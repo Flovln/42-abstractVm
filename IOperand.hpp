@@ -1,3 +1,6 @@
+#ifndef IOPERAND_HPP
+# define IOPERAND_HPP
+
 class IOperand {
   
   public:
@@ -14,3 +17,5 @@ class IOperand {
   
     virtual ~IOperand( void ) {}
 };
+
+#endif
