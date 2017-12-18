@@ -6,19 +6,32 @@
 //https://cpp.developpez.com/faq/cpp/?page=Les-templates
 //https://www.cprogramming.com/tutorial/templates.html
 
-template<typename T> class Operand : public AOperand
+template<typename T>
+class Operand : public IOperand
 {
   public:
-    template<typename T>int getPrecision( void ) const = 0;
-    template<typename T>eOperandType getType( void ) const = 0;
+    Operand<T>(void) {
 
-    template<typename T>const * operator+( IOperand const & rhs );
-    template<typename T>const * operator-( IOperand const & rhs );
-    template<typename T>const * operator*( IOperand const & rhs );
-    template<typename T>const * operator/( IOperand const & rhs );
-    template<typename T>const * operator%( IOperand const & rhs );
+    }
 
-    std::string const & toString( void ) const = 0;
+    Operan<T>(const Operand<T> & model) {
+
+    }
+
+    ~Operand<T>(void) {
+
+    }
+
+    <T>int getPrecision( void );
+    <T>eOperandType getType( void );
+
+    <T>const * operator+( T const & rhs );
+    <T>const * operator-( T const & rhs );
+    <T>const * operator*( T const & rhs );
+    <T>const * operator/( T const & rhs );
+    <T>const * operator%( T const & rhs );
+
+    std::string const & toString( void );
 }
 
 #endif
