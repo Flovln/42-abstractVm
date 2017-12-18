@@ -14,7 +14,7 @@ class Operand : public IOperand
 
     }
 
-    Operan<T>(const Operand<T> & model) {
+    Operand<T>(const Operand<T> & model) {
 
     }
 
@@ -22,16 +22,20 @@ class Operand : public IOperand
 
     }
 
-    <T>int getPrecision( void );
-    <T>eOperandType getType( void );
+    int              getPrecision( void );
+    eOperandType     getType( void );
 
-    <T>const * operator+( T const & rhs );
-    <T>const * operator-( T const & rhs );
-    <T>const * operator*( T const & rhs );
-    <T>const * operator/( T const & rhs );
-    <T>const * operator%( T const & rhs );
+    IOperand const * createOperand( eOperandType type, std::string const & value ) const;
+
+    IOperand const * operator+( IOperand const & rhs );
+    IOperand const * operator-( IOperand const & rhs );
+    IOperand const * operator*( IOperand const & rhs );
+    IOperand const * operator/( IOperand const & rhs );
+    IOperand const * operator%( IOperand const & rhs );
 
     std::string const & toString( void );
-}
+};
+
+std::ostream & operator<<(std::ostream & o, Operand const & fixed);
 
 #endif
