@@ -20,17 +20,11 @@ class Operand : public IOperand
       Double
     };
 
-    Operand<T>(void) {
+    Operand<T>(void) {}
 
-    }
+    Operand<T>(const Operand<T> & model) {}
 
-    Operand<T>(const Operand<T> & model) {
-
-    }
-
-    ~Operand<T>(void) {
-
-    }
+    ~Operand<T>(void) {}
 
     int                 getPrecision( void );
     eOperandType        getType( void );
@@ -39,11 +33,11 @@ class Operand : public IOperand
     /* Factory method (Fabrique) */
     IOperand const *    createOperand( eOperandType type, std::string const & value ) const;
     
-    IOperand const * createInt8( std::string const & value ) const;
-    IOperand const * createInt16( std::string const & value ) const;
-    IOperand const * createInt32( std::string const & value ) const;
-    IOperand const * createFloat( std::string const & value ) const;
-    IOperand const * createDouble( std::string const & value ) const;
+    IOperand const *    createInt8( std::string const & value ) const;
+    IOperand const *    createInt16( std::string const & value ) const;
+    IOperand const *    createInt32( std::string const & value ) const;
+    IOperand const *    createFloat( std::string const & value ) const;
+    IOperand const *    createDouble( std::string const & value ) const;
 
     IOperand const *    operator+( IOperand const & rhs );
     IOperand const *    operator-( IOperand const & rhs );

@@ -22,10 +22,8 @@ IOperand const *    Operand::createOperand( eOperandType type, std::string const
     &Operand::createDouble
   }
 
-  std::string keys[] = {"Int8", "Int16", "Int32", "Float", "Double"};
-
   for (int i = 0; i < 5; i++) {
-    if (keys[i] == type)
+    if ((eOperantType)i == type)
       return (this->*handler[i])(message);
   }
 }
