@@ -13,9 +13,45 @@ std::string const & Operand::toString() const {
 }
 
 IOperand const *    Operand::createOperand( eOperandType type, std::string const & value ) const {
-  //use array of pointers on member functions with enum values as an array
+  //use array of pointers on member functions with enum values as index
+  IOperand *(Operand::*handler[5])(std::string const &) = {
+    &Operand::createInt8,
+    &Operand::createInt16,
+    &Operand::createInt32,
+    &Operand::createFloat,
+    &Operand::createDouble
+  }
+
+  std::string keys[] = {"Int8", "Int16", "Int32", "Float", "Double"};
+
+  for (int i = 0; i < 5; i++) {
+    if (keys[i] == type)
+      return (this->*handler[i])(message);
+  }
 }
 
+/* Operators functions */
+IOperand const * createInt8( std::string const & value ) const {
+
+}
+
+IOperand const * createInt16( std::string const & value ) const {
+
+}
+
+IOperand const * createInt32( std::string const & value ) const {
+
+}
+
+IOperand const * createFloat( std::string const & value ) const {
+
+}
+
+IOperand const * createDouble( std::string const & value ) const {
+
+}
+
+/* Overload operators */
 IOperand const *    operator+( IOperand const & rhs ) {
 
 }
@@ -33,7 +69,7 @@ IOperand const *    operator/( IOperand const & rhs ) {
 }
 
 IOperand const *    operator%( IOperand const & rhs ) {
-  
+
 }
 
 
