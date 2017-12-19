@@ -11,10 +11,10 @@ int main(int ac, char **av)
   Test person3; // no parameter = default constructor
   Test person4(person1); // constructor by copy
 
-//  std::cout << person1; // operator overload
+  std::cout << person1; // operator overload
   obj = person2.toString();
   std::cout << obj;
 
-  person1.createOperand((Test::eOperandType)4, "test");
+  person1.createOperand((Test::eOperandType)4, "Test operand");
   return (0);
 }
