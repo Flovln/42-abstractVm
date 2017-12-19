@@ -11,15 +11,6 @@ template<typename T>
 class Operand : public IOperand
 {
   public:
-    enum eOperandType
-    {
-      Int8,
-      Int16,
-      Int32,
-      Float,
-      Double
-    };
-
     Operand<T>(void) {}
 
     Operand<T>(const Operand<T> & model) {}
@@ -29,15 +20,6 @@ class Operand : public IOperand
     int                 getPrecision( void );
     eOperandType        getType( void );
     std::string const & toString( void ) const;
-
-    /* Factory method (Fabrique) */
-    IOperand const *    createOperand( eOperandType type, std::string const & value ) const;
-    
-    IOperand const *    createInt8( std::string const & value ) const;
-    IOperand const *    createInt16( std::string const & value ) const;
-    IOperand const *    createInt32( std::string const & value ) const;
-    IOperand const *    createFloat( std::string const & value ) const;
-    IOperand const *    createDouble( std::string const & value ) const;
 
     IOperand const *    operator+( IOperand const & rhs );
     IOperand const *    operator-( IOperand const & rhs );

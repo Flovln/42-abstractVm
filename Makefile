@@ -13,8 +13,7 @@
 # -- definition de variables
 NAME = avm
 
-SRC = main.cpp\
-			Test.cpp
+SRC = main.cpp
 
 FLAGS = -Wall -Wextra -Werror
 # Genere les fichiers objet automatiquement depuis la liste des fichiers sources
