@@ -17,13 +17,25 @@ Test::~Test(void) {
   std::cout << "Destructor called" << std::endl;
 }
 
-std::string  Test::getName() const{
+std::string  Test::getName() const {
   return this->_name;
+}
+
+std::string const & Test::toString() const {
+  std::ostringstream stream;
+  std::string *str;
+  std::string tmp;
+
+  stream << *this;
+  tmp = stream.str();
+  str = &tmp;
+
+  return *str;
 }
 
 /* Non member */
 
-std::ostream & operator<<(std::ostream & o, Test const & fixed) {
-  o << "Surcharge : " << fixed.getName() << std::endl;
+std::ostream & operator<<(std::ostream & o, Test const & obj) {
+  o << "Name : " << obj.getName() << std::endl;
   return o;
 }

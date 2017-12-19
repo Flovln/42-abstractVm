@@ -36,6 +36,6 @@ class Operand : public IOperand
     std::string const & toString( void );
 };
 
-std::ostream & operator<<(std::ostream & o, Operand const & fixed);
+std::ostream & operator<<(std::ostream & o, Operand const & obj);
 
 #endif
