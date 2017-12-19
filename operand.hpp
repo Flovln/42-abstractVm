@@ -1,3 +1,4 @@
+#include <sstream>
 #include <iostream>
 
 #ifndef OPERAND_HPP
@@ -10,6 +11,15 @@ template<typename T>
 class Operand : public IOperand
 {
   public:
+    enum eOperandType
+    {
+      Int8,
+      Int16,
+      Int32,
+      Float,
+      Double
+    }
+
     Operand<T>(void) {
 
     }
@@ -22,18 +32,21 @@ class Operand : public IOperand
 
     }
 
-    int              getPrecision( void );
-    eOperandType     getType( void );
+    int                 getPrecision( void );
+    eOperandType        getType( void );
+    std::string const & toString( void ) const;
 
-    IOperand const * createOperand( eOperandType type, std::string const & value ) const;
+    /* Factory method (Fabrique) */
+    IOperand const *    createOperand( eOperandType type, std::string const & value ) const;
 
-    IOperand const * operator+( IOperand const & rhs );
-    IOperand const * operator-( IOperand const & rhs );
-    IOperand const * operator*( IOperand const & rhs );
-    IOperand const * operator/( IOperand const & rhs );
-    IOperand const * operator%( IOperand const & rhs );
+    IOperand const *    operator+( IOperand const & rhs );
+    IOperand const *    operator-( IOperand const & rhs );
+    IOperand const *    operator*( IOperand const & rhs );
+    IOperand const *    operator/( IOperand const & rhs );
+    IOperand const *    operator%( IOperand const & rhs );
 
-    std::string const & toString( void );
+  private:
+
 };
 
 std::ostream & operator<<(std::ostream & o, Operand const & obj);
