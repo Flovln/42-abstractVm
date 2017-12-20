@@ -34,6 +34,8 @@ class Lexer {
 
     std::vector<std::string>  *readFromFile(char *file);
     std::vector<std::string>  *readFromStdin(std::string line);
+
+    /* Utilities */
     void                      displayVectorContent(void);
 
   private:

@@ -4,13 +4,14 @@ int main(int ac, char **av)
 {
   if (ac < 3)
   {
-    std::string line;
-    Lexer       lexer;
+    Lexer lexer;
 
     if (ac == 2)
       lexer.readFromFile(av[1]);
     else
     {
+      std::string line;
+  
       while (1)
       {
         std::cin >> line;
@@ -22,7 +23,8 @@ int main(int ac, char **av)
     }
 
     lexer.displayVectorContent();
-    // call parser
+    // lexical analysis | convert vector to list or deque or stack
+    // parse and validate all elements from lexical data structure
     // call factory method
   }
   else
