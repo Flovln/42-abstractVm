@@ -32,11 +32,12 @@ class Lexer {
 
     Lexer &operator=(Lexer const &rhs);
 
-    std::vector<std::string>  *readFromFile(char *file);
-    std::vector<std::string>  *readFromStdin(std::string line);
+    void  readFromFile(char *file);
+    void  readFromStdin(std::string line);
+    void  analysis(void);
 
     /* Utilities */
-    void                      displayVectorContent(void);
+    void  displayVectorContent(void);
 
   private:
     std::vector<std::string> _buff;

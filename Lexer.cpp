@@ -17,7 +17,7 @@ Lexer & Lexer::operator=(Lexer const &rhs) {
   return (*this);
 }
 
-std::vector<std::string>  *Lexer::readFromFile(char *file) {
+void  Lexer::readFromFile(char *file) {
   std::string   line;
   std::ifstream ifs(file);
 
@@ -28,16 +28,15 @@ std::vector<std::string>  *Lexer::readFromFile(char *file) {
 
     ifs.close();
   }
-
-  return &this->_buff;  
 }
 
-std::vector<std::string>  *Lexer::readFromStdin(std::string line) {
+void  Lexer::readFromStdin(std::string line) {
   this->_buff.push_back(line);
-
-  return &this->_buff;
 }
 
+void  Lexer::analysis(void) {
+  std::cout << "Analysis" << std::endl;
+}
 
 void  Lexer::displayVectorContent(void) {
   std::cout << "--- Vector content ---" << std::endl;
