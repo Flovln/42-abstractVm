@@ -13,7 +13,8 @@
 # -- definition de variables
 NAME = avm
 
-SRC = main.cpp
+SRC = main.cpp\
+			Lexer.cpp
 
 FLAGS = -Wall -Wextra -Werror
 # Genere les fichiers objet automatiquement depuis la liste des fichiers sources

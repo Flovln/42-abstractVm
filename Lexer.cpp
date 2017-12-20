@@ -14,13 +14,29 @@ Lexer & Lexer::operator=(Lexer const &rhs) {
     //...
   }
 
-  return (*this)
+  return (*this);
+}
+
+void  Lexer::displayVectorContent(std::vector<std::string> buff) {
+  std::cout << "--- Vector content ---" << std::endl;
+
+  std::vector<std::string>::iterator iter = buff.begin();
+  std::vector<std::string>::iterator end = buff.end();
+
+  while (iter != end)
+  {
+    std::cout << (*iter) << std::endl;
+    ++iter;
+  }
+
+  std::cout << "---------" << std::endl;  
 }
 
 /* Non member function */
 
 std::ostream & operator<<(std::ostream & o, Lexer const &obj )
 {
+  (void)obj;
   o << "operator overload" << std::endl;
   return o;
 }

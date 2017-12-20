@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sstream>
+#include <regex>
+#include <vector>
 
 #ifndef LEXER_HPP
 # define LEXER_HPP
@@ -31,9 +33,10 @@ class Lexer {
 
     void  readFromFile();
     void  readFromStdin();
+    void  displayVectorContent(std::vector<std::string> buff);
 
   private:
-    std::string _content;
+    std::vector<std::string> _buff;
 
 };
 
