@@ -17,11 +17,33 @@ Lexer & Lexer::operator=(Lexer const &rhs) {
   return (*this);
 }
 
-void  Lexer::displayVectorContent(std::vector<std::string> buff) {
+std::vector<std::string>  *Lexer::readFromFile(char *file) {
+  std::string   line;
+  std::ifstream ifs(file);
+
+  if (ifs.is_open())
+  {
+    while (std::getline(ifs, line, '\n'))
+      this->_buff.push_back(line);
+
+    ifs.close();
+  }
+
+  return &this->_buff;  
+}
+
+std::vector<std::string>  *Lexer::readFromStdin(std::string line) {
+  this->_buff.push_back(line);
+
+  return &this->_buff;
+}
+
+
+void  Lexer::displayVectorContent(void) {
   std::cout << "--- Vector content ---" << std::endl;
 
-  std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();
+  std::vector<std::string>::iterator iter = this->_buff.begin();
+  std::vector<std::string>::iterator end = this->_buff.end();
 
   while (iter != end)
   {

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <regex>
 #include <vector>
@@ -31,9 +32,9 @@ class Lexer {
 
     Lexer &operator=(Lexer const &rhs);
 
-    void  readFromFile();
-    void  readFromStdin();
-    void  displayVectorContent(std::vector<std::string> buff);
+    std::vector<std::string>  *readFromFile(char *file);
+    std::vector<std::string>  *readFromStdin(std::string line);
+    void                      displayVectorContent(void);
 
   private:
     std::vector<std::string> _buff;
