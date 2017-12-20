@@ -22,7 +22,7 @@ int main(int ac, char **av)
       }
     }
 
-    lexer.displayVectorContent();
+//    lexer.displayVectorContent();
     // lexical analysis | convert vector to list or deque or stack
     lexer.analysis();
     // parse and validate all elements from lexical data structure

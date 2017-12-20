@@ -35,7 +35,15 @@ void  Lexer::readFromStdin(std::string line) {
 }
 
 void  Lexer::analysis(void) {
-  std::cout << "Analysis" << std::endl;
+  std::cout << "Analysis " << std::endl;
+  std::vector<std::string>::iterator iter = this->_buff.begin();
+  std::vector<std::string>::iterator end = this->_buff.end();
+
+  while (iter != end)
+  {
+    std::cout << (*iter) << std::endl;
+    ++iter;
+  }
 }
 
 void  Lexer::displayVectorContent(void) {
