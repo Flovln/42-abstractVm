@@ -29,7 +29,11 @@ class Lexer {
 
     Lexer &operator=(Lexer const &rhs);
 
+    void  readFromFile();
+    void  readFromStdin();
+
   private:
+    std::string _content;
 
 };
 
