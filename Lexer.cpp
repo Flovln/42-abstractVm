@@ -34,6 +34,9 @@ void  Lexer::readFromStdin(std::string line) {
   this->_buff.push_back(line);
 }
 
+//http://www.cplusplus.com/reference/map/multimap/insert/
+//http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
+
 void  Lexer::analysis(void) {
   std::cout << "Analysis " << std::endl;
   std::vector<std::string>::iterator iter = this->_buff.begin();
@@ -44,6 +47,10 @@ void  Lexer::analysis(void) {
     std::cout << (*iter) << std::endl;
     ++iter;
   }
+
+  // split the bare characters list into tokens
+  // recognizing those tokens (identifying keywords, parenthesis) (regex)
+  // verifying a general grammar structure
 }
 
 void  Lexer::displayVectorContent(void) {
@@ -58,7 +65,7 @@ void  Lexer::displayVectorContent(void) {
     ++iter;
   }
 
-  std::cout << "---------" << std::endl;  
+  std::cout << "---------" << std::endl;
 }
 
 /* Non member function */

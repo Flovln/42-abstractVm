@@ -3,6 +3,7 @@
 #include <sstream>
 #include <regex>
 #include <vector>
+#include <list>
 
 #ifndef LEXER_HPP
 # define LEXER_HPP
@@ -12,18 +13,12 @@ class Lexer {
     enum TokenType
     {
       Instruction, // push | pop | dump | assert | add | sub | mul | div | mod | print | exit
-      Separator, // \n
-      Value, // int8(N) | int16(N) | int32(N) | float(Z) | double(Z)
-      Eof, // ;;
-    };
-
-    enum ValueType
-    {
-      Int8,
-      Int16,
-      Int32,
-      Float,
-      Double
+//      Operand, // int8(N) | int16(N) | int32(N) | float(Z) | double(Z)
+      Int8, // + value
+      Int16, // + value 
+      Int32, // + value
+      Float, // + value
+      Double // + value
     };
 
     Lexer(void);

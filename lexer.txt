@@ -1,0 +1,62 @@
+ENTREE
+
+push int32(42)
+push int32(33)
+add
+push float(44.55)
+mul
+push double(42.42)
+push int32(42)
+dump
+pop
+assert double(42.42)
+exit
+
+ETAPE 1
+
+1 - push
+Token = Instruction
+2 - int32 => 42
+Token = int32 + valeur
+3 - push
+Token = Instruction
+4 - int32 => 33
+Token = int32 + valeur
+5 - add
+Token = Instruction
+6 - push
+Token = Instruction
+7 - float => 44.55 
+Token = Float + valeur
+8 - mul
+Token = Instruction
+9 - push
+Token = Instruction
+10 - double => 42.42
+Token = Double + valeur
+11 - push
+Token = Instruction
+12 - int32 => 42
+Token = int32 + valeur
+13 - dump
+Token = Instruction
+14 - pop
+Token = Instruction
+15 - assert
+Token = Instruction
+16 - double => 42.42
+Token = Double + valeur
+17 - exit
+Token = Instruction
+
+Lexer:
+
+Step 1: decouper sur tous les espaces/newline/parentheses -> stocker chaque chunk dans un maillon de list
+Step2: parcourir la liste et assigner un token pour chaque maillon
+
+Parser:
+
+Step 1: Parcours la liste analysée par le lexer.
+Step 2: Vérifie la cohérence du chunk courant avec le suivant
+Step 2.1: Vérifie la validité du chunk courant
+Step 3: Parse et supprime les elements inutiles de la liste courante (parentheses)q
