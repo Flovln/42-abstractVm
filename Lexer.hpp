@@ -56,11 +56,14 @@ class Lexer {
 
     /* Utilities */
     void  displayVectorContent(void);
+    void  printTokens(void);
 
   private:
     std::vector<std::string> _buff;
     std::vector<std::string> _chunks;
     std::vector<std::string> _tokens;
+
+    std::vector<std::string> _instructionType;
 };
 
 std::ostream & operator<<(std::ostream & o, Lexer const &obj);
