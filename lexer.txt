@@ -16,38 +16,55 @@ ETAPE 1
 
 1 - push
 Token = Instruction
+Token = NEWLINE
 2 - int32 => 42
 Token = int32 + valeur
+Token = NEWLINE
 3 - push
 Token = Instruction
+Token = NEWLINE
 4 - int32 => 33
 Token = int32 + valeur
+Token = NEWLINE
 5 - add
 Token = Instruction
+Token = NEWLINE
 6 - push
 Token = Instruction
+Token = NEWLINE
 7 - float => 44.55 
 Token = Float + valeur
+Token = NEWLINE
 8 - mul
 Token = Instruction
+Token = NEWLINE
 9 - push
 Token = Instruction
+Token = NEWLINE
 10 - double => 42.42
 Token = Double + valeur
+Token = NEWLINE
 11 - push
 Token = Instruction
+Token = NEWLINE
 12 - int32 => 42
 Token = int32 + valeur
+Token = NEWLINE
 13 - dump
 Token = Instruction
+Token = NEWLINE
 14 - pop
 Token = Instruction
+Token = NEWLINE
 15 - assert
 Token = Instruction
+Token = NEWLINE
 16 - double => 42.42
 Token = Double + valeur
+Token = NEWLINE
 17 - exit
 Token = Instruction
+Token = NEWLINE
 
 Lexer:
 

@@ -37,14 +37,63 @@ void  Lexer::readFromStdin(std::string line) {
 //http://www.cplusplus.com/reference/map/multimap/insert/
 //http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
 
-void  Lexer::analysis(void) {
-  std::cout << "Analysis " << std::endl;
-  std::vector<std::string>::iterator iter = this->_buff.begin();
-  std::vector<std::string>::iterator end = this->_buff.end();
+bool  Lexer::checkIfComment(std::string str)
+{
+  if (str[0] == ';' && str[1] != ';')
+    return true;
+  return false;
+}
+
+void  Lexer::getChunks(std::string str)
+{
+  // split line on whitespaces
+  std::stringstream lineStream(str);
+  std::string       chunk;
+
+  while (lineStream >> chunk)
+  {
+    this->_chunks.push_back(chunk) ;
+  }
+}
+
+void  Lexer::tokenizeChunks(void)
+{
+  std::vector<std::string>::iterator iter = this->_chunks.begin();
+  std::vector<std::string>::iterator end = this->_chunks.end();
+  std::string delimiters[3] = {";", "(", ")"};
+  std::string token;
 
   while (iter != end)
   {
-    std::cout << (*iter) << std::endl;
+    std::cout << "Chunk: " << *iter << std::endl;
+    for (size_t i = 0; i < (*iter).length(); i++)
+    {
+      // save tokens + label them
+      
+    }
+    ++iter;
+  }
+  return;
+}
+
+void  Lexer::analysis(void) {
+  std::cout << "--- Analysis ----" << std::endl;
+  std::vector<std::string>::iterator iter = this->_buff.begin();
+  std::vector<std::string>::iterator end = this->_buff.end();  
+//  std::list<std::tuple<std::string, int> > tokens;
+
+  while (iter != end)
+  {
+    std::cout << "COMMAND: " << (*iter) << std::endl;
+    std::cout << "------" << std::endl;
+    bool              isComment;
+
+    isComment = false;
+    this->_chunks.clear();
+    this->getChunks(*iter);
+    this->tokenizeChunks();
+    std::cout << "------" << std::endl;
+
     ++iter;
   }
 
