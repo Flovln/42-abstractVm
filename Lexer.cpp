@@ -48,16 +48,6 @@ void  Lexer::readFromStdin(std::string line) {
   this->_buff.push_back(line);
 }
 
-//http://www.cplusplus.com/reference/map/multimap/insert/
-//http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
-
-bool  Lexer::checkIfComment(std::string str)
-{
-  if (str[0] == ';' && str[1] != ';')
-    return true;
-  return false;
-}
-
 void  Lexer::getChunks(std::string str)
 {
   // split line on whitespaces
@@ -65,23 +55,7 @@ void  Lexer::getChunks(std::string str)
   std::string       chunk;
 
   while (lineStream >> chunk)
-  {
     this->_chunks.push_back(chunk) ;
-  }
-}
-
-void  Lexer::printTokens(void)
-{
-  std::vector<std::string>::iterator iter = this->_tokens.begin();
-  std::vector<std::string>::iterator end = this->_tokens.end();
-
-  std::cout << "--- Tokens list ---" << std::endl;
-  while (iter != end)
-  {
-    std::cout << "Token: " << *iter << std::endl;
-    ++iter;
-  }
-  std::cout << "--- --- ---" << std::endl;
 }
 
 void  Lexer::tokenizeChunks(void)
@@ -90,67 +64,86 @@ void  Lexer::tokenizeChunks(void)
   std::vector<std::string>::iterator chunkEnd = this->_chunks.end();
   std::vector<std::string>::iterator iterInstruc = this->_instructionType.begin();
   std::vector<std::string>::iterator endInstruc = this->_instructionType.end();
-
-  std::string delimiters[3] = {";", "(", ")"};
-  std::string token;
+  bool markAllAsComment = false;
 
   while (chunkIter != chunkEnd)
   {
     std::cout << "Chunk: " << *chunkIter << std::endl;
 
-    // Tag simple chunks as tokens if possible
-    while (iterInstruc != endInstruc)
+    if (markAllAsComment == false)
     {
-      if (*chunkIter == *iterInstruc)
-        this->_tokens.push_back(*chunkIter);
-      ++iterInstruc;
-    }
-
-    // Tag more complex chunks as comments + parenthesis
-    for (size_t i = 0; i < (*chunkIter).length(); i++)
-    {
-      //std::cout << (*iter)[i] << std::endl;
-      if ((*iter)[i] == ";" && (*iter)[i] != ";")
+      // Tag simple chunks as tokens if possible
+      while (iterInstruc != endInstruc)
       {
-        if (i > 1)
-          //get and save as token all content before ";"
-        else
+        if (*chunkIter == *iterInstruc)
+          this->_tokens.push_back(*chunkIter);
+        ++iterInstruc;
+      }
+
+      // Tag more complex chunks
+      for (size_t i = 0; i < (*chunkIter).length(); i++)
+      {
+        if ((*chunkIter)[i] == ';' && (*chunkIter)[i + 1] != ';')
         {
-          //from here until last chunk all content is a comment
+          // tag instructions before comment
+          if (i > 0)
+            this->_tokens.push_back((*chunkIter).substr(0, i));          
           
+          // from here until last chunk (from ";" to "\n") all content is a comment
+          markAllAsComment = true;
+          break;
         }
-        break;
+
+        if ((*chunkIter)[i] == '(')
+        {
+          int j;
+          int count;
+
+          // tag operand before opening parenthesis
+          this->_tokens.push_back((*chunkIter).substr(0, i));
+
+          j = i;
+          count = 0;
+          while ((*chunkIter)[j] != '\0')
+          {
+            if ((*chunkIter)[j] == ')')
+              break;
+            count++;
+            j++;
+          }
+
+          // tag value content contain between parenthesis
+          this->_tokens.push_back((*chunkIter).substr(i + 1, count - 1));
+        }
       }
     }
+    else
+    {
+      // tag all chunks as comment
+      std::cout << "Chunk | " << *chunkIter << " | tagged as comment" << std::endl;
+    }
+
     ++chunkIter;
   }
 }
 
 void  Lexer::analysis(void) {
-  std::cout << "--- Analysis ----" << std::endl;
   std::vector<std::string>::iterator iter = this->_buff.begin();
   std::vector<std::string>::iterator end = this->_buff.end();  
-//  std::list<std::tuple<std::string, int> > tokens;
 
   while (iter != end)
   {
-    std::cout << "COMMAND: " << (*iter) << std::endl;
-    std::cout << "------" << std::endl;
-    bool              isComment;
-
-    isComment = false;
     this->_chunks.clear();
     this->getChunks(*iter);
     this->tokenizeChunks();
-    std::cout << "------" << std::endl;
 
     ++iter;
   }
-  this->printTokens(); //tool
-  // split the bare characters list into tokens
-  // recognizing those tokens (identifying keywords, parenthesis) (regex)
-  // verifying a general grammar structure
+
+  this->displayTokensList(); //tool
 }
+
+/* Development tools */
 
 void  Lexer::displayVectorContent(void) {
   std::cout << "--- Vector content ---" << std::endl;
@@ -165,6 +158,20 @@ void  Lexer::displayVectorContent(void) {
   }
 
   std::cout << "---------" << std::endl;
+}
+
+void  Lexer::displayTokensList(void)
+{
+  std::vector<std::string>::iterator iter = this->_tokens.begin();
+  std::vector<std::string>::iterator end = this->_tokens.end();
+
+  std::cout << "--- Tokens list ---" << std::endl;
+  while (iter != end)
+  {
+    std::cout << "Token: " << *iter << std::endl;
+    ++iter;
+  }
+  std::cout << "--- --- ---" << std::endl;
 }
 
 /* Non member function */

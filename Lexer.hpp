@@ -50,18 +50,18 @@ class Lexer {
     void  readFromFile(char *file);
     void  readFromStdin(std::string line);
     void  analysis(void);
-    bool  checkIfComment(std::string str);
     void  getChunks(std::string str);
     void  tokenizeChunks(void);
 
     /* Utilities */
     void  displayVectorContent(void);
-    void  printTokens(void);
+    void  displayTokensList(void);
 
   private:
     std::vector<std::string> _buff;
     std::vector<std::string> _chunks;
     std::vector<std::string> _tokens;
+//    std::vector<std::tuple<std::string, int> > _tokens;
 
     std::vector<std::string> _instructionType;
 };
