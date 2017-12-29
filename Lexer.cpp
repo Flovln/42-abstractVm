@@ -43,6 +43,19 @@ void  Lexer::getChunks(std::string str)
   while (lineStream >> chunk)
     this->_chunks.push_back(chunk) ;
 }
+//tokenize logic
+/*
+  1 - Get simple instruction if possible using regex
+  2 - Get complex instruction (= operands + values + comments)
+    Comments: (unique separateloop)
+      1- If line starts with ";" until the end = comment = escape everything after
+      2- If a ";" is encountered anywhere in the string, extract content before and escape everyhting after
+    Parenthesis: (unique separate loop)
+      1- If a "(" is encountered, extract content before
+      2- From the "(" extract everything inside until the closing ")"
+      3- If next char after ")" is ";" escape it as comment
+      4- Everything after closing ")" minus comments is a lexical error
+*/
 
 void  Lexer::tokenizeChunks(void)
 {
