@@ -60,10 +60,11 @@ class Lexer {
     void  displayVectorContent(void);
     void  displayTokensList(void);
 
+    std::vector<token> tokens;
+
   private:
     std::vector<std::string> _buff;
     std::vector<std::string> _chunks;
-    std::vector<token> _tokens;
 //    std::vector<std::tuple<std::string, int> > _tokens;
 
 };

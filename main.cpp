@@ -23,7 +23,9 @@ int main(int ac, char **av)
     }
 
     lexer.analysis();
-    // parse and validate all elements from lexical data structure
+    //Parser parser;
+
+    //parser.mainFilter(lexer._tokens);
     // call factory method
   }
   else

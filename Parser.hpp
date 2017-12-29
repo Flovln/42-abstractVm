@@ -1,14 +1,24 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <regex>
+#include <vector>
+#include <list>
+#include <string>
+#include <string.h>
+#include <algorithm>
+#include <iterator>
 
 #ifndef PARSER_HPP
 # define PARSER_HPP
 
 class Parser {
-  public:
-    Parser(void);
-    ~Parser(void);
+  Parser(void);
 
-  private:
+  Parser(Parser const &obj);
+  ~Parser(void);
+
+  Parser &operator=(Parser const &rhs);
 
 };
 

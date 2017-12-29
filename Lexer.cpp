@@ -59,7 +59,7 @@ void  Lexer::tokenizeChunks(void)
 
     // Tokenize as error all content contained after closed parenthesis minus comments
     if (markAllAsError == true)
-      this->_tokens.push_back({LEXICAL_ERROR, *chunkIter});
+      this->tokens.push_back({LEXICAL_ERROR, *chunkIter});
 
     // Tokenize every type of chunks but comments
     if (markAllAsComment == false && markAllAsError == false)
@@ -68,7 +68,7 @@ void  Lexer::tokenizeChunks(void)
       // Tokenize simple instructions
       if (std::regex_match(*chunkIter, regexInstructions) == true && markAfterParenthesis == false)
       {
-        this->_tokens.push_back({INSTRUCTION, *chunkIter});
+        this->tokens.push_back({INSTRUCTION, *chunkIter});
         unvalidInstruction = false;
       }
       else
@@ -80,9 +80,9 @@ void  Lexer::tokenizeChunks(void)
           {
             // tag instructions before comment
             if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == false)
-              this->_tokens.push_back({INSTRUCTION, (*chunkIter).substr(0, i)});
+              this->tokens.push_back({INSTRUCTION, (*chunkIter).substr(0, i)});
             else if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == true)
-              this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(0, i)});
+              this->tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(0, i)});
 
             // from here until last chunk (from ";" to "\n") all content is a comment
             markAllAsComment = true;
@@ -105,14 +105,14 @@ void  Lexer::tokenizeChunks(void)
             }
 
             // tokenize operand + value
-            this->_tokens.push_back({(*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)});
+            this->tokens.push_back({(*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)});
 
             if (i + count + 1 < (*chunkIter).length())
             {
               if ((*chunkIter)[i + count] == ')' && (*chunkIter)[i + count + 1] != ';')
               {
                 markAllAsError = true;
-                this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(i + count + 1, (*chunkIter).length())});
+                this->tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(i + count + 1, (*chunkIter).length())});
               }
               else if ((*chunkIter)[i + count] == ')' && (*chunkIter)[i + count + 1] == ';')
                 markAllAsComment = true;
@@ -126,8 +126,8 @@ void  Lexer::tokenizeChunks(void)
 
       // tokenize unknown instructions = errors
       if (unvalidInstruction == true)
-        this->_tokens.push_back({UNKNOWN_INSTRUCTION, *chunkIter});
-//        this->_tokens.push_back(token("UnknownInstruction", *chunkIter));
+        this->tokens.push_back({UNKNOWN_INSTRUCTION, *chunkIter});
+//        this->tokens.push_back(token("UnknownInstruction", *chunkIter));
     }
 
     ++chunkIter;
@@ -168,8 +168,8 @@ void  Lexer::displayVectorContent(void) {
 
 void  Lexer::displayTokensList(void)
 {
-  std::vector<token>::iterator iter = this->_tokens.begin();
-  std::vector<token>::iterator end = this->_tokens.end();
+  std::vector<token>::iterator iter = this->tokens.begin();
+  std::vector<token>::iterator end = this->tokens.end();
 
   std::cout << "--- Tokens list ---" << std::endl;
   while (iter != end)
