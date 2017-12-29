@@ -29,14 +29,14 @@ OBJ = $(SRC:.cpp=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	clang++ $(FLAGS) $(OBJ) -o $(NAME)
+	clang++ -std=c++11 $(FLAGS) $(OBJ) -o $(NAME)
 
 # $@ nom de la cible
 # $< nom de la premiere dependance
 
 # construire un .o a partir d'un .cpp
 %.o : %.cpp
-	clang++ $(FLAGS) -o $@ -c $<
+	clang++ -std=c++11 $(FLAGS) -o $@ -c $<
 
 clean:
 	rm -rf $(OBJ)

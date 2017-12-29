@@ -1,0 +1,5 @@
+push int16(32;)
+pu int32(32))
+pu int16(91) ;valid comment
+pu float(12.64);valid comment
+exit

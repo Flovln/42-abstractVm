@@ -13,6 +13,14 @@
 # define LEXER_HPP
 
 //http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
+#define INSTRUCTION "Instruction"
+#define LEXICAL_ERROR "LexicalError"
+#define UNKNOWN_INSTRUCTION "UnknownInstruction"
+#define INT8 "Int8"
+#define INT16 "Int16"
+#define INT32 "Int32"
+#define FLOAT "Float"
+#define DOUBLE "Double"
 
 class Lexer {
   public:
@@ -25,13 +33,15 @@ class Lexer {
       Int32,
       Float,
       Double,
-      Error
+      /* Errors */
+      LexicalError,
+      UnknownInstruction
     };
 
     struct token {
       std::string type;
       std::string value;
-      token(std::string t, std::string v) : type(t), value(v) {}
+//      token(std::string t, std::string v) : type(t), value(v) {}
     };
 
     Lexer(void);
