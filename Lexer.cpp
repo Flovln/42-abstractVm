@@ -55,17 +55,18 @@ void  Lexer::tokenizeChunks(void)
 
   while (chunkIter != chunkEnd)
   {
-    // Tokenize as error all content contained after closed parenthesis
+    bool unvalidInstruction = true;
+
+    // Tokenize as error all content contained after closed parenthesis minus comments
     if (markAllAsError == true)
       this->_tokens.push_back({LEXICAL_ERROR, *chunkIter});
 
     // Tokenize every type of chunks but comments
     if (markAllAsComment == false && markAllAsError == false)
     {
-      bool unvalidInstruction = true;
   
       // Tokenize simple instructions
-      if (std::regex_match(*chunkIter, regexInstructions) == true)
+      if (std::regex_match(*chunkIter, regexInstructions) == true && markAfterParenthesis == false)
       {
         this->_tokens.push_back({INSTRUCTION, *chunkIter});
         unvalidInstruction = false;
@@ -78,9 +79,11 @@ void  Lexer::tokenizeChunks(void)
           if ((*chunkIter)[i] == ';' && (*chunkIter)[i + 1] != ';')
           {
             // tag instructions before comment
-            if (i > 0 && (*chunkIter)[i - 1] != ')')
+            if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == false)
               this->_tokens.push_back({INSTRUCTION, (*chunkIter).substr(0, i)});
-            
+            else if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == true)
+              this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(0, i)});
+
             // from here until last chunk (from ";" to "\n") all content is a comment
             markAllAsComment = true;
             unvalidInstruction = false;
