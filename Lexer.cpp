@@ -63,7 +63,7 @@ void  Lexer::tokenizeChunks(void)
       // Tokenize simple instructions
       if (std::regex_match(*chunkIter, regexInstructions) == true)
       {
-        this->_tokens.push_back(*chunkIter);
+        this->_tokens.push_back(token("Instruction", *chunkIter));
         unvalidInstruction = false;
       }
       else
@@ -75,7 +75,7 @@ void  Lexer::tokenizeChunks(void)
           {
             // tag instructions before comment
             if (i > 0)
-              this->_tokens.push_back((*chunkIter).substr(0, i));          
+              this->_tokens.push_back(token("Instruction", (*chunkIter).substr(0, i)));
             
             // from here until last chunk (from ";" to "\n") all content is a comment
             markAllAsComment = true;
@@ -86,9 +86,6 @@ void  Lexer::tokenizeChunks(void)
           {
             int j;
             int count;
-
-            // tokenize operand before opening parenthesis
-            this->_tokens.push_back((*chunkIter).substr(0, i));
 
             j = i;
             count = 0;
@@ -101,15 +98,15 @@ void  Lexer::tokenizeChunks(void)
             }
 
             unvalidInstruction = false;
-            // tokenize value contain between parenthesis
-            this->_tokens.push_back((*chunkIter).substr(i + 1, count - 1));
+            // tokenize operand  + value
+            this->_tokens.push_back(token((*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)));
           }
         }
       }
 
       // tokenize unknown instructions
       if (unvalidInstruction == true)
-        this->_tokens.push_back(*chunkIter);
+        this->_tokens.push_back(token("Instruction", *chunkIter));
     }
 
     ++chunkIter;
@@ -150,13 +147,13 @@ void  Lexer::displayVectorContent(void) {
 
 void  Lexer::displayTokensList(void)
 {
-  std::vector<std::string>::iterator iter = this->_tokens.begin();
-  std::vector<std::string>::iterator end = this->_tokens.end();
+  std::vector<token>::iterator iter = this->_tokens.begin();
+  std::vector<token>::iterator end = this->_tokens.end();
 
   std::cout << "--- Tokens list ---" << std::endl;
   while (iter != end)
   {
-    std::cout << "Token: " << *iter << std::endl;
+    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
     ++iter;
   }
   std::cout << "--- --- ---" << std::endl;

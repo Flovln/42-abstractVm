@@ -19,28 +19,18 @@ class Lexer {
     enum TokenType
     {
       Instruction, // push | pop | dump | assert | add | sub | mul | div | mod | print | exit
-//      Operand, // int8(N) | int16(N) | int32(N) | float(Z) | double(Z)
-      Comment,
-      Int8, // + value
-      Int16, // + value 
-      Int32, // + value
-      Float, // + value
-      Double // + value
+      /* Operands */
+      Int8,
+      Int16, 
+      Int32,
+      Float,
+      Double
     };
 
-    enum InstructionType
-    {
-      push,
-      pop,
-      dump,
-      assert,
-      add,
-      sub,
-      mul,
-      div,
-      mod,
-      print,
-      exit
+    struct token {
+      std::string type;
+      std::string value;
+      token(std::string t, std::string v) : type(t), value(v) {}
     };
 
     Lexer(void);
@@ -62,7 +52,7 @@ class Lexer {
   private:
     std::vector<std::string> _buff;
     std::vector<std::string> _chunks;
-    std::vector<std::string> _tokens;
+    std::vector<token> _tokens;
 //    std::vector<std::tuple<std::string, int> > _tokens;
 
 };
