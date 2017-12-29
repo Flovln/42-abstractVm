@@ -9,17 +9,21 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Lexer.hpp"
+
 #ifndef PARSER_HPP
 # define PARSER_HPP
 
 class Parser {
-  Parser(void);
+  public:
+    Parser(void);
 
-  Parser(Parser const &obj);
-  ~Parser(void);
+    Parser(Parser const &obj);
+    ~Parser(void);
 
-  Parser &operator=(Parser const &rhs);
+    Parser &operator=(Parser const &rhs);
 
+    void test(void);
 };
 
 #endif

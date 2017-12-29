@@ -1,4 +1,5 @@
 #include "Lexer.hpp"
+#include "Parser.hpp"
 
 int main(int ac, char **av)
 {
@@ -23,7 +24,7 @@ int main(int ac, char **av)
     }
 
     lexer.analysis();
-    //Parser parser;
+    Parser parser;
 
     //parser.mainFilter(lexer._tokens);
     // call factory method
