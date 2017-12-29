@@ -24,7 +24,8 @@ class Lexer {
       Int16, 
       Int32,
       Float,
-      Double
+      Double,
+      Error
     };
 
     struct token {

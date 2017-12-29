@@ -50,13 +50,16 @@ void  Lexer::tokenizeChunks(void)
   std::vector<std::string>::iterator chunkEnd = this->_chunks.end();
   std::regex regexInstructions("push|pop|dump|assert|add|sub|mul|div|mod|print|exit");
   bool markAllAsComment = false;
+  bool markAllAsError = false;
 
   while (chunkIter != chunkEnd)
   {
-    std::cout << "Chunk: " << *chunkIter << std::endl;
-
+    // Tokenize as error all content contained after closed parenthesis
+    if (markAllAsError == true)
+      this->_tokens.push_back(token("Error", *chunkIter));
+   
     // Tokenize every type of chunks but comments
-    if (markAllAsComment == false)
+    if (markAllAsComment == false && markAllAsError == false)
     {
       bool unvalidInstruction = true;
   
@@ -82,7 +85,7 @@ void  Lexer::tokenizeChunks(void)
             unvalidInstruction = false;
             break;
           }
-          else if ((*chunkIter)[i] == '(')
+          else if ((*chunkIter)[i] == '(' && markAllAsError == false)
           {
             int j;
             int count;
@@ -97,16 +100,21 @@ void  Lexer::tokenizeChunks(void)
               j++;
             }
 
-            unvalidInstruction = false;
-            // tokenize operand  + value
+            // tokenize operand + value
             this->_tokens.push_back(token((*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)));
+
+            if (i + count + 1 < (*chunkIter).length())
+              this->_tokens.push_back(token("Error", (*chunkIter).substr(i + count, (*chunkIter).length())));
+
+            unvalidInstruction = false;
+            markAllAsError = true;
           }
         }
       }
 
-      // tokenize unknown instructions
+      // tokenize unknown instructions = errors
       if (unvalidInstruction == true)
-        this->_tokens.push_back(token("Instruction", *chunkIter));
+        this->_tokens.push_back(token("Error", *chunkIter));
     }
 
     ++chunkIter;
