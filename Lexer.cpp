@@ -85,6 +85,11 @@ void  Lexer::tokenizeChunks(void)
             unvalidInstruction = false;
             break;
           }
+          else if ((*chunkIter)[i] == ';' && (*chunkIter)[i + 1] == ';')
+          {
+            // more error handling on ";;"
+            this->_tokens.push_back(token("Instruction", *chunkIter));
+          }
           else if ((*chunkIter)[i] == '(' && markAllAsError == false)
           {
             int j;
@@ -104,7 +109,7 @@ void  Lexer::tokenizeChunks(void)
             this->_tokens.push_back(token((*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)));
 
             if (i + count + 1 < (*chunkIter).length())
-              this->_tokens.push_back(token("Error", (*chunkIter).substr(i + count, (*chunkIter).length())));
+              this->_tokens.push_back(token("Error", (*chunkIter).substr(i + count + 1, (*chunkIter).length())));
 
             unvalidInstruction = false;
             markAllAsError = true;
