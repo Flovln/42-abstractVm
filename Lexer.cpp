@@ -1,20 +1,6 @@
 #include "Lexer.hpp"
 
-Lexer::Lexer(void) {
-//  this->_instructionType = {"push", "pop", "dump", "assert", "add", "sub", "mul", "div", "mod", "print", "exit"};
-
-  this->_instructionType.push_back("push");
-  this->_instructionType.push_back("pop");
-  this->_instructionType.push_back("dump");
-  this->_instructionType.push_back("assert");
-  this->_instructionType.push_back("add");
-  this->_instructionType.push_back("sub");
-  this->_instructionType.push_back("mul");
-  this->_instructionType.push_back("div");
-  this->_instructionType.push_back("mod");
-  this->_instructionType.push_back("print");
-  this->_instructionType.push_back("exit");
-}
+Lexer::Lexer(void) {}
 
 Lexer::Lexer(Lexer const &obj) {
   *this = obj;
@@ -62,65 +48,68 @@ void  Lexer::tokenizeChunks(void)
 {
   std::vector<std::string>::iterator chunkIter = this->_chunks.begin();
   std::vector<std::string>::iterator chunkEnd = this->_chunks.end();
-  std::vector<std::string>::iterator iterInstruc = this->_instructionType.begin();
-  std::vector<std::string>::iterator endInstruc = this->_instructionType.end();
+  std::regex regexInstructions("push|pop|dump|assert|add|sub|mul|div|mod|print|exit");
   bool markAllAsComment = false;
 
   while (chunkIter != chunkEnd)
   {
     std::cout << "Chunk: " << *chunkIter << std::endl;
 
+    // Tokenize every type of chunks but comments
     if (markAllAsComment == false)
     {
-      // Tag simple chunks as tokens if possible
-      while (iterInstruc != endInstruc)
+      bool unvalidInstruction = true;
+  
+      // Tokenize simple instructions
+      if (std::regex_match(*chunkIter, regexInstructions) == true)
       {
-        if (*chunkIter == *iterInstruc)
-          this->_tokens.push_back(*chunkIter);
-        ++iterInstruc;
+        this->_tokens.push_back(*chunkIter);
+        unvalidInstruction = false;
       }
-
-      // Tag more complex chunks
-      for (size_t i = 0; i < (*chunkIter).length(); i++)
+      else
       {
-        if ((*chunkIter)[i] == ';' && (*chunkIter)[i + 1] != ';')
+        // Tokenize instructions before comments or operands and values
+        for (size_t i = 0; i < (*chunkIter).length(); i++)
         {
-          // tag instructions before comment
-          if (i > 0)
-            this->_tokens.push_back((*chunkIter).substr(0, i));          
-          
-          // from here until last chunk (from ";" to "\n") all content is a comment
-          markAllAsComment = true;
-          break;
-        }
-
-        if ((*chunkIter)[i] == '(')
-        {
-          int j;
-          int count;
-
-          // tag operand before opening parenthesis
-          this->_tokens.push_back((*chunkIter).substr(0, i));
-
-          j = i;
-          count = 0;
-          while ((*chunkIter)[j] != '\0')
+          if ((*chunkIter)[i] == ';' && (*chunkIter)[i + 1] != ';')
           {
-            if ((*chunkIter)[j] == ')')
-              break;
-            count++;
-            j++;
+            // tag instructions before comment
+            if (i > 0)
+              this->_tokens.push_back((*chunkIter).substr(0, i));          
+            
+            // from here until last chunk (from ";" to "\n") all content is a comment
+            markAllAsComment = true;
+            unvalidInstruction = false;
+            break;
           }
+          else if ((*chunkIter)[i] == '(')
+          {
+            int j;
+            int count;
 
-          // tag value content contain between parenthesis
-          this->_tokens.push_back((*chunkIter).substr(i + 1, count - 1));
+            // tokenize operand before opening parenthesis
+            this->_tokens.push_back((*chunkIter).substr(0, i));
+
+            j = i;
+            count = 0;
+            while ((*chunkIter)[j] != '\0')
+            {
+              if ((*chunkIter)[j] == ')')
+                break;
+              count++;
+              j++;
+            }
+
+            unvalidInstruction = false;
+            // tokenize value contain between parenthesis
+            this->_tokens.push_back((*chunkIter).substr(i + 1, count - 1));
+          }
         }
       }
-    }
-    else
-    {
-      // tag all chunks as comment
-      std::cout << "Chunk | " << *chunkIter << " | tagged as comment" << std::endl;
+
+      // tokenize unknown instructions
+      if (unvalidInstruction == true)
+        this->_tokens.push_back(*chunkIter);
     }
 
     ++chunkIter;
@@ -136,7 +125,6 @@ void  Lexer::analysis(void) {
     this->_chunks.clear();
     this->getChunks(*iter);
     this->tokenizeChunks();
-
     ++iter;
   }
 

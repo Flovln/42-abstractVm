@@ -5,8 +5,10 @@ add
 push float(44.55)
 mul
 push double(42.42)
+p;new comment
 push int32(42)
 dump
+dumpe
 pop;comment fdsf sdf dsa fsdaf sdaf sdf sdf push sadf pop
 assert double(42.42)
 exit

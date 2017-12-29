@@ -12,6 +12,8 @@
 #ifndef LEXER_HPP
 # define LEXER_HPP
 
+//http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
+
 class Lexer {
   public:
     enum TokenType
@@ -63,7 +65,6 @@ class Lexer {
     std::vector<std::string> _tokens;
 //    std::vector<std::tuple<std::string, int> > _tokens;
 
-    std::vector<std::string> _instructionType;
 };
 
 std::ostream & operator<<(std::ostream & o, Lexer const &obj);
