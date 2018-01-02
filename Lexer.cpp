@@ -17,7 +17,22 @@ Lexer & Lexer::operator=(Lexer const &rhs) {
   return (*this);
 }
 
-void  Lexer::lexicalAnalysis(std::vector<std::string> buff) {
+std::vector<Token>  Lexer::lexicalAnalysis(std::vector<std::string> buff, int source) {
+  std::string lastElement =  buff.back();
+
+  if (source == 0)
+  {
+    if (lastElement != "exit")
+      //throw exception
+      std::cout << "Error" << std::endl;
+  }
+  else if (source == 1)
+  {
+    if (lastElement != ";;")
+      //throw exception
+      std::cout << "Error" << std::endl;
+  }
+
   std::vector<std::string>::iterator iter = buff.begin();
   std::vector<std::string>::iterator end = buff.end();  
 
@@ -29,7 +44,9 @@ void  Lexer::lexicalAnalysis(std::vector<std::string> buff) {
     ++iter;
   }
 
-  this->displayTokensList(); //tool
+//  this->displayTokensList(); //tool
+
+  return this->tokens;
 }
 
 void  Lexer::getChunks(std::string str)
@@ -164,10 +181,10 @@ void  Lexer::displayVectorContent(std::vector<std::string> buff) {
 
 void  Lexer::displayTokensList(void)
 {
-  std::vector<token>::iterator iter = this->tokens.begin();
-  std::vector<token>::iterator end = this->tokens.end();
+  std::vector<Token>::iterator iter = this->tokens.begin();
+  std::vector<Token>::iterator end = this->tokens.end();
 
-  std::cout << "--- Tokens list ---" << std::endl;
+  std::cout << "--- Tokens list Lexer ---" << std::endl;
   while (iter != end)
   {
     std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;

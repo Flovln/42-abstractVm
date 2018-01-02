@@ -26,13 +26,14 @@ void  Vm::readFromStdin(void) {
 }
 
 void  Vm::analysis(void) {
-  Lexer lexer;
-
-  lexer.lexicalAnalysis(this->_buff);
+  this->tokens = _lexer.lexicalAnalysis(this->_buff, this->_source);
+  //this->_instructions = _lexer.parseTokens(this->tokens)
+  this->displayTokens();
 }
 
 void  Vm::execute(void) {
-//  this->displayBufferContent();
+  //this->_instructions
+  //createOperand()
 }
 
 int  Vm::getSource(void) {
@@ -94,4 +95,18 @@ void  Vm::displayBufferContent(void) {
   }
 
   std::cout << "---------" << std::endl;
+}
+
+void  Vm::displayTokens(void)
+{
+  std::vector<Token>::iterator iter = this->tokens.begin();
+  std::vector<Token>::iterator end = this->tokens.end();
+
+  std::cout << "--- Tokens list vm ---" << std::endl;
+  while (iter != end)
+  {
+    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
+    ++iter;
+  }
+  std::cout << "--- --- ---" << std::endl;
 }

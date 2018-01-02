@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Token.hpp"
+
 #ifndef LEXER_HPP
 # define LEXER_HPP
 
@@ -24,25 +26,6 @@
 
 class Lexer {
   public:
-    enum TokenType
-    {
-      Instruction, // push | pop | dump | assert | add | sub | mul | div | mod | print | exit
-      /* Operands */
-      Int8,
-      Int16, 
-      Int32,
-      Float,
-      Double,
-      /* Errors */
-      LexicalError,
-      UnknownInstruction
-    };
-
-    struct token {
-      std::string type;
-      std::string value;
-//      token(std::string t, std::string v) : type(t), value(v) {}
-    };
 
     Lexer(void);
     Lexer(Lexer const &obj);
@@ -50,20 +33,20 @@ class Lexer {
 
     Lexer &operator=(Lexer const &rhs);
 
-    void  lexicalAnalysis(std::vector<std::string> buff);
+    std::vector<Token>  lexicalAnalysis(std::vector<std::string> buff, int source);
     void  getChunks(std::string str);
     void  tokenizeChunks(void);
 
-    /* Utilities */
+    void  parseTokens(void);
+
+    /* Dev utilities */
     void  displayVectorContent(std::vector<std::string> buff);
     void  displayTokensList(void);
 
-    std::vector<token> tokens;
+    std::vector<Token> tokens;
 
   private:
-    std::vector<std::string> _buff;
     std::vector<std::string> _chunks;
-//    std::vector<std::tuple<std::string, int> > _tokens;
 
 };
 
