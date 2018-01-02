@@ -1,6 +1,13 @@
 #include "Lexer.hpp"
 #include "Parser.hpp"
 
+void  usage(char *execName)
+{
+  std::cout << "Usage: " << execName << " [file]" << std::endl;
+  std::cout << "or" << std::endl;
+  std::cout << "Usage: " << execName << std::endl;
+}
+
 int main(int ac, char **av)
 {
   if (ac < 3)
@@ -13,24 +20,17 @@ int main(int ac, char **av)
     {
       std::string line;
   
-      while (1)
+      while (line != ";;")
       {
         std::cin >> line;
         lexer.readFromStdin(line);
-        
-        if (line == ";;")
-          break;
       }
     }
 
     lexer.analysis();
-    Parser parser;
-
-    //parser.mainFilter(lexer._tokens);
-    // call factory method
   }
   else
-    std::cout << "AbstractVm runs programs from a file and from the standard input." << std::endl;
+    usage(av[0]);
 
   return (0);
 }
