@@ -1,4 +1,7 @@
 #include <iostream>
+#include <list>
+
+#include "Lexer.hpp"
 
 #ifndef VM_HPP
 # define VM_HPP

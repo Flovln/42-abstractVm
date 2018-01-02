@@ -1,4 +1,4 @@
-#include "./includes/Lexer.hpp"
+#include "./includes/Vm.hpp"
 
 void  usage(char *execName)
 {
