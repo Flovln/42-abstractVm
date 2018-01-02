@@ -1,9 +1,9 @@
 #include <iostream>
 
-#ifndef FACTORY_HPP
-# define FACTORY_HPP
+#ifndef VM_HPP
+# define VM_HPP
 
-class Factory
+class Vm
 {
   public:
     enum eOperandType

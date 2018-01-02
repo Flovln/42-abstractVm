@@ -1,5 +1,4 @@
-#include "Lexer.hpp"
-#include "Parser.hpp"
+#include "./includes/Lexer.hpp"
 
 void  usage(char *execName)
 {
