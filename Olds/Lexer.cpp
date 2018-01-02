@@ -17,21 +17,6 @@ Lexer & Lexer::operator=(Lexer const &rhs) {
   return (*this);
 }
 
-void  Lexer::lexicalAnalysis(std::vector<std::string> buff) {
-  std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();  
-
-  while (iter != end)
-  {
-    this->_chunks.clear();
-    this->getChunks(*iter);
-    this->tokenizeChunks();
-    ++iter;
-  }
-
-  this->displayTokensList(); //tool
-}
-
 void  Lexer::getChunks(std::string str)
 {
   // split line on whitespaces
@@ -145,13 +130,28 @@ void  Lexer::tokenizeChunks(void)
   }
 }
 
+void  Lexer::analysis(void) {
+  std::vector<std::string>::iterator iter = this->_buff.begin();
+  std::vector<std::string>::iterator end = this->_buff.end();  
+
+  while (iter != end)
+  {
+    this->_chunks.clear();
+    this->getChunks(*iter);
+    this->tokenizeChunks();
+    ++iter;
+  }
+
+  this->displayTokensList(); //tool
+}
+
 /* Development tools */
 
-void  Lexer::displayVectorContent(std::vector<std::string> buff) {
-  std::cout << "--- Vector content in Lexer ---" << std::endl;
+void  Lexer::displayVectorContent(void) {
+  std::cout << "--- Vector content ---" << std::endl;
 
-  std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();
+  std::vector<std::string>::iterator iter = this->_buff.begin();
+  std::vector<std::string>::iterator end = this->_buff.end();
 
   while (iter != end)
   {

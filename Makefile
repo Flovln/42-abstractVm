@@ -14,6 +14,7 @@
 NAME = avm
 
 SRC = main.cpp\
+		Vm.cpp\
 		Lexer.cpp\
 
 FLAGS = -Wall -Wextra -Werror

@@ -11,22 +11,15 @@ int main(int ac, char **av)
 {
   if (ac < 3)
   {
-    Lexer lexer;
+    Vm vm;
 
     if (ac == 2)
-      lexer.readFromFile(av[1]);
+      vm.readFromFile(av[1]);
     else
-    {
-      std::string line;
-  
-      while (line != ";;")
-      {
-        std::cin >> line;
-        lexer.readFromStdin(line);
-      }
-    }
+      vm.readFromStdin();
 
-    lexer.analysis();
+    vm.analysis();
+    vm.execute();
   }
   else
     usage(av[0]);

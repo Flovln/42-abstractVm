@@ -50,14 +50,12 @@ class Lexer {
 
     Lexer &operator=(Lexer const &rhs);
 
-    void  readFromFile(char *file);
-    void  readFromStdin(std::string line);
-    void  analysis(void);
+    void  lexicalAnalysis(std::vector<std::string> buff);
     void  getChunks(std::string str);
     void  tokenizeChunks(void);
 
     /* Utilities */
-    void  displayVectorContent(void);
+    void  displayVectorContent(std::vector<std::string> buff);
     void  displayTokensList(void);
 
     std::vector<token> tokens;
@@ -72,3 +70,4 @@ class Lexer {
 std::ostream & operator<<(std::ostream & o, Lexer const &obj);
 
 #endif
+
