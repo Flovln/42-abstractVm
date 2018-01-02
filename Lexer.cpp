@@ -162,6 +162,11 @@ void  Lexer::tokenizeChunks(void)
   }
 }
 
+void  Lexer::parseTokens(void)
+{
+  //return this->_instructions;
+}
+
 /* Development tools */
 
 void  Lexer::displayVectorContent(std::vector<std::string> buff) {

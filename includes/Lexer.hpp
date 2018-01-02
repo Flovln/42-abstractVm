@@ -47,6 +47,7 @@ class Lexer {
 
   private:
     std::vector<std::string> _chunks;
+    std::list<Token>         _instructions;
 
 };
 
