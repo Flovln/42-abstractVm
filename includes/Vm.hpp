@@ -1,7 +1,7 @@
 #include <iostream>
 #include <list>
 
-#include "Lexer.hpp"
+#include "Instruction.hpp"
 #include "IOperand.hpp"
 
 #ifndef VM_HPP
@@ -22,8 +22,7 @@ class Vm
 
     void  readFromFile(char *file);
     void  readFromStdin(void);
-    void  analysis(void);
-    void  execute(void);
+    void  run(void);
 
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
@@ -42,11 +41,11 @@ class Vm
     IOperand const *  createFloat( std::string const & value ) const;
     IOperand const *  createDouble( std::string const & value ) const;
 
-    Lexer _lexer;
+    Instruction              _instruction;
 
-    int   _source; // 0 = file | 1 = stdin
+    int                      _source; // 0 = file | 1 = stdin
     std::vector<std::string> _buff;
-    std::list<Token> _instructions; 
+    std::list<Token>         _instructions; 
 };
 
 #endif

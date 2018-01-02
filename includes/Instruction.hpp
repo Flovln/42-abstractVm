@@ -11,11 +11,11 @@
 
 #include "Token.hpp"
 
-#ifndef LEXER_HPP
-# define LEXER_HPP
+#ifndef INSTRUCTION_HPP
+# define INSTRUCTION_HPP
 
 //http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
-#define INSTRUCTION "Instruction"
+#define INSTRUCTION "Instruction" // to rename
 #define LEXICAL_ERROR "LexicalError"
 #define UNKNOWN_INSTRUCTION "UnknownInstruction"
 #define INT8 "Int8"
@@ -24,34 +24,34 @@
 #define FLOAT "Float"
 #define DOUBLE "Double"
 
-class Lexer {
+class Instruction {
   public:
 
-    Lexer(void);
-    Lexer(Lexer const &obj);
-    ~Lexer(void);
+    Instruction(void);
+    Instruction(Instruction const &obj);
+    ~Instruction(void);
 
-    Lexer &operator=(Lexer const &rhs);
+    Instruction &operator=(Instruction const &rhs);
 
-    std::vector<Token>  lexicalAnalysis(std::vector<std::string> buff, int source);
-    void  getChunks(std::string str);
-    void  tokenizeChunks(void);
+    void  lexicalAnalysis(std::vector<std::string> buff, int source);
+    void  createChunks(std::string str);
+    void  tokenizer(void);
+    void  tokenizerOld(void);
 
-    void  parseTokens(void);
+    std::list<Token>  parseTokens(void);
 
     /* Dev utilities */
     void  displayVectorContent(std::vector<std::string> buff);
     void  displayTokensList(void);
 
-    std::vector<Token> tokens;
-
   private:
+    std::vector<Token>       _tokens;
     std::vector<std::string> _chunks;
     std::list<Token>         _instructions;
 
 };
 
-std::ostream & operator<<(std::ostream & o, Lexer const &obj);
+std::ostream & operator<<(std::ostream & o, Instruction const &obj);
 
 #endif
 

@@ -18,8 +18,7 @@ int main(int ac, char **av)
     else
       vm.readFromStdin();
 
-    vm.analysis();
-    vm.execute();
+    vm.run();
   }
   else
     usage(av[0]);

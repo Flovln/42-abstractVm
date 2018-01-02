@@ -25,15 +25,10 @@ void  Vm::readFromStdin(void) {
   this->_source = 1;
 }
 
-void  Vm::analysis(void) {
-  this->tokens = _lexer.lexicalAnalysis(this->_buff, this->_source);
-  //this->_instructions = _lexer.parseTokens(this->tokens)
-  this->displayTokens();
-}
-
-void  Vm::execute(void) {
-  //this->_instructions
-  //createOperand()
+void  Vm::run(void) {
+  _instruction.lexicalAnalysis(this->_buff, this->_source);
+  this->_instructions = _instruction.parseTokens();
+  //this->createOperand()
 }
 
 int  Vm::getSource(void) {

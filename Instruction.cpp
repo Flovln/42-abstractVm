@@ -1,14 +1,14 @@
-#include "./includes/Lexer.hpp"
+#include "./includes/Instruction.hpp"
 
-Lexer::Lexer(void) {}
+Instruction::Instruction(void) {}
 
-Lexer::Lexer(Lexer const &obj) {
+Instruction::Instruction(Instruction const &obj) {
   *this = obj;
 }
 
-Lexer::~Lexer(void) {}
+Instruction::~Instruction(void) {}
 
-Lexer & Lexer::operator=(Lexer const &rhs) {
+Instruction & Instruction::operator=(Instruction const &rhs) {
   if (this != &rhs) {
     //this->name = rhs.name;
     //...
@@ -17,7 +17,17 @@ Lexer & Lexer::operator=(Lexer const &rhs) {
   return (*this);
 }
 
-std::vector<Token>  Lexer::lexicalAnalysis(std::vector<std::string> buff, int source) {
+void  Instruction::createChunks(std::string str)
+{
+  /* split line on whitespaces to only keep strings and chars */
+  std::stringstream lineStream(str);
+  std::string       chunk;
+
+  while (lineStream >> chunk)
+    this->_chunks.push_back(chunk) ;
+}
+
+void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   std::string lastElement =  buff.back();
 
   if (source == 0)
@@ -36,29 +46,18 @@ std::vector<Token>  Lexer::lexicalAnalysis(std::vector<std::string> buff, int so
   std::vector<std::string>::iterator iter = buff.begin();
   std::vector<std::string>::iterator end = buff.end();  
 
+  /* Go through file content line by line */
   while (iter != end)
   {
-    this->_chunks.clear();
-    this->getChunks(*iter);
-    this->tokenizeChunks();
+    if (!this->_chunks.empty())
+      this->_chunks.clear();
+    this->createChunks(*iter);
+    this->tokenizer();
+    //this->tokenizerOld();
     ++iter;
   }
-
-//  this->displayTokensList(); //tool
-
-  return this->tokens;
 }
 
-void  Lexer::getChunks(std::string str)
-{
-  // split line on whitespaces
-  std::stringstream lineStream(str);
-  std::string       chunk;
-
-  while (lineStream >> chunk)
-    this->_chunks.push_back(chunk) ;
-}
-//tokenize logic
 /*
   1 - Get simple instruction if possible using regex
   2 - Get complex instruction (= operands + values + comments)
@@ -72,7 +71,18 @@ void  Lexer::getChunks(std::string str)
       4- Everything after closing ")" minus comments is a lexical error
 */
 
-void  Lexer::tokenizeChunks(void)
+void  Instruction::tokenizer(void)
+{
+  std::vector<std::string>::iterator iter = this->_chunks.begin();
+  std::vector<std::string>::iterator end = this->_chunks.end();
+
+  while (iter != end)
+  {
+    ++iter;
+  }
+}
+
+void  Instruction::tokenizerOld(void)
 {
   std::vector<std::string>::iterator chunkIter = this->_chunks.begin();
   std::vector<std::string>::iterator chunkEnd = this->_chunks.end();
@@ -87,7 +97,7 @@ void  Lexer::tokenizeChunks(void)
 
     // Tokenize as error all content contained after closed parenthesis minus comments
     if (markAllAsError == true)
-      this->tokens.push_back({LEXICAL_ERROR, *chunkIter});
+      this->_tokens.push_back({LEXICAL_ERROR, *chunkIter});
 
     // Tokenize every type of chunks but comments
     if (markAllAsComment == false && markAllAsError == false)
@@ -96,7 +106,7 @@ void  Lexer::tokenizeChunks(void)
       // Tokenize simple instructions
       if (std::regex_match(*chunkIter, regexInstructions) == true && markAfterParenthesis == false)
       {
-        this->tokens.push_back({INSTRUCTION, *chunkIter});
+        this->_tokens.push_back({INSTRUCTION, *chunkIter});
         unvalidInstruction = false;
       }
       else
@@ -108,9 +118,9 @@ void  Lexer::tokenizeChunks(void)
           {
             // tag instructions before comment
             if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == false)
-              this->tokens.push_back({INSTRUCTION, (*chunkIter).substr(0, i)});
+              this->_tokens.push_back({INSTRUCTION, (*chunkIter).substr(0, i)});
             else if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == true)
-              this->tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(0, i)});
+              this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(0, i)});
 
             // from here until last chunk (from ";" to "\n") all content is a comment
             markAllAsComment = true;
@@ -133,14 +143,14 @@ void  Lexer::tokenizeChunks(void)
             }
 
             // tokenize operand + value
-            this->tokens.push_back({(*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)});
+            this->_tokens.push_back({(*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)});
 
             if (i + count + 1 < (*chunkIter).length())
             {
               if ((*chunkIter)[i + count] == ')' && (*chunkIter)[i + count + 1] != ';')
               {
                 markAllAsError = true;
-                this->tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(i + count + 1, (*chunkIter).length())});
+                this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(i + count + 1, (*chunkIter).length())});
               }
               else if ((*chunkIter)[i + count] == ')' && (*chunkIter)[i + count + 1] == ';')
                 markAllAsComment = true;
@@ -154,7 +164,7 @@ void  Lexer::tokenizeChunks(void)
 
       // tokenize unknown instructions = errors
       if (unvalidInstruction == true)
-        this->tokens.push_back({UNKNOWN_INSTRUCTION, *chunkIter});
+        this->_tokens.push_back({UNKNOWN_INSTRUCTION, *chunkIter});
 //        this->tokens.push_back(token("UnknownInstruction", *chunkIter));
     }
 
@@ -162,15 +172,17 @@ void  Lexer::tokenizeChunks(void)
   }
 }
 
-void  Lexer::parseTokens(void)
+std::list<Token>  Instruction::parseTokens(void)
 {
-  //return this->_instructions;
+  this->displayTokensList();
+  
+  return this->_instructions;
 }
 
 /* Development tools */
 
-void  Lexer::displayVectorContent(std::vector<std::string> buff) {
-  std::cout << "--- Vector content in Lexer ---" << std::endl;
+void  Instruction::displayVectorContent(std::vector<std::string> buff) {
+  std::cout << "--- Vector content in Instruction ---" << std::endl;
 
   std::vector<std::string>::iterator iter = buff.begin();
   std::vector<std::string>::iterator end = buff.end();
@@ -184,12 +196,12 @@ void  Lexer::displayVectorContent(std::vector<std::string> buff) {
   std::cout << "---------" << std::endl;
 }
 
-void  Lexer::displayTokensList(void)
+void  Instruction::displayTokensList(void)
 {
-  std::vector<Token>::iterator iter = this->tokens.begin();
-  std::vector<Token>::iterator end = this->tokens.end();
+  std::vector<Token>::iterator iter = this->_tokens.begin();
+  std::vector<Token>::iterator end = this->_tokens.end();
 
-  std::cout << "--- Tokens list Lexer ---" << std::endl;
+  std::cout << "--- Tokens list Instruction ---" << std::endl;
   while (iter != end)
   {
     std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
@@ -200,7 +212,7 @@ void  Lexer::displayTokensList(void)
 
 /* Non member function */
 
-std::ostream & operator<<(std::ostream & o, Lexer const &obj )
+std::ostream & operator<<(std::ostream & o, Instruction const &obj )
 {
   (void)obj;
   o << "operator overload" << std::endl;
