@@ -52,7 +52,7 @@ IOperand const *    Vm::createOperand( eOperandType type, std::string const & va
   };
 
   for (int i = 0; i < 5; i++) {
-    if ((eOperantType)i == type)
+    if ((eOperandType)i == type)
       return (this->*handler[i])(message);
   }
 }*/
