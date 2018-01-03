@@ -13,12 +13,18 @@ int main(int ac, char **av)
   {
     Vm vm;
 
-    if (ac == 2)
-      vm.readFromFile(av[1]);
-    else
-      vm.readFromStdin();
+    try {
+      if (ac == 2)
+        vm.readFromFile(av[1]);
+      else
+        vm.readFromStdin();
 
-    vm.run();
+      vm.run();
+    }
+
+    catch (Vm::NoExitException & e) {
+      std::cout << "Catch open file exception: " << e.what() << std::endl;
+    }
   }
   else
     usage(av[0]);

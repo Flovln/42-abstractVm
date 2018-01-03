@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <exception>
 
 #include "Instruction.hpp"
 #include "IOperand.hpp"
@@ -33,6 +34,20 @@ class Vm
     int   getSource(void);
 
     std::vector<Token> tokens;
+
+    class NoExitException : public std::exception
+    {
+      public:
+        //Exception(std::string msg) : message(msg){}
+
+        virtual const char * what(void) const throw ()
+        {
+          return "No exit error";
+          //return message.c_str();
+        }
+
+        //std::string message;
+    };
 
   private:
     IOperand const *  createInt8( std::string const & value ) const;

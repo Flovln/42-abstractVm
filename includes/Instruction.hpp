@@ -35,13 +35,10 @@ class Instruction {
 
     void  lexicalAnalysis(std::vector<std::string> buff, int source);
     void  createChunks(std::string str);
+    void  removeComments(void);
     void  tokenizer(void);
     void  tokenizeSimple(std::string chunk);
     void  tokenizeComplex(std::string chunk);
-    void  removeComments(void);
-
-    void  tokenizerOld(void); // TO REMOVE
-
     std::list<Token>  parseTokens(void);
 
     /* Dev utilities */

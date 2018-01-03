@@ -1,4 +1,5 @@
 #include "./includes/Instruction.hpp"
+#include "./includes/Vm.hpp"
 
 Instruction::Instruction(void) {}
 
@@ -33,14 +34,14 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   if (source == 0)
   {
     if (lastElement != "exit")
-      //throw exception
       std::cout << "Error" << std::endl;
+      //throw Vm::Exception("No instruction ending the program found");
   }
   else if (source == 1)
   {
     if (lastElement != ";;")
-      //throw exception
       std::cout << "Error" << std::endl;
+      //throw Vm::Exception("No instruction ending the program found");
   }
 
   /* Remove last element from vector aka exit command or ";;" */

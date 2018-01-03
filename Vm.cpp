@@ -12,8 +12,8 @@ void  Vm::readFromFile(char *file) {
     ifs.close();
   }
   else
-    std::cout << "Throw OPEN FILE ERROR" << std::endl;
-  
+    throw Vm::NoExitException();//("File open error");
+
   this->_source = 0;
 }
 
