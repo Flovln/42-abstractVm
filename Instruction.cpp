@@ -52,15 +52,18 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   /* Go through file content line by line to remove comments */
   while (iter != end)
   {
+    std::cout << "----> Line: " << *iter << std::endl;
+
     if (!this->_chunks.empty())
       this->_chunks.clear();
     this->createChunks(*iter);
+    if (!this->_commentsRemoved.empty())
+      this->_commentsRemoved.clear();
     this->removeComments();
+    this->tokenizer();
     ++iter;
   }
  
-  this->displayTokensListWithoutComments(); // UTILS to be removed
-  this->tokenizer();
 }
 
 void  Instruction::removeComments(void)
@@ -100,16 +103,39 @@ void  Instruction::tokenizeSimple(std::string chunk)
 
 void  Instruction::tokenizeComplex(std::string chunk)
 {
-  //std::cout << "Chunk complex: " << chunk << std::endl;
-
   for (size_t i = 0; i < chunk.length(); ++i)
   {
-//    std::cout << "c: " << chunk[i] << std::endl;
     if (chunk[i] == '(')
     {
-      if (i > 0)
-        this->_tokens.push_back({INSTRUCTION, chunk.substr(0, i)});
+      int   count;
+      bool  closed;
+
+      count = 0;
+      closed = false;
+      for (int j = i; chunk[j] != '\0'; j++)
+      {
+        if (chunk[j] == ')')
+        {
+          closed = true;
+          break;
+        }
+        count++;
+      }
+
+      if (closed == false)
+        std::cout << "Throw NO CLOSING PARENTHESIS" << std::endl;
+
+      /* Get content before and between parenthesis */
+      this->_tokens.push_back({chunk.substr(0, i), chunk.substr(i + 1, count - 1)});
+
+      if (i + count + 1 < chunk.length())
+      {
+        this->_tokens.push_back({LEXICAL_ERROR, chunk.substr(i + count + 1, chunk.length())});
+        this->_markAsLexicalError = true;
+      }
     }
+    else
+      this->_tokens.push_back({UNKNOWN_INSTRUCTION, chunk});
   }
 }
 
@@ -117,11 +143,20 @@ void  Instruction::tokenizer(void)
 {
   std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
   std::vector<std::string>::iterator end = this->_commentsRemoved.end();
+  this->_markAsLexicalError = false;
 
   while (iter != end)
   {
-    this->tokenizeComplex(*iter);
-    this->tokenizeSimple(*iter);
+    std::cout << "Chunk: " << *iter << std::endl;
+
+    if (this->_markAsLexicalError == false)
+    {
+      this->tokenizeComplex(*iter);
+      this->tokenizeSimple(*iter);
+    }
+    else
+      this->_tokens.push_back({LEXICAL_ERROR, *iter});
+
     ++iter;
   }
 }
