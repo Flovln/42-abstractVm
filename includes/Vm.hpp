@@ -28,17 +28,11 @@ class Vm
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
 
-    /* Development tools */
-    void  displayBufferContent(void);
-    void  displayTokens(void);
-    int   getSource(void);
-
     std::vector<Token> tokens;
 
     class ExecutionException : public std::exception
     {
       public:
-
         ExecutionException(std::string str) : message(str){}
 
         virtual const char * what(void) const throw ()
@@ -52,7 +46,6 @@ class Vm
     class SyntaxException : public std::exception
     {
       public:
-
         SyntaxException(std::string str) : message(str){}
 
         virtual const char * what(void) const throw ()
@@ -62,6 +55,11 @@ class Vm
 
         std::string message;
     };
+
+    /* Development tools */
+    void  displayBufferContent(void);
+    void  displayTokens(void);
+    int   getSource(void);
 
   private:
     IOperand const *  createInt8( std::string const & value ) const;

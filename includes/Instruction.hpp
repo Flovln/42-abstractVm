@@ -14,7 +14,6 @@
 #ifndef INSTRUCTION_HPP
 # define INSTRUCTION_HPP
 
-//http://www.cse.chalmers.se/edu/year/2015/course/DAT150/lectures/proglang-04.html
 #define INSTRUCTION "Instruction" // to rename
 #define LEXICAL_ERROR "LexicalError"
 #define UNKNOWN_INSTRUCTION "UnknownInstruction"
