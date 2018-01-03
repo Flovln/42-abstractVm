@@ -49,10 +49,9 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   std::vector<std::string>::iterator iter = buff.begin();
   std::vector<std::string>::iterator end = buff.end();  
 
-  /* Go through file content line by line to remove comments */
+  /* Go through file content line by line to remove comments and tonekize chunks */
   while (iter != end)
   {
-//    std::cout << "----> Line: " << *iter << std::endl;
     if (!this->_chunks.empty())
       this->_chunks.clear();
     this->createChunks(*iter);
@@ -94,12 +93,21 @@ void  Instruction::removeComments(void)
 
 void  Instruction::tokenizeSimple(std::string chunk)
 {
-  std::regex regexInstructions("push|pop|dump|assert|add|sub|mul|div|mod|print|exit");
+  std::regex simpleInstructions("pop|dump|add|sub|mul|div|mod|print");
+  std::regex complexInstructions("push|assert");
 
-  if (std::regex_match(chunk, regexInstructions) == true)
+  if (std::regex_match(chunk, simpleInstructions) == true)
+  {
+    this->_markAsUnknownInstruction = true;
+    this->_tokens.push_back({INSTRUCTION, chunk});
+  }
+  else if (std::regex_match(chunk, complexInstructions) == true)
     this->_tokens.push_back({INSTRUCTION, chunk});
   else if (this->_markAsUnknownInstruction == false)
+  {
+    this->_markAsUnknownInstruction = true;
     this->_tokens.push_back({UNKNOWN_INSTRUCTION, chunk});
+  }
 }
 
 void  Instruction::tokenizeComplex(std::string chunk)
@@ -149,8 +157,6 @@ void  Instruction::tokenizer(void)
 
   while (iter != end)
   {
-    //std::cout << "Chunk: " << *iter << std::endl;
-
     if (this->_markAsUnknownInstruction == true)
       this->_tokens.push_back({LEXICAL_ERROR, *iter});
     else if (this->_markAsLexicalError == false)
@@ -165,6 +171,68 @@ void  Instruction::tokenizer(void)
   }
 }
 
+std::list<Token>  Instruction::parseTokens(void)
+{
+  this->displayTokensList();
+  
+  return this->_instructions;
+}
+
+/* Development tools */
+
+void  Instruction::displayVectorContent(std::vector<std::string> buff) {
+  std::cout << "--- Vector content in Instruction ---" << std::endl;
+
+  std::vector<std::string>::iterator iter = buff.begin();
+  std::vector<std::string>::iterator end = buff.end();
+
+  while (iter != end)
+  {
+    std::cout << (*iter) << std::endl;
+    ++iter;
+  }
+
+  std::cout << "---------" << std::endl;
+}
+
+void  Instruction::displayTokensListWithoutComments(void)
+{
+  std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
+  std::vector<std::string>::iterator end = this->_commentsRemoved.end();
+
+  std::cout << "--- Tokens list without comments ---" << std::endl;
+  while (iter != end)
+  {
+    std::cout << "Token: " << *iter << std::endl;
+    ++iter;
+  }
+  std::cout << "--- --- ---" << std::endl;
+}
+
+void  Instruction::displayTokensList(void)
+{
+  std::vector<Token>::iterator iter = this->_tokens.begin();
+  std::vector<Token>::iterator end = this->_tokens.end();
+
+  std::cout << "--- Tokens list Instruction ---" << std::endl;
+  while (iter != end)
+  {
+    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
+    ++iter;
+  }
+  std::cout << "--- --- ---" << std::endl;
+}
+
+/* Non member function */
+
+std::ostream & operator<<(std::ostream & o, Instruction const &obj )
+{
+  (void)obj;
+  o << "operator overload" << std::endl;
+  return o;
+}
+
+/*
 void  Instruction::tokenizerOld(void)
 {
   std::vector<std::string>::iterator chunkIter = this->_chunks.begin();
@@ -253,65 +321,4 @@ void  Instruction::tokenizerOld(void)
 
     ++chunkIter;
   }
-}
-
-std::list<Token>  Instruction::parseTokens(void)
-{
-  this->displayTokensList();
-  
-  return this->_instructions;
-}
-
-/* Development tools */
-
-void  Instruction::displayVectorContent(std::vector<std::string> buff) {
-  std::cout << "--- Vector content in Instruction ---" << std::endl;
-
-  std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();
-
-  while (iter != end)
-  {
-    std::cout << (*iter) << std::endl;
-    ++iter;
-  }
-
-  std::cout << "---------" << std::endl;
-}
-
-void  Instruction::displayTokensListWithoutComments(void)
-{
-  std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
-  std::vector<std::string>::iterator end = this->_commentsRemoved.end();
-
-  std::cout << "--- Tokens list without comments ---" << std::endl;
-  while (iter != end)
-  {
-    std::cout << "Token: " << *iter << std::endl;
-    ++iter;
-  }
-  std::cout << "--- --- ---" << std::endl;
-}
-
-void  Instruction::displayTokensList(void)
-{
-  std::vector<Token>::iterator iter = this->_tokens.begin();
-  std::vector<Token>::iterator end = this->_tokens.end();
-
-  std::cout << "--- Tokens list Instruction ---" << std::endl;
-  while (iter != end)
-  {
-    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
-    ++iter;
-  }
-  std::cout << "--- --- ---" << std::endl;
-}
-
-/* Non member function */
-
-std::ostream & operator<<(std::ostream & o, Instruction const &obj )
-{
-  (void)obj;
-  o << "operator overload" << std::endl;
-  return o;
-}
+}*/
