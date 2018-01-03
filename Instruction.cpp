@@ -34,14 +34,12 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   if (source == 0)
   {
     if (lastElement != "exit")
-      std::cout << "Error" << std::endl;
-      //throw Vm::Exception("No instruction ending the program found");
+      throw Vm::SyntaxException("No instruction ending the program found.");
   }
   else if (source == 1)
   {
     if (lastElement != ";;")
-      std::cout << "Error" << std::endl;
-      //throw Vm::Exception("No instruction ending the program found");
+      throw Vm::SyntaxException("No instruction ending the program found.");
   }
 
   /* Remove last element from vector aka exit command or ";;" */

@@ -12,7 +12,7 @@ void  Vm::readFromFile(char *file) {
     ifs.close();
   }
   else
-    throw Vm::NoExitException();//("File open error");
+    throw Vm::ExecutionException("File open error.");
 
   this->_source = 0;
 }

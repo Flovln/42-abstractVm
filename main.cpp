@@ -22,9 +22,8 @@ int main(int ac, char **av)
       vm.run();
     }
 
-    catch (Vm::NoExitException & e) {
-      std::cout << "Catch open file exception: " << e.what() << std::endl;
-    }
+    catch (Vm::ExecutionException & e) { std::cout << "Execution error: " << e.what() << std::endl; }
+    catch (Vm::SyntaxException & e) { std::cout << "Syntax error: " << e.what() << std::endl; }
   }
   else
     usage(av[0]);

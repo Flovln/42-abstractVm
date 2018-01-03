@@ -35,18 +35,32 @@ class Vm
 
     std::vector<Token> tokens;
 
-    class NoExitException : public std::exception
+    class ExecutionException : public std::exception
     {
       public:
-        //Exception(std::string msg) : message(msg){}
+
+        ExecutionException(std::string str) : message(str){}
 
         virtual const char * what(void) const throw ()
         {
-          return "No exit error";
-          //return message.c_str();
+          return message.c_str();
         }
 
-        //std::string message;
+        std::string message;
+    };
+
+    class SyntaxException : public std::exception
+    {
+      public:
+
+        SyntaxException(std::string str) : message(str){}
+
+        virtual const char * what(void) const throw ()
+        {
+          return message.c_str();
+        }
+
+        std::string message;
     };
 
   private:
