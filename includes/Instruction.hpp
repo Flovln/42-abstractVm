@@ -14,15 +14,6 @@
 #ifndef INSTRUCTION_HPP
 # define INSTRUCTION_HPP
 
-#define INSTRUCTION "Instruction" // to rename
-#define LEXICAL_ERROR "LexicalError"
-#define UNKNOWN_INSTRUCTION "UnknownInstruction"
-#define INT8 "Int8"
-#define INT16 "Int16"
-#define INT32 "Int32"
-#define FLOAT "Float"
-#define DOUBLE "Double"
-
 class Instruction {
   public:
 

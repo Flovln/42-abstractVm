@@ -53,9 +53,12 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   {
     if (!this->_chunks.empty())
       this->_chunks.clear();
+    
     this->createChunks(*iter);
+    
     if (!this->_commentsRemoved.empty())
       this->_commentsRemoved.clear();
+    
     this->removeComments();
     this->tokenizer();
     ++iter;
@@ -98,14 +101,14 @@ void  Instruction::tokenizeSimple(std::string chunk)
   if (std::regex_match(chunk, simpleInstructions) == true)
   {
     this->_markAsUnknownInstruction = true;
-    this->_tokens.push_back({INSTRUCTION, chunk});
+    this->_tokens.push_back({Token::Instruction, "", chunk});
   }
   else if (std::regex_match(chunk, complexInstructions) == true)
-    this->_tokens.push_back({INSTRUCTION, chunk});
+    this->_tokens.push_back({Token::Instruction, "", chunk});
   else if (this->_markAsUnknownInstruction == false)
   {
     this->_markAsUnknownInstruction = true;
-    this->_tokens.push_back({UNKNOWN_INSTRUCTION, chunk});
+    this->_tokens.push_back({Token::UnknownInstruction, "", chunk});
   }
 }
 
@@ -131,14 +134,14 @@ void  Instruction::tokenizeComplex(std::string chunk)
       }
 
       /* Get content before and between parenthesis */
-      this->_tokens.push_back({chunk.substr(0, i), chunk.substr(i + 1, count - 1)});
+      this->_tokens.push_back({Token::Operand, chunk.substr(0, i), chunk.substr(i + 1, count - 1)});
 
       if (closed == false)
-        this->_tokens.push_back({LEXICAL_ERROR, "Missing closing parenthesis"});
+        this->_tokens.push_back({Token::LexicalError, "", "Missing closing parenthesis"});
 
       if (i + count + 1 < chunk.length())
       {
-        this->_tokens.push_back({LEXICAL_ERROR, chunk.substr(i + count + 1, chunk.length())});
+        this->_tokens.push_back({Token::LexicalError, "", chunk.substr(i + count + 1, chunk.length())});
         this->_markAsLexicalError = true;
       }
   
@@ -157,14 +160,14 @@ void  Instruction::tokenizer(void)
   while (iter != end)
   {
     if (this->_markAsUnknownInstruction == true)
-      this->_tokens.push_back({LEXICAL_ERROR, *iter});
+      this->_tokens.push_back({Token::LexicalError, "", *iter});
     else if (this->_markAsLexicalError == false)
     {
       this->tokenizeComplex(*iter);
       this->tokenizeSimple(*iter);
     }
     else
-      this->_tokens.push_back({LEXICAL_ERROR, *iter});
+      this->_tokens.push_back({Token::LexicalError, "",*iter});
 
     ++iter;
   }
@@ -216,7 +219,7 @@ void  Instruction::displayTokensList(void)
   std::cout << "--- Tokens list Instruction ---" << std::endl;
   while (iter != end)
   {
-    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
+    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].valueType << ", " << iter[0].value << " }" << std::endl;
     ++iter;
   }
   std::cout << "--- --- ---" << std::endl;

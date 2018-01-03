@@ -5,19 +5,15 @@
 struct Token {
   
   enum Type {
-    Instruction, // push | pop | dump | assert | add | sub | mul | div | mod | print | exit
-    /* Operands */
-    Int8,
-    Int16, 
-    Int32,
-    Float,
-    Double,
+    Instruction,
+    Operand,
     /* Errors */
     LexicalError,
     UnknownInstruction
   };
 
-  std::string type;
+  Type        type;
+  std::string valueType;
   std::string value;
 };
 
