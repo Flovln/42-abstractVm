@@ -36,18 +36,25 @@ class Instruction {
     void  lexicalAnalysis(std::vector<std::string> buff, int source);
     void  createChunks(std::string str);
     void  tokenizer(void);
-    void  tokenizerOld(void);
+    void  tokenizeSimple(std::string chunk);
+    void  tokenizeComplex(std::string chunk);
+    void  removeComments(void);
+
+    void  tokenizerOld(void); // TO REMOVE
 
     std::list<Token>  parseTokens(void);
 
     /* Dev utilities */
     void  displayVectorContent(std::vector<std::string> buff);
     void  displayTokensList(void);
+    void  displayTokensListWithoutComments(void);
 
   private:
-    std::vector<Token>       _tokens;
     std::vector<std::string> _chunks;
+    std::vector<std::string> _commentsRemoved;
+    std::vector<Token>       _tokens;
     std::list<Token>         _instructions;
+    bool                     _markedAsComment;
 
 };
 

@@ -11,6 +11,9 @@ void  Vm::readFromFile(char *file) {
 
     ifs.close();
   }
+  else
+    std::cout << "Throw OPEN FILE ERROR" << std::endl;
+  
   this->_source = 0;
 }
 

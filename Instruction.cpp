@@ -43,17 +43,85 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
       std::cout << "Error" << std::endl;
   }
 
+  /* Remove last element from vector aka exit command or ";;" */
+  buff.pop_back();
+
   std::vector<std::string>::iterator iter = buff.begin();
   std::vector<std::string>::iterator end = buff.end();  
 
-  /* Go through file content line by line */
+  /* Go through file content line by line to remove comments */
   while (iter != end)
   {
     if (!this->_chunks.empty())
       this->_chunks.clear();
     this->createChunks(*iter);
-    this->tokenizer();
-    //this->tokenizerOld();
+    this->removeComments();
+    ++iter;
+  }
+ 
+  this->displayTokensListWithoutComments(); // UTILS to be removed
+  this->tokenizer();
+}
+
+void  Instruction::removeComments(void)
+{
+  std::vector<std::string>::iterator iter = this->_chunks.begin();
+  std::vector<std::string>::iterator end = this->_chunks.end();
+
+  this->_markedAsComment = false;
+
+  while (iter != end)
+  {
+    for (size_t i = 0; i < (*iter).length(); ++i)
+    {
+      if ((*iter)[i] == ';')
+      {
+        if (i > 0)
+          this->_commentsRemoved.push_back((*iter).substr(0, i));
+        this->_markedAsComment = true;
+        break;
+      }
+    }
+
+    if (this->_markedAsComment != true)
+      this->_commentsRemoved.push_back(*iter);
+
+    ++iter;
+  }
+}
+
+void  Instruction::tokenizeSimple(std::string chunk)
+{
+  std::regex regexInstructions("push|pop|dump|assert|add|sub|mul|div|mod|print|exit");
+
+  if (std::regex_match(chunk, regexInstructions) == true)
+    this->_tokens.push_back({INSTRUCTION, chunk});
+}
+
+void  Instruction::tokenizeComplex(std::string chunk)
+{
+  //std::cout << "Chunk complex: " << chunk << std::endl;
+
+  for (size_t i = 0; i < chunk.length(); ++i)
+  {
+//    std::cout << "c: " << chunk[i] << std::endl;
+    if (chunk[i] == '(')
+    {
+      if (i > 0)
+        this->_tokens.push_back({INSTRUCTION, chunk.substr(0, i)});
+    }
+  }
+}
+
+void  Instruction::tokenizer(void)
+{
+  std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
+  std::vector<std::string>::iterator end = this->_commentsRemoved.end();
+
+  while (iter != end)
+  {
+    this->tokenizeComplex(*iter);
+    this->tokenizeSimple(*iter);
     ++iter;
   }
 }
@@ -70,17 +138,6 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
       3- If next char after ")" is ";" escape it as comment
       4- Everything after closing ")" minus comments is a lexical error
 */
-
-void  Instruction::tokenizer(void)
-{
-  std::vector<std::string>::iterator iter = this->_chunks.begin();
-  std::vector<std::string>::iterator end = this->_chunks.end();
-
-  while (iter != end)
-  {
-    ++iter;
-  }
-}
 
 void  Instruction::tokenizerOld(void)
 {
@@ -194,6 +251,20 @@ void  Instruction::displayVectorContent(std::vector<std::string> buff) {
   }
 
   std::cout << "---------" << std::endl;
+}
+
+void  Instruction::displayTokensListWithoutComments(void)
+{
+  std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
+  std::vector<std::string>::iterator end = this->_commentsRemoved.end();
+
+  std::cout << "--- Tokens list without comments ---" << std::endl;
+  while (iter != end)
+  {
+    std::cout << "Token: " << *iter << std::endl;
+    ++iter;
+  }
+  std::cout << "--- --- ---" << std::endl;
 }
 
 void  Instruction::displayTokensList(void)
