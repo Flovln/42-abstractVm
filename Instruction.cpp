@@ -52,8 +52,7 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   /* Go through file content line by line to remove comments */
   while (iter != end)
   {
-    std::cout << "----> Line: " << *iter << std::endl;
-
+//    std::cout << "----> Line: " << *iter << std::endl;
     if (!this->_chunks.empty())
       this->_chunks.clear();
     this->createChunks(*iter);
@@ -99,6 +98,8 @@ void  Instruction::tokenizeSimple(std::string chunk)
 
   if (std::regex_match(chunk, regexInstructions) == true)
     this->_tokens.push_back({INSTRUCTION, chunk});
+  else if (this->_markAsUnknownInstruction == false)
+    this->_tokens.push_back({UNKNOWN_INSTRUCTION, chunk});
 }
 
 void  Instruction::tokenizeComplex(std::string chunk)
@@ -133,9 +134,9 @@ void  Instruction::tokenizeComplex(std::string chunk)
         this->_tokens.push_back({LEXICAL_ERROR, chunk.substr(i + count + 1, chunk.length())});
         this->_markAsLexicalError = true;
       }
-    }
-    else
-      this->_tokens.push_back({UNKNOWN_INSTRUCTION, chunk});
+  
+      this->_markAsUnknownInstruction = true;
+    }    
   }
 }
 
@@ -144,12 +145,15 @@ void  Instruction::tokenizer(void)
   std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
   std::vector<std::string>::iterator end = this->_commentsRemoved.end();
   this->_markAsLexicalError = false;
+  this->_markAsUnknownInstruction = false;
 
   while (iter != end)
   {
-    std::cout << "Chunk: " << *iter << std::endl;
+    //std::cout << "Chunk: " << *iter << std::endl;
 
-    if (this->_markAsLexicalError == false)
+    if (this->_markAsUnknownInstruction == true)
+      this->_tokens.push_back({UNKNOWN_INSTRUCTION, *iter});
+    else if (this->_markAsLexicalError == false)
     {
       this->tokenizeComplex(*iter);
       this->tokenizeSimple(*iter);

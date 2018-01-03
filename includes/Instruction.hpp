@@ -56,7 +56,7 @@ class Instruction {
     std::list<Token>         _instructions;
     bool                     _markedAsComment;
     bool                     _markAsLexicalError;
-    bool                     _unknownInstruction;
+    bool                     _markAsUnknownInstruction;
 
 };
 
