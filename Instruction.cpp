@@ -173,10 +173,20 @@ void  Instruction::tokenizer(void)
   }
 }
 
-std::list<Token>  Instruction::parseTokens(void)
+std::list<Token>  Instruction::parser(void)
 {
-  this->displayTokensList();
-  
+  for (auto &iter : this->_tokens)
+  {
+    std::cout << "Token: " << "{ " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
+
+    if (iter.type == Token::Instruction)
+    {
+        //std::next(iter, 1);
+        this->_next = *(&iter + 1);
+        std::cout << "Next Token: " << "{ " << this->_next.type << ", " << this->_next.valueType << ", " << this->_next.value << " }" << std::endl;
+    }
+  }
+
   return this->_instructions;
 }
 
@@ -233,94 +243,3 @@ std::ostream & operator<<(std::ostream & o, Instruction const &obj )
   o << "operator overload" << std::endl;
   return o;
 }
-
-/*
-void  Instruction::tokenizerOld(void)
-{
-  std::vector<std::string>::iterator chunkIter = this->_chunks.begin();
-  std::vector<std::string>::iterator chunkEnd = this->_chunks.end();
-  std::regex regexInstructions("push|pop|dump|assert|add|sub|mul|div|mod|print|exit");
-  bool markAllAsComment = false;
-  bool markAllAsError = false;
-  bool markAfterParenthesis = false;
-
-  while (chunkIter != chunkEnd)
-  {
-    bool unvalidInstruction = true;
-
-    // Tokenize as error all content contained after closed parenthesis minus comments
-    if (markAllAsError == true)
-      this->_tokens.push_back({LEXICAL_ERROR, *chunkIter});
-
-    // Tokenize every type of chunks but comments
-    if (markAllAsComment == false && markAllAsError == false)
-    {
-  
-      // Tokenize simple instructions
-      if (std::regex_match(*chunkIter, regexInstructions) == true && markAfterParenthesis == false)
-      {
-        this->_tokens.push_back({INSTRUCTION, *chunkIter});
-        unvalidInstruction = false;
-      }
-      else
-      {
-        // Tokenize instructions before comments or operands and values
-        for (size_t i = 0; i < (*chunkIter).length(); i++)
-        {
-          if ((*chunkIter)[i] == ';' && (*chunkIter)[i + 1] != ';')
-          {
-            // tag instructions before comment
-            if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == false)
-              this->_tokens.push_back({INSTRUCTION, (*chunkIter).substr(0, i)});
-            else if (i > 0 && (*chunkIter)[i - 1] != ')' && markAfterParenthesis == true)
-              this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(0, i)});
-
-            // from here until last chunk (from ";" to "\n") all content is a comment
-            markAllAsComment = true;
-            unvalidInstruction = false;
-            break;
-          }
-          else if ((*chunkIter)[i] == '(' && markAllAsError == false)
-          {
-            int j;
-            int count;
-
-            j = i;
-            count = 0;
-            while ((*chunkIter)[j] != '\0')
-            {
-              if ((*chunkIter)[j] == ')')
-                break;
-              count++;
-              j++;
-            }
-
-            // tokenize operand + value
-            this->_tokens.push_back({(*chunkIter).substr(0, i), (*chunkIter).substr(i + 1, count - 1)});
-
-            if (i + count + 1 < (*chunkIter).length())
-            {
-              if ((*chunkIter)[i + count] == ')' && (*chunkIter)[i + count + 1] != ';')
-              {
-                markAllAsError = true;
-                this->_tokens.push_back({LEXICAL_ERROR, (*chunkIter).substr(i + count + 1, (*chunkIter).length())});
-              }
-              else if ((*chunkIter)[i + count] == ')' && (*chunkIter)[i + count + 1] == ';')
-                markAllAsComment = true;
-            }
-
-            markAfterParenthesis = true;
-            unvalidInstruction = false;
-          }
-        }
-      }
-
-      // tokenize unknown instructions = errors
-      if (unvalidInstruction == true)
-        this->_tokens.push_back({UNKNOWN_INSTRUCTION, *chunkIter});
-//        this->tokens.push_back(token("UnknownInstruction", *chunkIter));
-    }
-
-    ++chunkIter;
-  }
-}*/

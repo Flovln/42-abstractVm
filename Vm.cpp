@@ -30,7 +30,7 @@ void  Vm::readFromStdin(void) {
 
 void  Vm::run(void) {
   _instruction.lexicalAnalysis(this->_buff, this->_source);
-  this->_instructions = _instruction.parseTokens();
+  this->_instructions = _instruction.parser();
   //this->createOperand()
 }
 

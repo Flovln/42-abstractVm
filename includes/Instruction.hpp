@@ -23,13 +23,16 @@ class Instruction {
 
     Instruction &operator=(Instruction const &rhs);
 
+    /* LEXER */
     void  lexicalAnalysis(std::vector<std::string> buff, int source);
     void  createChunks(std::string str);
     void  removeComments(void);
     void  tokenizer(void);
     void  tokenizeSimple(std::string chunk);
     void  tokenizeComplex(std::string chunk);
-    std::list<Token>  parseTokens(void);
+
+    /* PARSER */
+    std::list<Token>  parser(void);
 
     /* Dev utilities */
     void  displayVectorContent(std::vector<std::string> buff);
@@ -45,6 +48,7 @@ class Instruction {
     bool                     _markAsLexicalError;
     bool                     _markAsUnknownInstruction;
 
+    Token _next;
 };
 
 std::ostream & operator<<(std::ostream & o, Instruction const &obj);
