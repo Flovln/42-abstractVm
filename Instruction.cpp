@@ -123,11 +123,11 @@ void  Instruction::tokenizeComplex(std::string chunk)
         count++;
       }
 
-      if (closed == false)
-        std::cout << "Throw NO CLOSING PARENTHESIS" << std::endl;
-
       /* Get content before and between parenthesis */
       this->_tokens.push_back({chunk.substr(0, i), chunk.substr(i + 1, count - 1)});
+
+      if (closed == false)
+        this->_tokens.push_back({LEXICAL_ERROR, "Missing closing parenthesis"});
 
       if (i + count + 1 < chunk.length())
       {
@@ -137,8 +137,6 @@ void  Instruction::tokenizeComplex(std::string chunk)
   
       this->_markAsUnknownInstruction = true;
     }
-    else
-      break;
   }
 }
 
@@ -154,12 +152,7 @@ void  Instruction::tokenizer(void)
     //std::cout << "Chunk: " << *iter << std::endl;
 
     if (this->_markAsUnknownInstruction == true)
-    {
-      if (this->_markAsLexicalError == false)
-        this->_tokens.push_back({UNKNOWN_INSTRUCTION, *iter});
-      else
-        this->_tokens.push_back({LEXICAL_ERROR, *iter});
-    }
+      this->_tokens.push_back({LEXICAL_ERROR, *iter});
     else if (this->_markAsLexicalError == false)
     {
       this->tokenizeComplex(*iter);
