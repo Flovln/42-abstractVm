@@ -17,15 +17,12 @@ enum eOperandType
   Double
 };
 
-class Vm
-{
+class Vm {
   public:
 
-    Vm(void) {};
-
-    Vm(const Vm &model) {};
-
-    ~Vm(void) {};
+    Vm(void);
+    Vm(Vm const &model);
+    ~Vm(void);
 
     void  readFromFile(char *file);
     void  readFromStdin(void);
@@ -80,7 +77,7 @@ class Vm
 
     int                      _source; // 0 = file | 1 = stdin
     std::vector<std::string> _buff;
-    std::list<Content>         _instructions; 
+    std::list<Content>       _instructions;
 };
 
 #endif
