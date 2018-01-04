@@ -183,10 +183,10 @@ std::list<Content>  Instruction::parser(void)
         this->_instructions.push_back({iter.valueType, iter.value});
         break;
       case Token::LexicalError:
-        throw Vm::SyntaxException(iter.value);
+        throw Vm::SyntaxException("at [" + iter.value + "].");
         break;
       case Token::UnknownInstruction:
-        throw Vm::SyntaxException(iter.value);
+        throw Vm::SyntaxException("unknown instruction at [" + iter.value + "].");
         break;
 
       default:
