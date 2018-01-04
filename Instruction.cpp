@@ -46,7 +46,8 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   buff.pop_back();
 
   std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();  
+  std::vector<std::string>::iterator end = buff.end();
+  this->_line = 0;
 
   /* Go through file content line by line to remove comments and tonekize chunks */
   while (iter != end)
@@ -61,6 +62,7 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
     
     this->removeComments();
     this->tokenizer();
+    this->_line++;
     ++iter;
   }
  
@@ -96,14 +98,14 @@ void  Instruction::tokenizeSimple(std::string chunk)
   if (std::regex_match(chunk, simpleInstructions) == true)
   {
     this->_markAsUnknownInstruction = true;
-    this->_tokens.push_back({Token::Instruction, "", chunk});
+    this->_tokens.push_back({this->_line, Token::Instruction, "", chunk});
   }
   else if (std::regex_match(chunk, complexInstructions) == true)
-    this->_tokens.push_back({Token::Instruction, "", chunk});
+    this->_tokens.push_back({this->_line, Token::Instruction, "", chunk});
   else if (this->_markAsUnknownInstruction == false)
   {
     this->_markAsUnknownInstruction = true;
-    this->_tokens.push_back({Token::UnknownInstruction, "", chunk});
+    this->_tokens.push_back({this->_line, Token::UnknownInstruction, "", chunk});
   }
 }
 
@@ -129,14 +131,14 @@ void  Instruction::tokenizeComplex(std::string chunk)
       }
 
       /* Get content before and between parenthesis */
-      this->_tokens.push_back({Token::Operand, chunk.substr(0, i), chunk.substr(i + 1, count - 1)});
+      this->_tokens.push_back({this->_line, Token::Operand, chunk.substr(0, i), chunk.substr(i + 1, count - 1)});
 
       if (closed == false)
-        this->_tokens.push_back({Token::LexicalError, "", "Missing closing parenthesis"});
+        this->_tokens.push_back({this->_line, Token::LexicalError, "", "Missing closing parenthesis"});
 
       if (i + count + 1 < chunk.length())
       {
-        this->_tokens.push_back({Token::LexicalError, "", chunk.substr(i + count + 1, chunk.length())});
+        this->_tokens.push_back({this->_line, Token::LexicalError, "", chunk.substr(i + count + 1, chunk.length())});
         this->_markAsLexicalError = true;
       }
   
@@ -153,14 +155,14 @@ void  Instruction::tokenizer(void)
   for (auto &iter : this->_commentsRemoved)
   {
     if (this->_markAsUnknownInstruction == true)
-      this->_tokens.push_back({Token::LexicalError, "", iter});
+      this->_tokens.push_back({this->_line, Token::LexicalError, "", iter});
     else if (this->_markAsLexicalError == false)
     {
       this->tokenizeComplex(iter);
       this->tokenizeSimple(iter);
     }
     else
-      this->_tokens.push_back({Token::LexicalError, "", iter});
+      this->_tokens.push_back({this->_line, Token::LexicalError, "", iter});
   }
 }
 
@@ -168,7 +170,7 @@ std::list<Content>  Instruction::parser(void)
 {
   for (auto &iter : this->_tokens)
   {
-//    std::cout << "Token: " << "{ " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
+    //std::cout << "Token: " << "{ " << iter.line << ", " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
     Token::Type type = iter.type;
 
     //auto next = std::next(&iter, 1);
@@ -183,10 +185,10 @@ std::list<Content>  Instruction::parser(void)
         this->_instructions.push_back({iter.valueType, iter.value});
         break;
       case Token::LexicalError:
-        throw Vm::SyntaxException("at [" + iter.value + "].");
+        throw Vm::SyntaxException("line: " + std::to_string(iter.line) + ": " + iter.value + ".");
         break;
       case Token::UnknownInstruction:
-        throw Vm::SyntaxException("unknown instruction at [" + iter.value + "].");
+        throw Vm::SyntaxException("unknown instruction line: " + std::to_string(iter.line) + ": " + iter.value + ".");
         break;
 
       default:

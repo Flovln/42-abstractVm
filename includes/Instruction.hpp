@@ -41,6 +41,7 @@ class Instruction {
     void  displayTokensListWithoutComments(void);
 
   private:
+    int                      _line;
     std::vector<std::string> _chunks;
     std::vector<std::string> _commentsRemoved;
     std::vector<Token>       _tokens;

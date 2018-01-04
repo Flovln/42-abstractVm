@@ -11,6 +11,7 @@ struct Token {
     UnknownInstruction
   };
 
+  int         line;
   Type        type;
   std::string valueType;
   std::string value;
