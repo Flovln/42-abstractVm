@@ -28,7 +28,8 @@ class Vm {
     void  readFromStdin(void);
     void  run(void);
     void  handleInstructions(void);
-    void  manageInstruction(std::string instruction);
+    void  manageSimple(std::string instruction);
+    void  manageComplex(std::string operand, std::string value);
     void  pop(std::string const &instruction);
     void  dump(std::string const &instruction);
     void  add(std::string const &instruction);

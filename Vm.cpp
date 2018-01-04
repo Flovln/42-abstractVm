@@ -84,9 +84,9 @@ void  Vm::print(std::string const &instruction)
   std::cout << "Print instruction: " << instruction << std::endl; 
 }
 
-void  Vm::manageInstruction(std::string instruction)
+void  Vm::manageSimple(std::string instruction)
 {
-  //{push|assert}|pop|dump|add|sub|mul|div|mod|print
+  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
   void (Vm::*handler[8])(std::string const &) = {
     &Vm::pop,
     &Vm::dump,
@@ -98,8 +98,6 @@ void  Vm::manageInstruction(std::string instruction)
     &Vm::print
   };
 
-  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
-
   for (int i = 0; i < 8; i++)
   {
     if (keys[i] == instruction)
@@ -107,16 +105,9 @@ void  Vm::manageInstruction(std::string instruction)
   }
 }
 
-void  Vm::handleInstructions()
+void  Vm::manageComplex(std::string operand, std::string value)
 {
-  for (auto &iter : this->_instructions)
-  {
-//    std::cout << "Node: " << iter.type << " | " << iter.value << std::endl;
-
-    this->manageInstruction(iter.value);
 /*
-    std::string type = iter.type;
-
     switch(type)
     {
       case("Instruction"):
@@ -140,6 +131,17 @@ void  Vm::handleInstructions()
       default:
         break;
     }*/
+}
+
+void  Vm::handleInstructions()
+{
+  for (auto &iter : this->_instructions)
+  {
+//    std::cout << "Node: " << iter.type << " | " << iter.value << std::endl;
+    if (iter.value == "push" || iter.value == "assert")
+      this->manageComplex(iter.type, iter.value);
+    else
+      this->manageSimple(iter.value);
   }
 }
 
