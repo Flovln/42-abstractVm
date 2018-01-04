@@ -31,6 +31,8 @@ void  Vm::readFromStdin(void) {
 void  Vm::run(void) {
   _instruction.lexicalAnalysis(this->_buff, this->_source);
   this->_instructions = _instruction.parser();
+  
+  displayListContent();
   //this->createOperand()
 }
 
@@ -78,6 +80,14 @@ IOperand const * Vm::createDouble( std::string const & value ) const {
 }*/
 
 /* Development tools */
+
+void  Vm::displayListContent(void) {
+  std::cout << "--- List content ---" << std::endl;
+  for (auto &iter : this->_instructions)
+  {
+    std::cout << "Node: " << "{ " << iter.type << ", " << iter.value << " }" << std::endl;
+  }
+}
 
 void  Vm::displayBufferContent(void) {
   std::cout << "--- Buffer(vector) content ---" << std::endl;

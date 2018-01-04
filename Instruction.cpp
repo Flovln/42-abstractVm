@@ -68,28 +68,23 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
 
 void  Instruction::removeComments(void)
 {
-  std::vector<std::string>::iterator iter = this->_chunks.begin();
-  std::vector<std::string>::iterator end = this->_chunks.end();
-
   this->_markedAsComment = false;
 
-  while (iter != end)
+  for (auto &iter: this->_chunks)
   {
-    for (size_t i = 0; i < (*iter).length(); ++i)
+    for (size_t i = 0; i < iter.length(); ++i)
     {
-      if ((*iter)[i] == ';')
+      if (iter[i] == ';')
       {
         if (i > 0)
-          this->_commentsRemoved.push_back((*iter).substr(0, i));
+          this->_commentsRemoved.push_back(iter.substr(0, i));
         this->_markedAsComment = true;
         break;
       }
     }
 
     if (this->_markedAsComment != true)
-      this->_commentsRemoved.push_back(*iter);
-
-    ++iter;
+      this->_commentsRemoved.push_back(iter);
   }
 }
 
@@ -152,38 +147,50 @@ void  Instruction::tokenizeComplex(std::string chunk)
 
 void  Instruction::tokenizer(void)
 {
-  std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
-  std::vector<std::string>::iterator end = this->_commentsRemoved.end();
   this->_markAsLexicalError = false;
   this->_markAsUnknownInstruction = false;
 
-  while (iter != end)
+  for (auto &iter : this->_commentsRemoved)
   {
     if (this->_markAsUnknownInstruction == true)
-      this->_tokens.push_back({Token::LexicalError, "", *iter});
+      this->_tokens.push_back({Token::LexicalError, "", iter});
     else if (this->_markAsLexicalError == false)
     {
-      this->tokenizeComplex(*iter);
-      this->tokenizeSimple(*iter);
+      this->tokenizeComplex(iter);
+      this->tokenizeSimple(iter);
     }
     else
-      this->_tokens.push_back({Token::LexicalError, "",*iter});
-
-    ++iter;
+      this->_tokens.push_back({Token::LexicalError, "", iter});
   }
 }
 
-std::list<Token>  Instruction::parser(void)
+std::list<Content>  Instruction::parser(void)
 {
   for (auto &iter : this->_tokens)
   {
-    std::cout << "Token: " << "{ " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
+//    std::cout << "Token: " << "{ " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
+    Token::Type type = iter.type;
 
-    if (iter.type == Token::Instruction)
+    //auto next = std::next(&iter, 1);
+    //std::cout << "Next Token: " << "{ " << next->type << ", " << next->valueType << ", " << next->value << " }" << std::endl;
+
+    switch(type)
     {
-        //std::next(iter, 1);
-        this->_next = *(&iter + 1);
-        std::cout << "Next Token: " << "{ " << this->_next.type << ", " << this->_next.valueType << ", " << this->_next.value << " }" << std::endl;
+      case Token::Instruction:
+        this->_instructions.push_back({"Instruction", iter.value});
+        break;
+      case Token::Operand:
+        this->_instructions.push_back({iter.valueType, iter.value});
+        break;
+      case Token::LexicalError:
+        throw Vm::SyntaxException(iter.value);
+        break;
+      case Token::UnknownInstruction:
+        throw Vm::SyntaxException(iter.value);
+        break;
+
+      default:
+        break;      
     }
   }
 

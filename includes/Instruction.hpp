@@ -15,6 +15,7 @@
 # define INSTRUCTION_HPP
 
 class Instruction {
+
   public:
 
     Instruction(void);
@@ -32,7 +33,7 @@ class Instruction {
     void  tokenizeComplex(std::string chunk);
 
     /* PARSER */
-    std::list<Token>  parser(void);
+    std::list<Content>  parser(void);
 
     /* Dev utilities */
     void  displayVectorContent(std::vector<std::string> buff);
@@ -43,7 +44,7 @@ class Instruction {
     std::vector<std::string> _chunks;
     std::vector<std::string> _commentsRemoved;
     std::vector<Token>       _tokens;
-    std::list<Token>         _instructions;
+    std::list<Content>       _instructions;
     bool                     _markedAsComment;
     bool                     _markAsLexicalError;
     bool                     _markAsUnknownInstruction;

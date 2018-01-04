@@ -57,6 +57,7 @@ class Vm
     };
 
     /* Development tools */
+    void  displayListContent(void);
     void  displayBufferContent(void);
     void  displayTokens(void);
     int   getSource(void);
@@ -72,7 +73,7 @@ class Vm
 
     int                      _source; // 0 = file | 1 = stdin
     std::vector<std::string> _buff;
-    std::list<Token>         _instructions; 
+    std::list<Content>         _instructions; 
 };
 
 #endif
