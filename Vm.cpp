@@ -10,6 +10,10 @@ Vm::~Vm(void) {
   //delete instances
 }
 
+int  Vm::getSource(void) {
+  return this->_source;
+}
+
 void  Vm::readFromFile(char *file) {
   std::string   line;
   std::ifstream ifs(file);
@@ -107,47 +111,62 @@ void  Vm::manageSimple(std::string instruction)
 
 void  Vm::manageComplex(std::string operand, std::string value)
 {
-/*
-    switch(type)
-    {
-      case("Instruction"):
-        break;
-      case("Int8"):
-        this->createOperand(eOperandType::Int8, iter.value);
-        break;
-      case("Int16"):
-        this->createOperand(eOperandType::Int16, iter.value);
-        break;
-      case("Int32"):
-        this->createOperand(eOperandType::Int32, iter.value);
-        break;
-      case("Float"):
-        this->createOperand(eOperandType::Float, iter.value);
-        break;
-      case("Double"):
-        this->createOperand(eOperandType::Double, iter.value);
-        break;
+  std::string operands[] = { "int8", "int16", "int32", "float", "double" };
 
-      default:
-        break;
-    }*/
+  for (int i = 0; i < 5; ++i)
+  {
+    //std::cout << "Operand: " << operand << std::endl;
+    //std::cout << "Value: " << value << std::endl;
+    if (operands[i] == operand)
+      switch(i)
+      {
+        case(0):
+          this->createOperand(eOperandType::Int8, value);
+          break;
+        case(1):
+          this->createOperand(eOperandType::Int16, value);
+          break;
+        case(2):
+          this->createOperand(eOperandType::Int32, value);
+          break;
+        case(3):
+          this->createOperand(eOperandType::Float, value);
+          break;
+        case(4):
+          this->createOperand(eOperandType::Double, value);
+          break;
+
+        default:
+          break;
+      }
+  }
 }
 
 void  Vm::handleInstructions()
 {
   for (auto &iter : this->_instructions)
   {
-//    std::cout << "Node: " << iter.type << " | " << iter.value << std::endl;
+    std::cout << "Node: " << " | " << iter.type << " | " << iter.value << std::endl;
+
     if (iter.value == "push" || iter.value == "assert")
-      this->manageComplex(iter.type, iter.value);
+    {
+      auto next = std::next(&iter, 1);
+
+      //std::cout << "Node next: " /*<< " | " << next->type << " | "*/ << next->value << std::endl;
+
+      this->manageComplex(next->type, next->value);
+    }
     else
       this->manageSimple(iter.value);
   }
 }
 
-int  Vm::getSource(void) {
-  return this->_source;
+void  Vm::createOperand(eOperandType type, std::string const & value)
+{
+  std::cout << "Type: " << type << std::endl;
+  std::cout << "Value: " << value << std::endl;
 }
+
 /*
 IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const {
   //use array of pointers on member functions with enum values as index
@@ -163,8 +182,8 @@ IOperand const *    Vm::createOperand( eOperandType type, std::string const & va
     if ((eOperandType)i == type)
       return (this->*handler[i])(message);
   }
-}*/
-
+}
+*/
 /* Operands handling functions */
 /* 
 IOperand const * Vm::createInt8( std::string const & value ) const {

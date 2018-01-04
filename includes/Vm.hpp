@@ -41,6 +41,7 @@ class Vm {
 
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
+    void createOperand( eOperandType type, std::string const & value ); //test
 
     std::vector<Token> tokens;
 
