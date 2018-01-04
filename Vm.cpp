@@ -1,6 +1,9 @@
 #include "./includes/Vm.hpp"
 
-Vm::Vm(void){}
+Vm::Vm(void) {
+//  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
+//   std::string operands[] = { "int8", "int16", "int32", "float", "double" };
+}
 
 Vm::Vm(Vm const &model) {
   *this = model;
@@ -146,13 +149,12 @@ void  Vm::handleInstructions()
 {
   for (auto &iter : this->_instructions)
   {
-    std::cout << "Node: " << " | " << iter.type << " | " << iter.value << std::endl;
+    //std::cout << "Node: " << " | " << iter.type << " | " << iter.value << std::endl;
 
     if (iter.value == "push" || iter.value == "assert")
     {
       auto next = std::next(&iter, 1);
-
-      //std::cout << "Node next: " /*<< " | " << next->type << " | "*/ << next->value << std::endl;
+      //std::cout << "Node next: " << " | " << next->type << " | " << next->value << std::endl;
 
       this->manageComplex(next->type, next->value);
     }
@@ -163,8 +165,7 @@ void  Vm::handleInstructions()
 
 void  Vm::createOperand(eOperandType type, std::string const & value)
 {
-  std::cout << "Type: " << type << std::endl;
-  std::cout << "Value: " << value << std::endl;
+  std::cout << "Type: " << type << " | Value: " << value << std::endl;
 }
 
 /*

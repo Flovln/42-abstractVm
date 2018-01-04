@@ -36,7 +36,7 @@ void  Instruction::createChunks(std::string str)
 void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   std::string lastElement =  buff.back();
 
-  switch(source)
+  switch(source) // TO BE MOVE IN PARSER
   {
     case(0):
       if (lastElement != "exit")
@@ -52,7 +52,7 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   }
 
   /* Remove last element from vector aka exit command or ";;" */
-  buff.pop_back();
+  buff.pop_back(); // TO BE MOVE IN PARSER
 
   int lineNb;
 
@@ -176,8 +176,12 @@ void  Instruction::tokenizer(void)
   }
 }
 
-std::list<Content>  Instruction::parser(void)
+std::vector<Content>  Instruction::parser(void)
 {
+  /* Remove last element from vector aka exit command or ";;" */
+  //std::string lastElement =  buff.back();
+  //buff.pop_back();
+
   for (auto &iter : this->_tokens)
   {
     //std::cout << "Token: " << "{ " << iter.line << ", " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
@@ -192,6 +196,7 @@ std::list<Content>  Instruction::parser(void)
         this->_instructions.push_back({"Instruction", iter.value});
         break;
       case Token::Operand:
+        // Check if valid operand and if so check if valid value
         this->_instructions.push_back({iter.valueType, iter.value});
         break;
       case Token::LexicalError:

@@ -33,7 +33,7 @@ class Instruction {
     void  tokenizeComplex(std::string chunk);
 
     /* PARSER */
-    std::list<Content>  parser(void);
+    std::vector<Content>  parser(void);
 
     void  setLine(int nb);
     
@@ -47,7 +47,7 @@ class Instruction {
     std::vector<std::string> _chunks;
     std::vector<std::string> _commentsRemoved;
     std::vector<Token>       _tokens;
-    std::list<Content>       _instructions;
+    std::vector<Content>       _instructions;
     bool                     _markedAsComment;
     bool                     _markAsLexicalError;
     bool                     _markAsUnknownInstruction;
