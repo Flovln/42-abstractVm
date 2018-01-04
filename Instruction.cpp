@@ -18,6 +18,11 @@ Instruction & Instruction::operator=(Instruction const &rhs) {
   return (*this);
 }
 
+void  Instruction::setLine(int nb)
+{
+  this->_line = nb;
+}
+
 void  Instruction::createChunks(std::string str)
 {
   /* split line on whitespaces to only keep strings and chars */
@@ -31,40 +36,44 @@ void  Instruction::createChunks(std::string str)
 void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   std::string lastElement =  buff.back();
 
-  if (source == 0)
+  switch(source)
   {
-    if (lastElement != "exit")
-      throw Vm::SyntaxException("No instruction ending the program found.");
-  }
-  else if (source == 1)
-  {
-    if (lastElement != ";;")
-      throw Vm::SyntaxException("No instruction ending the program found.");
+    case(0):
+      if (lastElement != "exit")
+        throw Vm::SyntaxException("No instruction ending the program found.");
+      break;
+    case(1):
+      if (lastElement != ";;")
+        throw Vm::SyntaxException("No instruction ending the program found.");
+      break;
+
+    default:
+      break;
   }
 
   /* Remove last element from vector aka exit command or ";;" */
   buff.pop_back();
 
-  std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();
-  this->_line = 0;
+  int lineNb;
 
+  lineNb = 0;
   /* Go through file content line by line to remove comments and tonekize chunks */
-  while (iter != end)
+  for (auto &iter : buff)
   {
-    //std::cout << "TEst: " << *iter << std::endl;
+    //std::cout << "TEst: " << iter << std::endl;
+    this->setLine(lineNb);
+    lineNb++;
+
     if (!this->_chunks.empty())
       this->_chunks.clear();
     
-    this->createChunks(*iter);
+    this->createChunks(iter);
     
     if (!this->_commentsRemoved.empty())
       this->_commentsRemoved.clear();
     
     this->removeComments();
     this->tokenizer();
-    this->_line++;
-    ++iter;
   }
  
 }

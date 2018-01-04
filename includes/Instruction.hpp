@@ -35,6 +35,8 @@ class Instruction {
     /* PARSER */
     std::list<Content>  parser(void);
 
+    void  setLine(int nb);
+    
     /* Dev utilities */
     void  displayVectorContent(std::vector<std::string> buff);
     void  displayTokensList(void);
