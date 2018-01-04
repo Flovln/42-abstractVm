@@ -29,11 +29,14 @@ void  Vm::readFromStdin(void) {
 }
 
 void  Vm::run(void) {
-  _instruction.lexicalAnalysis(this->_buff, this->_source);
-  this->_instructions = _instruction.parser();
-  
+  this->_instruction.lexicalAnalysis(this->_buff, this->_source);
+  this->_instructions = this->_instruction.parser();  
+  this->createOperand();
+}
+
+void  Vm::createOperand()
+{
   displayListContent();
-  //this->createOperand()
 }
 
 int  Vm::getSource(void) {

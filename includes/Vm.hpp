@@ -24,6 +24,7 @@ class Vm
     void  readFromFile(char *file);
     void  readFromStdin(void);
     void  run(void);
+    void  createOperand(void);
 
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
