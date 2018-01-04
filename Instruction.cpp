@@ -187,9 +187,6 @@ std::vector<Content>  Instruction::parser(void)
     //std::cout << "Token: " << "{ " << iter.line << ", " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
     Token::Type type = iter.type;
 
-    //auto next = std::next(&iter, 1);
-    //std::cout << "Next Token: " << "{ " << next->type << ", " << next->valueType << ", " << next->value << " }" << std::endl;
-
     switch(type)
     {
       case Token::Instruction:
