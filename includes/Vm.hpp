@@ -27,7 +27,16 @@ class Vm {
     void  readFromFile(char *file);
     void  readFromStdin(void);
     void  run(void);
-    void  createOperand(void);
+    void  handleInstructions(void);
+    void  manageInstruction(std::string instruction);
+    void  pop(std::string const &instruction);
+    void  dump(std::string const &instruction);
+    void  add(std::string const &instruction);
+    void  sub(std::string const &instruction);
+    void  mul(std::string const &instruction);
+    void  div(std::string const &instruction);
+    void  mod(std::string const &instruction);
+    void  print(std::string const &instruction);
 
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    

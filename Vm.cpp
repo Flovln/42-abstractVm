@@ -41,27 +41,100 @@ void  Vm::readFromStdin(void) {
 void  Vm::run(void) {
   this->_instruction.lexicalAnalysis(this->_buff, this->_source);
   this->_instructions = this->_instruction.parser();  
-  this->createOperand();
+  this->handleInstructions();
 }
 
-void  Vm::createOperand()
+void  Vm::pop(std::string const &instruction)
+{
+  std::cout << "Pop instruction: " << instruction << std::endl;
+}
+
+void  Vm::dump(std::string const &instruction)
+{
+  std::cout << "Dump instruction: " << instruction << std::endl;
+}
+
+void  Vm::add(std::string const &instruction)
+{
+  std::cout << "Add instruction: " << instruction << std::endl;
+}
+
+void  Vm::sub(std::string const &instruction)
+{
+  std::cout << "Sub instruction: " << instruction << std::endl;
+}
+
+void  Vm::mul(std::string const &instruction)
+{
+  std::cout << "Mul instruction: " << instruction << std::endl;
+}
+
+void  Vm::div(std::string const &instruction)
+{
+  std::cout << "Div instruction: " << instruction << std::endl;  
+}
+
+void  Vm::mod(std::string const &instruction)
+{
+  std::cout << "Mod instruction: " << instruction << std::endl;  
+}
+
+void  Vm::print(std::string const &instruction)
+{
+  std::cout << "Print instruction: " << instruction << std::endl; 
+}
+
+void  Vm::manageInstruction(std::string instruction)
+{
+  //{push|assert}|pop|dump|add|sub|mul|div|mod|print
+  void (Vm::*handler[8])(std::string const &) = {
+    &Vm::pop,
+    &Vm::dump,
+    &Vm::add,
+    &Vm::sub,
+    &Vm::mul,
+    &Vm::div,
+    &Vm::mod,
+    &Vm::print
+  };
+
+  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
+
+  for (int i = 0; i < 8; i++)
+  {
+    if (keys[i] == instruction)
+      (this->*handler[i])(instruction);
+  }
+}
+
+void  Vm::handleInstructions()
 {
   for (auto &iter : this->_instructions)
   {
-    std::cout << "Node: " << iter.type << " | " << iter.value << std::endl;
-    std::string type = iter.type;
+//    std::cout << "Node: " << iter.type << " | " << iter.value << std::endl;
+
+    this->manageInstruction(iter.value);
 /*
+    std::string type = iter.type;
+
     switch(type)
     {
+      case("Instruction"):
+        break;
       case("Int8"):
+        this->createOperand(eOperandType::Int8, iter.value);
         break;
       case("Int16"):
+        this->createOperand(eOperandType::Int16, iter.value);
         break;
       case("Int32"):
+        this->createOperand(eOperandType::Int32, iter.value);
         break;
       case("Float"):
+        this->createOperand(eOperandType::Float, iter.value);
         break;
       case("Double"):
+        this->createOperand(eOperandType::Double, iter.value);
         break;
 
       default:
