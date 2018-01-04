@@ -75,9 +75,10 @@ class Vm {
 
     Instruction              _instruction;
 
-    int                      _source; // 0 = file | 1 = stdin
-    std::vector<std::string> _buff;
-    std::list<Content>       _instructions;
+    int                         _source; // 0 = file | 1 = stdin
+    std::vector<std::string>    _buff;
+    std::list<Content>          _instructions;
+    std::list<IOperand const *> _stack;
 };
 
 #endif

@@ -52,6 +52,7 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   /* Go through file content line by line to remove comments and tonekize chunks */
   while (iter != end)
   {
+    //std::cout << "TEst: " << *iter << std::endl;
     if (!this->_chunks.empty())
       this->_chunks.clear();
     

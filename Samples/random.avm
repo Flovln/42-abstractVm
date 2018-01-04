@@ -1,4 +1,4 @@
-pop
+pop mul add
 toto;push assert int8(42)
 ;hello world
 hahahaha tototo sdksdk pop

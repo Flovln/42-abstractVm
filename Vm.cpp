@@ -32,7 +32,7 @@ void  Vm::readFromStdin(void) {
 
   while (line != ";;")
   {
-    std::cin >> line;
+    std::getline(std::cin, line);
     this->_buff.push_back(line);
   }
   this->_source = 1;
@@ -46,7 +46,28 @@ void  Vm::run(void) {
 
 void  Vm::createOperand()
 {
-  displayListContent();
+  for (auto &iter : this->_instructions)
+  {
+    std::cout << "Node: " << iter.type << " | " << iter.value << std::endl;
+    std::string type = iter.type;
+/*
+    switch(type)
+    {
+      case("Int8"):
+        break;
+      case("Int16"):
+        break;
+      case("Int32"):
+        break;
+      case("Float"):
+        break;
+      case("Double"):
+        break;
+
+      default:
+        break;
+    }*/
+  }
 }
 
 int  Vm::getSource(void) {
