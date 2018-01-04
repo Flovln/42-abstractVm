@@ -21,6 +21,12 @@ class Vm
 {
   public:
 
+    Vm(void) {};
+
+    Vm(const Vm &model) {};
+
+    ~Vm(void) {};
+
     void  readFromFile(char *file);
     void  readFromStdin(void);
     void  run(void);

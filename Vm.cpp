@@ -1,5 +1,15 @@
 #include "./includes/Vm.hpp"
 
+Vm::Vm(void){}
+
+Vm::Vm(const Vm &model) {
+  *this = model;
+}
+
+Vm::~Vm(void) {
+  //delete instances
+}
+
 void  Vm::readFromFile(char *file) {
   std::string   line;
   std::ifstream ifs(file);
@@ -43,7 +53,6 @@ int  Vm::getSource(void) {
   return this->_source;
 }
 
-/*
 IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const {
   //use array of pointers on member functions with enum values as index
   IOperand *(Vm::*handler[5])(std::string const &) = {
@@ -58,7 +67,7 @@ IOperand const *    Vm::createOperand( eOperandType type, std::string const & va
     if ((eOperandType)i == type)
       return (this->*handler[i])(message);
   }
-}*/
+}
 
 /* Operands handling functions */
 /* 

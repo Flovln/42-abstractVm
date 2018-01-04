@@ -32,22 +32,6 @@ class Operand : public IOperand
       return *str;
     }
 
-    IOperand const *    Operand::createOperand( eOperandType type, std::string const & value ) const {
-      //use array of pointers on member functions with enum values as index
-      IOperand *(Operand::*handler[5])(std::string const &) = {
-        &Operand::createInt8,
-        &Operand::createInt16,
-        &Operand::createInt32,
-        &Operand::createFloat,
-        &Operand::createDouble
-      }
-
-      for (int i = 0; i < 5; i++) {
-        if ((eOperantType)i == type)
-          return (this->*handler[i])(message);
-      }
-    }
-
     IOperand const *    operator+( IOperand const & rhs ) {
 
     }
