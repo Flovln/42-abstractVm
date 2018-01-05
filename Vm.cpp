@@ -195,22 +195,22 @@ IOperand const * Vm::_createInt8( std::string const & value ) const {
 }
 
 IOperand const * Vm::_createInt16( std::string const & value ) const {
-  std::cout << "Create Int16" << value << std::endl;
+  std::cout << "Create Int16: " << value << std::endl;
   return new Operand<int16_t>(eOperandType::Int16, value);
 }
 
 IOperand const * Vm::_createInt32( std::string const & value ) const {
-  std::cout << "Create Int32" << value << std::endl;
+  std::cout << "Create Int32: " << value << std::endl;
   return new Operand<int32_t>(eOperandType::Int32, value);
 }
 
 IOperand const * Vm::_createFloat( std::string const & value ) const {
-  std::cout << "Create Float" << value << std::endl;
+  std::cout << "Create Float: " << value << std::endl;
   return new Operand<float>(eOperandType::Float, value);
 }
 
 IOperand const * Vm::_createDouble( std::string const & value ) const {
-  std::cout << "Create Double" << value << std::endl;
+  std::cout << "Create Double: " << value << std::endl;
   return new Operand<double>(eOperandType::Double, value);
 }
 
