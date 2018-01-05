@@ -1,5 +1,6 @@
 push int32(32)
 push int8(41132)
+pop
 push int16(2113)
 dump
 exit

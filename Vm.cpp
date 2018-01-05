@@ -66,6 +66,8 @@ void  Vm::pop(void)
   std::cout << "Pop instruction: " << std::endl;
   if (this->_stack.empty())
     throw Vm::ExecutionException("empty stack.");
+  else
+    this->_stack.pop_front();
 }
 
 void  Vm::dump(void)
