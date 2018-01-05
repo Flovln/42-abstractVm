@@ -88,26 +88,37 @@ void  Vm::add(void)
 void  Vm::sub(void)
 {
   std::cout << "Sub instruction: " << std::endl;
+  if (this->_stack.size() < 2)
+    throw Vm::ExecutionException("less than 2 values in the stack.");
 }
 
 void  Vm::mul(void)
 {
   std::cout << "Mul instruction: " << std::endl;
+  if (this->_stack.size() < 2)
+    throw Vm::ExecutionException("less than 2 values in the stack.");
 }
 
 void  Vm::div(void)
 {
   std::cout << "Div instruction: " << std::endl;  
+  if (this->_stack.size() < 2)
+    throw Vm::ExecutionException("less than 2 values in the stack.");
 }
 
 void  Vm::mod(void)
 {
   std::cout << "Mod instruction: " << std::endl;  
+  if (this->_stack.size() < 2)
+    throw Vm::ExecutionException("less than 2 values in the stack.");
 }
 
 void  Vm::print(void)
 {
-  std::cout << "Print instruction: " << std::endl; 
+  if (this->_stack.front()->getType() == eOperandType::Int8)
+    std::cout << this->_stack.front()->toString() << std::endl;
+  else
+    throw Vm::ExecutionException("value is not an 8 bit integer.");
 }
 
 void  Vm::manageOperand(std::string operand, std::string value)
