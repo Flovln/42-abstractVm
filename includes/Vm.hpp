@@ -44,7 +44,6 @@ class Vm {
 
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
-    void createOperand( eOperandType type, std::string const & value ); //test
 
     class ExecutionException : public std::exception
     {
@@ -85,13 +84,13 @@ class Vm {
     int   getSource(void);
 
   private:
-    IOperand const *  createInt8( std::string const & value ) const;
-    IOperand const *  createInt16( std::string const & value ) const;
-    IOperand const *  createInt32( std::string const & value ) const;
-    IOperand const *  createFloat( std::string const & value ) const;
-    IOperand const *  createDouble( std::string const & value ) const;
+    Instruction                 _instruction;
 
-    Instruction              _instruction;
+    IOperand const *            _createInt8( std::string const & value ) const;
+    IOperand const *            _createInt16( std::string const & value ) const;
+    IOperand const *            _createInt32( std::string const & value ) const;
+    IOperand const *            _createFloat( std::string const & value ) const;
+    IOperand const *            _createDouble( std::string const & value ) const;
 
     int                         _source; // 0 = file | 1 = stdin
     std::vector<std::string>    _buff;

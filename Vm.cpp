@@ -130,32 +130,33 @@ void  Vm::manageOperand(std::string operand, std::string value)
 {
   std::string operands[] = { "int8", "int16", "int32", "float", "double" };
 
-  //mstd::cout << "{ " << operand << ", " << value << " }" << std::endl;
+  //std::cout << "{ " << operand << ", " << value << " }" << std::endl;
   for (int i = 0; i < 5; ++i)
   {
     if (operands[i] == operand)
       switch(i)
       {
         case(0):
-          this->createOperand(eOperandType::Int8, value);
+          this->_stack.push_back(this->createOperand(eOperandType::Int8, value));
           break;
         case(1):
-          this->createOperand(eOperandType::Int16, value);
+          this->_stack.push_back(this->createOperand(eOperandType::Int16, value));
           break;
         case(2):
-          this->createOperand(eOperandType::Int32, value);
+          this->_stack.push_back(this->createOperand(eOperandType::Int32, value));
           break;
         case(3):
-          this->createOperand(eOperandType::Float, value);
+          this->_stack.push_back(this->createOperand(eOperandType::Float, value));
           break;
         case(4):
-          this->createOperand(eOperandType::Double, value);
+          this->_stack.push_back(this->createOperand(eOperandType::Double, value));
           break;
 
         default:
           break;
       }
   }
+  //IOperand const *o = createOperand(eOperandType::Int8, value);
 }
 
 void  Vm::handleInstructions()
@@ -177,50 +178,48 @@ void  Vm::handleInstructions()
   }
 }
 
-void  Vm::createOperand(eOperandType type, std::string const & value)
+IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const
 {
   std::cout << "--- Create new operand ---" << std::endl;
   std::cout << "{ " << type << ", " << value << " }"<< std::endl;
-}
 
-/*
-IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const {
-  //use array of pointers on member functions with enum values as index
-  IOperand *(Vm::*handler[5])(std::string const &) = {
-    &Vm::createInt8,
-    &Vm::createInt16,
-    &Vm::createInt32,
-    &Vm::createFloat,
-    &Vm::createDouble
+  IOperand const *(Vm::*handler[5])(std::string const &) const = {
+    &Vm::_createInt8,
+    &Vm::_createInt16,
+    &Vm::_createInt32,
+    &Vm::_createFloat,
+    &Vm::_createDouble
   };
 
-  for (int i = 0; i < 5; i++) {
-    if ((eOperandType)i == type)
-      return (this->*handler[i])(message);
-  }
+  return (this->*(handler[type]))(value);
 }
-*/
+
 /* Operands handling functions */
-/* 
-IOperand const * Vm::createInt8( std::string const & value ) const {
 
+IOperand const * Vm::_createInt8( std::string const & value ) const {
+  std::cout << "Create Int8: " << value << std::endl;
+  //return new Operand<int8_t>(value/*, Int8*/);
 }
 
-IOperand const * Vm::createInt16( std::string const & value ) const {
-
+IOperand const * Vm::_createInt16( std::string const & value ) const {
+  std::cout << "Create Int16" << value << std::endl;
+  //return new Operand<int16_t>(value/*, Int16*/);
 }
 
-IOperand const * Vm::createInt32( std::string const & value ) const {
-
+IOperand const * Vm::_createInt32( std::string const & value ) const {
+  std::cout << "Create Int32" << value << std::endl;
+  //return new Operand<int32_t>(value/*, Int32*/);
 }
 
-IOperand const * Vm::createFloat( std::string const & value ) const {
-
+IOperand const * Vm::_createFloat( std::string const & value ) const {
+  std::cout << "Create Float" << value << std::endl;
+  //return new Operand<float>(value/*, Float*/);
 }
 
-IOperand const * Vm::createDouble( std::string const & value ) const {
-
-}*/
+IOperand const * Vm::_createDouble( std::string const & value ) const {
+  std::cout << "Create Double" << value << std::endl;
+  //return new Operand<double>(value/*, Double*/);
+}
 
 /* Development tools */
 
