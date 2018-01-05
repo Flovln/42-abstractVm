@@ -76,14 +76,13 @@ void  Vm::dump(void)
 
   for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++)
     std::cout << (*iter)->toString() << std::endl;
-
-//  for (auto &iter: this->_stack)
-//    std::cout << iter->toString() << std::endl;
 }
 
 void  Vm::add(void)
 {
   std::cout << "Add instruction: " << std::endl;
+  if (this->_stack.size() < 2)
+    throw Vm::ExecutionException("less than 2 values in the stack.");
 }
 
 void  Vm::sub(void)
