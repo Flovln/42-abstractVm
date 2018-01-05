@@ -16,6 +16,8 @@ class Vm {
     Vm(Vm const &model);
     ~Vm(void);
 
+    Vm &operator=(Vm const &rhs);
+
     void  readFromFile(char *file);
     void  readFromStdin(void);
     void  run(void);

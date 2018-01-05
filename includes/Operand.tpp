@@ -15,26 +15,25 @@ class Operand : public IOperand
 {
   public:
     Operand(void) {}
+    Operand(eOperandType type, std::string value) : _type(type), _value(value) {}
 
-    Operand(const Operand & model) {}
-
+    Operand(const Operand & model) { *this = model; }
     ~Operand(void) {}
 
-    int                 getPrecision( void );
-    eOperandType        getType( void );
-
-    std::string const & Operand::toString() const {
-      std::ostringstream stream;
-      std::string *str;
-      std::string tmp;
-
-      stream << *this;
-      tmp = stream.str();
-      str = &tmp;
-
-      return *str;
+    Operand &operator=(Operand const &rhs)
+    {
+      if (this != &rhs) {
+        //this->name = rhs.name;
+        //...
+      }
+      return (*this);
     }
 
+    int                 getPrecision( void ) const { return this->_type; }
+    eOperandType        getType( void ) const { return this->_type; }
+    std::string         getValue( void ) { return this->_value; }
+    //std::string const & toString( void ) const {}
+/*
     IOperand const *    operator+( IOperand const & rhs ) {
 
     }
@@ -54,9 +53,14 @@ class Operand : public IOperand
     IOperand const *    operator%( IOperand const & rhs ){
 
     }
+*/
+    void  test(void){
+      std::cout << "Value: " << this->getValue << std::endl;
+    }
 
   private:
-
+    eOperandType _type;
+    std::string  _value;
 };
 
 #endif
