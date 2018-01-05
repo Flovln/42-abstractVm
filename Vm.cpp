@@ -149,8 +149,8 @@ void  Vm::handleInstructions()
 {
   for (auto &iter : this->_instructions)
   {
-    std::cout << "Node: " << " | " << iter.type << " | " << iter.value << std::endl;
-
+    std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
+/*
     if (iter.value == "push" || iter.value == "assert")
     {
       auto next = std::next(&iter, 1);
@@ -159,7 +159,7 @@ void  Vm::handleInstructions()
       this->manageComplex(next->type, next->value);
     }
     else
-      this->manageSimple(iter.value);
+      this->manageSimple(iter.value);*/
   }
 }
 

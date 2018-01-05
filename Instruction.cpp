@@ -102,21 +102,17 @@ void  Instruction::removeComments(void)
 
 void  Instruction::tokenizeSimple(std::string chunk)
 {
-  std::regex simpleInstructions("pop|dump|add|sub|mul|div|mod|print");
-  std::regex complexInstructions("push|assert");
+  std::regex instructions("push|assert|pop|dump|add|sub|mul|div|mod|print");
 
-  if (std::regex_match(chunk, simpleInstructions) == true)
+  if (std::regex_match(chunk, instructions) == true)
   {
-    this->_markAsUnknownInstruction = true;
+    if (chunk != "push" && chunk != "assert")
+      this->_markAsUnknownInstruction = true;
     this->_tokens.push_back({this->_line, Token::Instruction, "", chunk});
   }
-  else if (std::regex_match(chunk, complexInstructions) == true)
-    this->_tokens.push_back({this->_line, Token::Instruction, "", chunk});
   else if (this->_markAsUnknownInstruction == false)
-  {
-    this->_markAsUnknownInstruction = true;
     this->_tokens.push_back({this->_line, Token::UnknownInstruction, "", chunk});
-  }
+    //this->_markAsUnknownInstruction = true; ??? Use for multi instructions after parenthesis or with no operand or after unknown commands ex: (412) pop mul ... || asds mul pop ...
 }
 
 void  Instruction::tokenizeComplex(std::string chunk)
@@ -178,10 +174,6 @@ void  Instruction::tokenizer(void)
 
 std::vector<Content>  Instruction::parser(void)
 {
-  /* Remove last element from vector aka exit command or ";;" */
-  //std::string lastElement =  buff.back();
-  //buff.pop_back();
-
   for (auto &iter : this->_tokens)
   {
     //std::cout << "Token: " << "{ " << iter.line << ", " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
@@ -199,20 +191,23 @@ std::vector<Content>  Instruction::parser(void)
         if (std::regex_match(iter.valueType, operands) == true)
           this->_instructions.push_back({iter.valueType, iter.value});
         else
-          throw Vm::SyntaxException("unvalid operand line: " + std::to_string(iter.line) + ": " + iter.valueType + ".");
+          this->_errors.push_back("Line: " + std::to_string(iter.line) + ": unvalid operand: " + iter.valueType);
         break;
       }
       case Token::LexicalError:
-        throw Vm::SyntaxException("line: " + std::to_string(iter.line) + ": " + iter.value + ".");
+        this->_errors.push_back("Line: " + std::to_string(iter.line) + ": lexical error: " + iter.value);
         break;
       case Token::UnknownInstruction:
-        throw Vm::SyntaxException("unknown instruction line: " + std::to_string(iter.line) + ": " + iter.value + ".");
+        this->_errors.push_back("Line: " + std::to_string(iter.line) + ": unknown instruction: " + iter.value);
         break;
 
       default:
         break;      
     }
   }
+
+  if (!this->_errors.empty())
+    throw Vm::SyntaxException(this->_errors);
 
   return this->_instructions;
 }

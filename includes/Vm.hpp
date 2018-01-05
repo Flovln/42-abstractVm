@@ -62,13 +62,26 @@ class Vm {
     {
       public:
         SyntaxException(std::string str) : message(str){}
+        SyntaxException(std::vector<std::string> errors) {
+            for (auto &m : errors)
+              this->messages.push_back(m);
+        }
 
         virtual const char * what(void) const throw ()
         {
           return message.c_str();
         }
 
+        virtual void test(void) const throw ()
+        {
+          for (auto &iter : this->messages)
+          {
+            std::cout << iter << std::endl;
+          }
+        }
+
         std::string message;
+        std::vector<std::string> messages;
     };
 
     /* Development tools */

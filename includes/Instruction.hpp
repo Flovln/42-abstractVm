@@ -44,10 +44,11 @@ class Instruction {
 
   private:
     int                      _line;
+    std::vector<std::string> _errors;
     std::vector<std::string> _chunks;
     std::vector<std::string> _commentsRemoved;
     std::vector<Token>       _tokens;
-    std::vector<Content>       _instructions;
+    std::vector<Content>     _instructions;
     bool                     _markedAsComment;
     bool                     _markAsLexicalError;
     bool                     _markAsUnknownInstruction;

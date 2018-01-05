@@ -1,0 +1,7 @@
+push int32(42)
+
+add
+assert double(90.21) mul pop add dump
+add pop dump
+push asdfsad(24) print add
+exit
