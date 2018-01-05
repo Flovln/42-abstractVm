@@ -1,0 +1,4 @@
+push int8(112) ;p
+print
+pop
+print

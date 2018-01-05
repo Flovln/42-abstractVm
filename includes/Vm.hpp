@@ -62,18 +62,12 @@ class Vm {
     class SyntaxException : public std::exception
     {
       public:
-        SyntaxException(std::string str) : message(str){}
         SyntaxException(std::vector<std::string> errors) {
             for (auto &m : errors)
               this->messages.push_back(m);
         }
 
-        virtual const char * what(void) const throw ()
-        {
-          return message.c_str();
-        }
-
-        virtual void test(void) const throw ()
+        virtual void displayErrors(void) const throw ()
         {
           for (auto &iter : this->messages)
           {
@@ -81,7 +75,6 @@ class Vm {
           }
         }
 
-        std::string message;
         std::vector<std::string> messages;
     };
 

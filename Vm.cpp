@@ -54,6 +54,8 @@ void  Vm::run(void) {
 void  Vm::pop(std::string const &instruction)
 {
   std::cout << "Pop instruction: " << instruction << std::endl;
+  if (this->_stack.empty())
+    throw Vm::ExecutionException("empty stack.");
 }
 
 void  Vm::dump(std::string const &instruction)

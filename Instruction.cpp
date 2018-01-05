@@ -40,11 +40,11 @@ void  Instruction::lexer(std::vector<std::string> buff, int source) {
   {
     case(0):
       if (lastElement != "exit")
-        throw Vm::SyntaxException("No instruction ending the program found.");
+        this->_errors.push_back("No instruction ending the program found.");
       break;
     case(1):
       if (lastElement != ";;")
-        throw Vm::SyntaxException("No instruction ending the program found.");
+        this->_errors.push_back("No instruction ending the program found.");
       break;
 
     default:

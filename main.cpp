@@ -23,8 +23,7 @@ int main(int ac, char **av)
     }
 
     catch (Vm::ExecutionException & e) { std::cout << "Execution error: " << e.what() << std::endl; }
-//    catch (Vm::SyntaxException & e) { std::cout << "Syntax error: " << e.what() << std::endl; }
-    catch (Vm::SyntaxException & e) { e.test(); }
+    catch (Vm::SyntaxException & e) { e.displayErrors(); }
   }
   else
     usage(av[0]);
