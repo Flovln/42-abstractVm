@@ -1,6 +1,9 @@
 #include <sstream>
 #include <iostream>
 
+#include "IOperand.hpp"
+#include "Token.hpp"
+
 #ifndef OPERAND_HPP
 # define OPERAND_HPP
 

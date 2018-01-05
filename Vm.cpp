@@ -126,6 +126,25 @@ void  Vm::manageSimple(std::string instruction)
   }
 }
 
+void  Vm::handleInstructions()
+{
+  for (auto &iter : this->_instructions)
+  {
+    //std::cout << "------------- instruction --------------"<< std::endl;
+    //std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
+    auto next = std::next(&iter, 1);
+    
+    if (iter.value == "push")
+      this->push(next->type, next->value);
+    else if (iter.value == "assert")
+      this->assert(next->type, next->value);
+    else
+      this->manageSimple(iter.value);
+
+    //std::cout << "----------------------------------------"<< std::endl;
+  }
+}
+
 void  Vm::manageOperand(std::string operand, std::string value)
 {
   std::string operands[] = { "int8", "int16", "int32", "float", "double" };
@@ -159,23 +178,30 @@ void  Vm::manageOperand(std::string operand, std::string value)
   //IOperand const *o = createOperand(eOperandType::Int8, value);
 }
 
-void  Vm::handleInstructions()
-{
-  for (auto &iter : this->_instructions)
-  {
-    //std::cout << "------------- instruction --------------"<< std::endl;
-    //std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
-    auto next = std::next(&iter, 1);
-    
-    if (iter.value == "push")
-      this->push(next->type, next->value);
-    else if (iter.value == "assert")
-      this->assert(next->type, next->value);
-    else
-      this->manageSimple(iter.value);
+/* Operands handling functions */
+IOperand const * Vm::_createInt8( std::string const & value ) const {
+  std::cout << "Create Int8: " << value << std::endl;
+  return new Operand<int8_t>(value/*, Int8*/);
+}
 
-    //std::cout << "----------------------------------------"<< std::endl;
-  }
+IOperand const * Vm::_createInt16( std::string const & value ) const {
+  std::cout << "Create Int16" << value << std::endl;
+  return new Operand<int16_t>(value/*, Int16*/);
+}
+
+IOperand const * Vm::_createInt32( std::string const & value ) const {
+  std::cout << "Create Int32" << value << std::endl;
+  return new Operand<int32_t>(value/*, Int32*/);
+}
+
+IOperand const * Vm::_createFloat( std::string const & value ) const {
+  std::cout << "Create Float" << value << std::endl;
+  return new Operand<float>(value/*, Float*/);
+}
+
+IOperand const * Vm::_createDouble( std::string const & value ) const {
+  std::cout << "Create Double" << value << std::endl;
+  return new Operand<double>(value/*, Double*/);
 }
 
 IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const
@@ -192,33 +218,6 @@ IOperand const *    Vm::createOperand( eOperandType type, std::string const & va
   };
 
   return (this->*(handler[type]))(value);
-}
-
-/* Operands handling functions */
-
-IOperand const * Vm::_createInt8( std::string const & value ) const {
-  std::cout << "Create Int8: " << value << std::endl;
-  //return new Operand<int8_t>(value/*, Int8*/);
-}
-
-IOperand const * Vm::_createInt16( std::string const & value ) const {
-  std::cout << "Create Int16" << value << std::endl;
-  //return new Operand<int16_t>(value/*, Int16*/);
-}
-
-IOperand const * Vm::_createInt32( std::string const & value ) const {
-  std::cout << "Create Int32" << value << std::endl;
-  //return new Operand<int32_t>(value/*, Int32*/);
-}
-
-IOperand const * Vm::_createFloat( std::string const & value ) const {
-  std::cout << "Create Float" << value << std::endl;
-  //return new Operand<float>(value/*, Float*/);
-}
-
-IOperand const * Vm::_createDouble( std::string const & value ) const {
-  std::cout << "Create Double" << value << std::endl;
-  //return new Operand<double>(value/*, Double*/);
 }
 
 /* Development tools */

@@ -3,19 +3,11 @@
 #include <exception>
 
 #include "Instruction.hpp"
-#include "IOperand.hpp"
+#include "Operand.tpp"
+#include "Token.hpp"
 
 #ifndef VM_HPP
 # define VM_HPP
-
-enum eOperandType
-{
-  Int8,
-  Int16,
-  Int32,
-  Float,
-  Double
-};
 
 class Vm {
   public:
