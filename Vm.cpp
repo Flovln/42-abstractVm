@@ -70,7 +70,12 @@ void  Vm::pop(std::string const &instruction)
 
 void  Vm::dump(std::string const &instruction)
 {
-  std::cout << "Dump instruction: " << instruction << std::endl;
+  //std::cout << "Dump instruction: " << instruction << std::endl;
+  std::list<IOperand const *>::reverse_iterator start = this->_stack.rend();
+
+  for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++){
+    std::cout << (*iter)->toString() << std::endl;
+  }
 }
 
 void  Vm::add(std::string const &instruction)
@@ -101,6 +106,39 @@ void  Vm::mod(std::string const &instruction)
 void  Vm::print(std::string const &instruction)
 {
   std::cout << "Print instruction: " << instruction << std::endl; 
+}
+
+void  Vm::manageOperand(std::string operand, std::string value)
+{
+  std::string operands[] = { "int8", "int16", "int32", "float", "double" };
+
+  //std::cout << "{ " << operand << ", " << value << " }" << std::endl;
+  for (int i = 0; i < 5; ++i)
+  {
+    if (operands[i] == operand)
+      switch(i)
+      {
+        case(0):
+          this->_stack.push_back(this->createOperand(eOperandType::Int8, value));
+          break;
+        case(1):
+          this->_stack.push_back(this->createOperand(eOperandType::Int16, value));
+          break;
+        case(2):
+          this->_stack.push_back(this->createOperand(eOperandType::Int32, value));
+          break;
+        case(3):
+          this->_stack.push_back(this->createOperand(eOperandType::Float, value));
+          break;
+        case(4):
+          this->_stack.push_back(this->createOperand(eOperandType::Double, value));
+          break;
+
+        default:
+          break;
+      }
+  }
+  //IOperand const *o = createOperand(eOperandType::Int8, value);
 }
 
 void  Vm::push(std::string operand, std::string value)
@@ -153,39 +191,6 @@ void  Vm::handleInstructions()
 
     //std::cout << "----------------------------------------"<< std::endl;
   }
-}
-
-void  Vm::manageOperand(std::string operand, std::string value)
-{
-  std::string operands[] = { "int8", "int16", "int32", "float", "double" };
-
-  //std::cout << "{ " << operand << ", " << value << " }" << std::endl;
-  for (int i = 0; i < 5; ++i)
-  {
-    if (operands[i] == operand)
-      switch(i)
-      {
-        case(0):
-          this->_stack.push_back(this->createOperand(eOperandType::Int8, value));
-          break;
-        case(1):
-          this->_stack.push_back(this->createOperand(eOperandType::Int16, value));
-          break;
-        case(2):
-          this->_stack.push_back(this->createOperand(eOperandType::Int32, value));
-          break;
-        case(3):
-          this->_stack.push_back(this->createOperand(eOperandType::Float, value));
-          break;
-        case(4):
-          this->_stack.push_back(this->createOperand(eOperandType::Double, value));
-          break;
-
-        default:
-          break;
-      }
-  }
-  //IOperand const *o = createOperand(eOperandType::Int8, value);
 }
 
 /* Operands handling functions */

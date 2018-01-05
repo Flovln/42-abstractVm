@@ -15,7 +15,12 @@ class Operand : public IOperand
 {
   public:
     Operand(void) {}
-    Operand(eOperandType type, std::string value) : _type(type), _value(value) {}
+    Operand(eOperandType type, std::string value) : _type(type), _value(value)
+    {
+      std::cout << "||||| CONSTRUCTOR ||||||" << std::endl;
+      std::cout << "value: " << this->getValue() << ", type: " << this->getType() << std::endl;
+      std::cout << "||||||||||||||||||||||||" << std::endl;
+    }
 
     Operand(const Operand & model) { *this = model; }
     ~Operand(void) {}
@@ -25,7 +30,7 @@ class Operand : public IOperand
     std::string         getValue( void ) { return this->_value; }
 
     std::string const & toString( void ) const {
-      std::ostringstream stream;
+/*      std::ostringstream stream;
       std::string *str;
       std::string tmp;
 
@@ -33,36 +38,33 @@ class Operand : public IOperand
       tmp = stream.str();
       str = &tmp;
 
-      return *str;
+      return *str;*/
+      return this->_value;
     }
 
     IOperand const *    operator+( IOperand const & rhs ) const {
-      std::cout << "YO" << std::endl;
+      std::cout << "ADD" << std::endl;
       return &rhs;
     }
 
     IOperand const *    operator-( IOperand const & rhs ) const {
-      std::cout << "YO" << std::endl;
+      std::cout << "SUB" << std::endl;
       return &rhs;
     }
 
     IOperand const *    operator*( IOperand const & rhs ) const {
-      std::cout << "YO" << std::endl;
+      std::cout << "MUL" << std::endl;
       return &rhs;
     }
 
     IOperand const *    operator/( IOperand const & rhs ) const {
-      std::cout << "YO" << std::endl;
+      std::cout << "DIV" << std::endl;
       return &rhs;
     }
 
     IOperand const *    operator%( IOperand const & rhs ) const {
-      std::cout << "YO" << std::endl;
+      std::cout << "MOD" << std::endl;
       return &rhs;
-    }
-
-    void  test(void){
-      std::cout << "Value: " << this->getValue << std::endl;
     }
 
   private:
