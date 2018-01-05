@@ -29,7 +29,10 @@ class Vm {
     void  run(void);
     void  handleInstructions(void);
     void  manageSimple(std::string instruction);
-    void  manageComplex(std::string operand, std::string value);
+    void  manageOperand(std::string operand, std::string value);
+
+    void  push(std::string operand, std::string value);
+    void  assert(std::string operand, std::string value);
     void  pop(std::string const &instruction);
     void  dump(std::string const &instruction);
     void  add(std::string const &instruction);

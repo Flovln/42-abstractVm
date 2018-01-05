@@ -91,6 +91,18 @@ void  Vm::print(std::string const &instruction)
   std::cout << "Print instruction: " << instruction << std::endl; 
 }
 
+void  Vm::push(std::string operand, std::string value)
+{
+  std::cout << "Push instruction" << std::endl; 
+  this->manageOperand(operand, value);
+}
+
+void  Vm::assert(std::string operand, std::string value)
+{
+  std::cout << "Assert instruction" << std::endl; 
+  this->manageOperand(operand, value);
+}
+
 void  Vm::manageSimple(std::string instruction)
 {
   std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
@@ -112,14 +124,13 @@ void  Vm::manageSimple(std::string instruction)
   }
 }
 
-void  Vm::manageComplex(std::string operand, std::string value)
+void  Vm::manageOperand(std::string operand, std::string value)
 {
   std::string operands[] = { "int8", "int16", "int32", "float", "double" };
 
+  //mstd::cout << "{ " << operand << ", " << value << " }" << std::endl;
   for (int i = 0; i < 5; ++i)
   {
-    //std::cout << "Operand: " << operand << std::endl;
-    //std::cout << "Value: " << value << std::endl;
     if (operands[i] == operand)
       switch(i)
       {
@@ -149,23 +160,25 @@ void  Vm::handleInstructions()
 {
   for (auto &iter : this->_instructions)
   {
-    std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
-/*
-    if (iter.value == "push" || iter.value == "assert")
-    {
-      auto next = std::next(&iter, 1);
-      //std::cout << "Node next: " << " | " << next->type << " | " << next->value << std::endl;
-
-      this->manageComplex(next->type, next->value);
-    }
+    //std::cout << "------------- instruction --------------"<< std::endl;
+    //std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
+    auto next = std::next(&iter, 1);
+    
+    if (iter.value == "push")
+      this->push(next->type, next->value);
+    else if (iter.value == "assert")
+      this->assert(next->type, next->value);
     else
-      this->manageSimple(iter.value);*/
+      this->manageSimple(iter.value);
+
+    //std::cout << "----------------------------------------"<< std::endl;
   }
 }
 
 void  Vm::createOperand(eOperandType type, std::string const & value)
 {
-  std::cout << "Type: " << type << " | Value: " << value << std::endl;
+  std::cout << "--- Create new operand ---" << std::endl;
+  std::cout << "{ " << type << ", " << value << " }"<< std::endl;
 }
 
 /*
