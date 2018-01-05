@@ -68,8 +68,6 @@ class Instruction {
     bool                     _markedAsComment;
     bool                     _markAsLexicalError;
     bool                     _markAsUnknownInstruction;
-
-    Token _next;
 };
 
 std::ostream & operator<<(std::ostream & o, Instruction const &obj);
