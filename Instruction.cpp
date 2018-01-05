@@ -185,6 +185,7 @@ std::vector<Content>  Instruction::parser(void)
   for (auto &iter : this->_tokens)
   {
     //std::cout << "Token: " << "{ " << iter.line << ", " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
+    std::regex operands("int8|int16|int32|float|double");
     Token::Type type = iter.type;
 
     switch(type)
@@ -193,9 +194,14 @@ std::vector<Content>  Instruction::parser(void)
         this->_instructions.push_back({"Instruction", iter.value});
         break;
       case Token::Operand:
-        // Check if valid operand and if so check if valid value
-        this->_instructions.push_back({iter.valueType, iter.value});
+      {
+        /* Check if valid operand */
+        if (std::regex_match(iter.valueType, operands) == true)
+          this->_instructions.push_back({iter.valueType, iter.value});
+        else
+          throw Vm::SyntaxException("unvalid operand line: " + std::to_string(iter.line) + ": " + iter.valueType + ".");
         break;
+      }
       case Token::LexicalError:
         throw Vm::SyntaxException("line: " + std::to_string(iter.line) + ": " + iter.value + ".");
         break;
