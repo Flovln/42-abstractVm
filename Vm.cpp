@@ -61,51 +61,52 @@ void  Vm::run(void) {
   this->handleInstructions();
 }
 
-void  Vm::pop(std::string const &instruction)
+void  Vm::pop(void)
 {
-  std::cout << "Pop instruction: " << instruction << std::endl;
+  std::cout << "Pop instruction: " << std::endl;
   if (this->_stack.empty())
     throw Vm::ExecutionException("empty stack.");
 }
 
-void  Vm::dump(std::string const &instruction)
+void  Vm::dump(void)
 {
-  //std::cout << "Dump instruction: " << instruction << std::endl;
   std::list<IOperand const *>::reverse_iterator start = this->_stack.rend();
 
-  for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++){
+  for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++)
     std::cout << (*iter)->toString() << std::endl;
-  }
+
+//  for (auto &iter: this->_stack)
+//    std::cout << iter->toString() << std::endl;
 }
 
-void  Vm::add(std::string const &instruction)
+void  Vm::add(void)
 {
-  std::cout << "Add instruction: " << instruction << std::endl;
+  std::cout << "Add instruction: " << std::endl;
 }
 
-void  Vm::sub(std::string const &instruction)
+void  Vm::sub(void)
 {
-  std::cout << "Sub instruction: " << instruction << std::endl;
+  std::cout << "Sub instruction: " << std::endl;
 }
 
-void  Vm::mul(std::string const &instruction)
+void  Vm::mul(void)
 {
-  std::cout << "Mul instruction: " << instruction << std::endl;
+  std::cout << "Mul instruction: " << std::endl;
 }
 
-void  Vm::div(std::string const &instruction)
+void  Vm::div(void)
 {
-  std::cout << "Div instruction: " << instruction << std::endl;  
+  std::cout << "Div instruction: " << std::endl;  
 }
 
-void  Vm::mod(std::string const &instruction)
+void  Vm::mod(void)
 {
-  std::cout << "Mod instruction: " << instruction << std::endl;  
+  std::cout << "Mod instruction: " << std::endl;  
 }
 
-void  Vm::print(std::string const &instruction)
+void  Vm::print(void)
 {
-  std::cout << "Print instruction: " << instruction << std::endl; 
+  std::cout << "Print instruction: " << std::endl; 
 }
 
 void  Vm::manageOperand(std::string operand, std::string value)
@@ -138,7 +139,6 @@ void  Vm::manageOperand(std::string operand, std::string value)
           break;
       }
   }
-  //IOperand const *o = createOperand(eOperandType::Int8, value);
 }
 
 void  Vm::push(std::string operand, std::string value)
@@ -156,7 +156,7 @@ void  Vm::assert(std::string operand, std::string value)
 void  Vm::manageSimple(std::string instruction)
 {
   std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
-  void (Vm::*handler[8])(std::string const &) = {
+  void (Vm::*handler[8])(void) = {
     &Vm::pop,
     &Vm::dump,
     &Vm::add,
@@ -170,7 +170,7 @@ void  Vm::manageSimple(std::string instruction)
   for (int i = 0; i < 8; i++)
   {
     if (keys[i] == instruction)
-      (this->*handler[i])(instruction);
+      (this->*handler[i])();
   }
 }
 
@@ -178,7 +178,6 @@ void  Vm::handleInstructions()
 {
   for (auto &iter : this->_instructions)
   {
-    //std::cout << "------------- instruction --------------"<< std::endl;
     //std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
     auto next = std::next(&iter, 1);
     
@@ -188,41 +187,34 @@ void  Vm::handleInstructions()
       this->assert(next->type, next->value);
     else
       this->manageSimple(iter.value);
-
-    //std::cout << "----------------------------------------"<< std::endl;
   }
 }
 
 /* Operands handling functions */
 IOperand const * Vm::_createInt8( std::string const & value ) const {
-  std::cout << "Create Int8: " << value << std::endl;
   return new Operand<int8_t>(eOperandType::Int8, value);
 }
 
 IOperand const * Vm::_createInt16( std::string const & value ) const {
-  std::cout << "Create Int16: " << value << std::endl;
   return new Operand<int16_t>(eOperandType::Int16, value);
 }
 
 IOperand const * Vm::_createInt32( std::string const & value ) const {
-  std::cout << "Create Int32: " << value << std::endl;
   return new Operand<int32_t>(eOperandType::Int32, value);
 }
 
 IOperand const * Vm::_createFloat( std::string const & value ) const {
-  std::cout << "Create Float: " << value << std::endl;
   return new Operand<float>(eOperandType::Float, value);
 }
 
 IOperand const * Vm::_createDouble( std::string const & value ) const {
-  std::cout << "Create Double: " << value << std::endl;
   return new Operand<double>(eOperandType::Double, value);
 }
 
 IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const
 {
-  std::cout << "--- Create new operand ---" << std::endl;
-  std::cout << "{ " << type << ", " << value << " }"<< std::endl;
+//  std::cout << "--- Create new operand ---" << std::endl;
+//  std::cout << "{ " << type << ", " << value << " }"<< std::endl;
 
   IOperand const *(Vm::*handler[5])(std::string const &) const = {
     &Vm::_createInt8,

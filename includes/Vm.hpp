@@ -27,14 +27,14 @@ class Vm {
 
     void  push(std::string operand, std::string value);
     void  assert(std::string operand, std::string value);
-    void  pop(std::string const &instruction);
-    void  dump(std::string const &instruction);
-    void  add(std::string const &instruction);
-    void  sub(std::string const &instruction);
-    void  mul(std::string const &instruction);
-    void  div(std::string const &instruction);
-    void  mod(std::string const &instruction);
-    void  print(std::string const &instruction);
+    void  pop(void);
+    void  dump(void);
+    void  add(void);
+    void  sub(void);
+    void  mul(void);
+    void  div(void);
+    void  mod(void);
+    void  print(void);
 
     /* Factory method (Fabrique) */
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
