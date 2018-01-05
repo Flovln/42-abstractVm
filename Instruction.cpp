@@ -33,10 +33,10 @@ void  Instruction::createChunks(std::string str)
     this->_chunks.push_back(chunk) ;
 }
 
-void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
+void  Instruction::lexer(std::vector<std::string> buff, int source) {
   std::string lastElement =  buff.back();
 
-  switch(source) // TO BE MOVE IN PARSER
+  switch(source)
   {
     case(0):
       if (lastElement != "exit")
@@ -52,15 +52,14 @@ void  Instruction::lexicalAnalysis(std::vector<std::string> buff, int source) {
   }
 
   /* Remove last element from vector aka exit command or ";;" */
-  buff.pop_back(); // TO BE MOVE IN PARSER
+  buff.pop_back();
 
   int lineNb;
-
   lineNb = 0;
+
   /* Go through file content line by line to remove comments and tonekize chunks */
   for (auto &iter : buff)
   {
-    //std::cout << "TEst: " << iter << std::endl;
     this->setLine(lineNb);
     lineNb++;
 

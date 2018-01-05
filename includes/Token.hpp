@@ -1,22 +1,7 @@
 #ifndef TOKEN_HPP
 # define TOKEN_HPP
 
-struct Token {
-  
-  enum Type {
-    Instruction,
-    Operand,
-    /* Errors */
-    LexicalError,
-    UnknownInstruction
-  };
-
-  int         line;
-  Type        type;
-  std::string valueType;
-  std::string value;
-};
-
+// replace by std::pair
 struct Content {
 
   std::string   type;

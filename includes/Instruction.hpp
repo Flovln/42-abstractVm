@@ -14,6 +14,22 @@
 #ifndef INSTRUCTION_HPP
 # define INSTRUCTION_HPP
 
+struct Token {
+  
+  enum Type {
+    Instruction,
+    Operand,
+    /* Errors */
+    LexicalError,
+    UnknownInstruction
+  };
+
+  int         line;
+  Type        type;
+  std::string valueType;
+  std::string value;
+};
+
 class Instruction {
 
   public:
@@ -25,7 +41,7 @@ class Instruction {
     Instruction &operator=(Instruction const &rhs);
 
     /* LEXER */
-    void  lexicalAnalysis(std::vector<std::string> buff, int source);
+    void  lexer(std::vector<std::string> buff, int source);
     void  createChunks(std::string str);
     void  removeComments(void);
     void  tokenizer(void);

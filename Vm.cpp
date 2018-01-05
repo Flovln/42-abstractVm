@@ -46,7 +46,7 @@ void  Vm::readFromStdin(void) {
 }
 
 void  Vm::run(void) {
-  this->_instruction.lexicalAnalysis(this->_buff, this->_source);
+  this->_instruction.lexer(this->_buff, this->_source);
   this->_instructions = this->_instruction.parser();  
   this->handleInstructions();
 }
@@ -231,18 +231,4 @@ void  Vm::displayBufferContent(void) {
   }
 
   std::cout << "---------" << std::endl;
-}
-
-void  Vm::displayTokens(void)
-{
-  std::vector<Token>::iterator iter = this->tokens.begin();
-  std::vector<Token>::iterator end = this->tokens.end();
-
-  std::cout << "--- Tokens list vm ---" << std::endl;
-  while (iter != end)
-  {
-    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].value << " }" << std::endl;
-    ++iter;
-  }
-  std::cout << "--- --- ---" << std::endl;
 }

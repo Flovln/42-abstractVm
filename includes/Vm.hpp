@@ -43,8 +43,6 @@ class Vm {
     IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
     void createOperand( eOperandType type, std::string const & value ); //test
 
-    std::vector<Token> tokens;
-
     class ExecutionException : public std::exception
     {
       public:
@@ -101,7 +99,7 @@ class Vm {
 
     int                         _source; // 0 = file | 1 = stdin
     std::vector<std::string>    _buff;
-    std::vector<Content>          _instructions;
+    std::vector<Content>        _instructions;
     std::list<IOperand const *> _stack;
 };
 
