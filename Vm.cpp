@@ -155,23 +155,18 @@ void  Vm::push(std::string operand, std::string value)
       {
         case(0):
           this->_stack.push_back(this->_factory.createOperand(eOperandType::Int8, value));
-//          this->_stack.push_back(this->createOperand(eOperandType::Int8, value));
           break;
         case(1):
           this->_stack.push_back(this->_factory.createOperand(eOperandType::Int16, value));
-//          this->_stack.push_back(this->createOperand(eOperandType::Int16, value));
           break;
         case(2):
           this->_stack.push_back(this->_factory.createOperand(eOperandType::Int32, value));
-//          this->_stack.push_back(this->createOperand(eOperandType::Int32, value));
           break;
         case(3):
           this->_stack.push_back(this->_factory.createOperand(eOperandType::Float, value));
-//          this->_stack.push_back(this->createOperand(eOperandType::Float, value));
           break;
         case(4):
           this->_stack.push_back(this->_factory.createOperand(eOperandType::Double, value));
-//          this->_stack.push_back(this->createOperand(eOperandType::Double, value));
           break;
 
         default:
@@ -234,39 +229,6 @@ void  Vm::handleInstructions()
       this->manageSingleInstruction(iter.value);
   }
 }
-/*
-IOperand const * Vm::_createInt8( std::string const & value ) const {
-  return new Operand<int8_t>(eOperandType::Int8, value);
-}
-
-IOperand const * Vm::_createInt16( std::string const & value ) const {
-  return new Operand<int16_t>(eOperandType::Int16, value);
-}
-
-IOperand const * Vm::_createInt32( std::string const & value ) const {
-  return new Operand<int32_t>(eOperandType::Int32, value);
-}
-
-IOperand const * Vm::_createFloat( std::string const & value ) const {
-  return new Operand<float>(eOperandType::Float, value);
-}
-
-IOperand const * Vm::_createDouble( std::string const & value ) const {
-  return new Operand<double>(eOperandType::Double, value);
-}
-
-IOperand const *    Vm::createOperand( eOperandType type, std::string const & value ) const
-{
-  IOperand const *(Vm::*handler[5])(std::string const &) const = {
-    &Vm::_createInt8,
-    &Vm::_createInt16,
-    &Vm::_createInt32,
-    &Vm::_createFloat,
-    &Vm::_createDouble
-  };
-
-  return (this->*(handler[type]))(value);
-}*/
 
 /* Development tools */
 
