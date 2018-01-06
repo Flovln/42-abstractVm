@@ -2,7 +2,12 @@
 
 Vm::Vm(void) {
 //  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
-//   std::string operands[] = { "int8", "int16", "int32", "float", "double" };
+  std::string values[] = {"int8", "int16", "int32", "float", "double" };
+
+  for (int i = 0; i < 5; ++i)
+  {
+    this->_operands[i] = values[i];
+  }
 }
 
 Vm::Vm(Vm const &model) {
@@ -121,29 +126,31 @@ void  Vm::print(void)
     throw Vm::ExecutionException("value is not an 8 bit integer.");
 }
 
-void  Vm::manageOperand(std::string operand, std::string value)
+void  Vm::push(std::string operand, std::string value)
 {
-  std::string operands[] = { "int8", "int16", "int32", "float", "double" };
-
-  //std::cout << "{ " << operand << ", " << value << " }" << std::endl;
   for (int i = 0; i < 5; ++i)
   {
-    if (operands[i] == operand)
+    if (this->_operands[i] == operand)
       switch(i)
       {
         case(0):
+          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Int8, value));
           break;
         case(1):
+          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Int16, value));
           break;
         case(2):
+          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Int32, value));
           break;
         case(3):
+          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Float, value));
           break;
         case(4):
+          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Double, value));
           break;
 
@@ -153,19 +160,25 @@ void  Vm::manageOperand(std::string operand, std::string value)
   }
 }
 
-void  Vm::push(std::string operand, std::string value)
-{
-  std::cout << "Push instruction" << std::endl; 
-  this->manageOperand(operand, value);
-}
-
 void  Vm::assert(std::string operand, std::string value)
 {
-  std::cout << "Assert instruction" << std::endl; 
-  this->manageOperand(operand, value);
+  IOperand const *tmp = this->_stack.front();
+
+  for (int i = 0; i < 5; i++)
+  {
+    if (this->_operands[i] == operand)
+    {
+      if (tmp->getType() != i || tmp->toString() != value)
+      {
+        delete tmp;
+        throw Vm::ExecutionException("values are not equal.");
+      }
+    }
+  }
+  delete tmp;
 }
 
-void  Vm::manageSimple(std::string instruction)
+void  Vm::manageSingleInstruction(std::string instruction)
 {
   std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
   void (Vm::*handler[8])(void) = {
@@ -198,7 +211,7 @@ void  Vm::handleInstructions()
     else if (iter.value == "assert")
       this->assert(next->type, next->value);
     else
-      this->manageSimple(iter.value);
+      this->manageSingleInstruction(iter.value);
   }
 }
 

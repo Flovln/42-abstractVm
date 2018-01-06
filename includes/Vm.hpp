@@ -22,8 +22,7 @@ class Vm {
     void  readFromStdin(void);
     void  run(void);
     void  handleInstructions(void);
-    void  manageSimple(std::string instruction);
-    void  manageOperand(std::string operand, std::string value);
+    void  manageSingleInstruction(std::string instruction);
 
     void  push(std::string operand, std::string value);
     void  assert(std::string operand, std::string value);
@@ -90,6 +89,8 @@ class Vm {
     std::vector<std::string>    _buff;
     std::vector<Content>        _instructions;
     std::list<IOperand const *> _stack;
+
+    std::string                 _operands[5];
 };
 
 #endif
