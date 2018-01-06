@@ -68,10 +68,9 @@ void  Vm::run(void) {
 
 void  Vm::pop(void)
 {
-  std::cout << "Pop instruction: " << std::endl;
   if (this->_stack.empty())
     throw Vm::ExecutionException("empty stack.");
-  //delete *(this->_stack.front());
+  delete *(this->_stack.begin());
   this->_stack.pop_front();
 }
 
@@ -88,6 +87,18 @@ void  Vm::add(void)
   std::cout << "Add instruction: " << std::endl;
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
+
+  IOperand const *v1 = this->_stack.front();
+  IOperand const *v2 = *(std::next(this->_stack.begin()));
+
+  std::cout << "v1: " << "{ " << v1->toString() << ", " << v1->getType() << " }" << std::endl;
+  std::cout << "v2: " << "{ " << v2->toString() << ", " << v2->getType() << " }" << std::endl;
+
+  IOperand const *res = *v1 + *v2;
+
+  this->_stack.pop_front();
+  this->_stack.pop_front();
+  this->_stack.push_back(res);
 }
 
 void  Vm::sub(void)
@@ -121,7 +132,16 @@ void  Vm::mod(void)
 void  Vm::print(void)
 {
   if (this->_stack.front()->getType() == eOperandType::Int8)
-    std::cout << this->_stack.front()->toString() << std::endl;
+  {
+    char c;
+    std::stringstream ss;
+    ss << this->_stack.front()->toString();
+    ss >> c;
+
+    std::cout << c << std::endl;    
+//    std::cout << static_cast<char>(c) << std::endl;    
+//    std::cout << this->_stack.front()->toString() << std::endl;
+  }
   else
     throw Vm::ExecutionException("value is not an 8 bit integer.");
 }
@@ -134,23 +154,18 @@ void  Vm::push(std::string operand, std::string value)
       switch(i)
       {
         case(0):
-          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Int8, value));
           break;
         case(1):
-          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Int16, value));
           break;
         case(2):
-          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Int32, value));
           break;
         case(3):
-          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Float, value));
           break;
         case(4):
-          // do checking on n value
           this->_stack.push_back(this->createOperand(eOperandType::Double, value));
           break;
 
