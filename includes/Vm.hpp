@@ -84,6 +84,7 @@ class Vm {
     std::list<IOperand const *> _stack;
 
     std::string                 _operands[5];
+    std::string                 _keys[8];
 };
 
 #endif

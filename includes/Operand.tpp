@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-#include "IOperand.hpp"
 #include "Token.hpp"
+#include "IOperand.hpp"
 #include "Factory.hpp"
 
 #ifndef OPERAND_HPP
@@ -59,9 +59,15 @@ class Operand : public IOperand
 
     IOperand const *    operator-( IOperand const & rhs ) const {
       std::cout << "SUB" << std::endl;
-//      std::cout << "v1: " << v1 << ", " << "v2: " << v2 << std::endl;
-//      std::cout << "value: " << value << std::endl;
-      return &rhs;
+      int v1 = std::stoi(this->toString());
+      int v2 = std::stoi(rhs.toString());
+      int res = v1 - v2;
+
+      std::stringstream ss;
+      ss << res;
+      std::string value = ss.str();
+
+      return this->_factory.createOperand(this->getType(), value);
     }
 
     IOperand const *    operator*( IOperand const & rhs ) const {

@@ -1,12 +1,17 @@
 #include "./includes/Vm.hpp"
 
 Vm::Vm(void) {
-//  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
   std::string values[] = {"int8", "int16", "int32", "float", "double" };
+  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
 
   for (int i = 0; i < 5; ++i)
   {
     this->_operands[i] = values[i];
+  }
+
+  for (int i = 0; i < 8; ++i)
+  {
+    this->_keys[i] = keys[i];
   }
 }
 
@@ -84,16 +89,11 @@ void  Vm::dump(void)
 
 void  Vm::add(void)
 {
-  std::cout << "Add instruction: " << std::endl;
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
-
-  std::cout << "v1: " << "{ " << v1->toString() << ", " << v1->getType() << " }" << std::endl;
-  std::cout << "v2: " << "{ " << v2->toString() << ", " << v2->getType() << " }" << std::endl;
-
   IOperand const *res = *v1 + *v2;
 
   this->_stack.pop_front();
@@ -101,25 +101,52 @@ void  Vm::add(void)
   this->_stack.push_back(res);
 }
 
+//  std::cout << "v1: " << "{ " << v1->toString() << ", " << v1->getType() << " }" << std::endl;
+//  std::cout << "v2: " << "{ " << v2->toString() << ", " << v2->getType() << " }" << std::endl;
 void  Vm::sub(void)
 {
-  std::cout << "Sub instruction: " << std::endl;
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
+
+  IOperand const *v1 = this->_stack.front();
+  IOperand const *v2 = *(std::next(this->_stack.begin()));
+  IOperand const *res = *v1 - *v2;
+
+  this->_stack.pop_front();
+  this->_stack.pop_front();
+  this->_stack.push_back(res);
 }
 
 void  Vm::mul(void)
 {
-  std::cout << "Mul instruction: " << std::endl;
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
+
+  IOperand const *v1 = this->_stack.front();
+  IOperand const *v2 = *(std::next(this->_stack.begin()));
+  IOperand const *res = *v1 * *v2;
+
+  this->_stack.pop_front();
+  this->_stack.pop_front();
+  this->_stack.push_back(res);
 }
 
 void  Vm::div(void)
 {
-  std::cout << "Div instruction: " << std::endl;  
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
+
+  IOperand const *v1 = this->_stack.front();
+  IOperand const *v2 = *(std::next(this->_stack.begin()));
+
+  if (v2->toString() == "0")
+    throw Vm::ExecutionException("divisor is equal to 0.");
+
+  IOperand const *res = *v1 / *v2;
+
+  this->_stack.pop_front();
+  this->_stack.pop_front();
+  this->_stack.push_back(res);
 }
 
 void  Vm::mod(void)
@@ -195,7 +222,6 @@ void  Vm::assert(std::string operand, std::string value)
 
 void  Vm::manageSingleInstruction(std::string instruction)
 {
-  std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
   void (Vm::*handler[8])(void) = {
     &Vm::pop,
     &Vm::dump,
@@ -209,7 +235,7 @@ void  Vm::manageSingleInstruction(std::string instruction)
 
   for (int i = 0; i < 8; i++)
   {
-    if (keys[i] == instruction)
+    if (this->_keys[i] == instruction)
       (this->*handler[i])();
   }
 }
