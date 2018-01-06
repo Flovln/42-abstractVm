@@ -171,14 +171,14 @@ void  Vm::print(void)
 {
   if (this->_stack.front()->getType() == eOperandType::Int8)
   {
-    char c;
-    std::stringstream ss;
-    ss << this->_stack.front()->toString();
-    ss >> c;
+    std::string value = this->_stack.front()->toString();
 
-    std::cout << c << std::endl;    
-//    std::cout << static_cast<char>(c) << std::endl;    
-//    std::cout << this->_stack.front()->toString() << std::endl;
+    int ascii;
+    std::stringstream ss;
+    ss << value;
+    ss >> ascii;
+
+    std::cout << static_cast<char>(ascii);
   }
   else
     throw Vm::ExecutionException("value is not an 8 bit integer.");

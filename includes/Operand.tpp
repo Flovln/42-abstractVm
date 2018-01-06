@@ -32,15 +32,6 @@ class Operand : public IOperand
     std::string         getValue( void ) { return this->_value; }
 
     std::string const & toString( void ) const {
-/*      std::ostringstream stream;
-      std::string *str;
-      std::string tmp;
-
-      stream << *this;
-      tmp = stream.str();
-      str = &tmp;
-
-      return *str;*/
       return this->_value;
     }
 
