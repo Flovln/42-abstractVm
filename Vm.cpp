@@ -151,9 +151,20 @@ void  Vm::div(void)
 
 void  Vm::mod(void)
 {
-  std::cout << "Mod instruction: " << std::endl;  
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
+
+  IOperand const *v1 = this->_stack.front();
+  IOperand const *v2 = *(std::next(this->_stack.begin()));
+
+  if (v2->toString() == "0")
+    throw Vm::ExecutionException("divisor is equal to 0.");
+
+  IOperand const *res = *v1 % *v2;
+
+  this->_stack.pop_front();
+  this->_stack.pop_front();
+  this->_stack.push_back(res);
 }
 
 void  Vm::print(void)
