@@ -4,6 +4,7 @@
 
 #include "IOperand.hpp"
 #include "Token.hpp"
+#include "Factory.hpp"
 
 #ifndef OPERAND_HPP
 # define OPERAND_HPP
@@ -20,7 +21,7 @@ class Operand : public IOperand
       std::cout << "value: " << this->getValue() << ", type: " << this->getType() << std::endl;
       std::cout << "||||||||||||||||||||||||" << std::endl;
 
-      
+      //if (type == eOperandType::Float)
     }
 
     Operand(const Operand & model) { *this = model; }
@@ -53,7 +54,7 @@ class Operand : public IOperand
       ss << res;
       std::string value = ss.str();
 
-      return &rhs;//this->createOperand(this->getType(), value);
+      return this->_factory.createOperand(this->getType(), value);
     }
 
     IOperand const *    operator-( IOperand const & rhs ) const {
@@ -79,6 +80,7 @@ class Operand : public IOperand
     }
 
   private:
+    Factory      _factory;
     eOperandType _type;
     std::string  _value;
 };

@@ -16,6 +16,7 @@ NAME = avm
 SRC = main.cpp\
 		Vm.cpp\
 		Instruction.cpp\
+		Factory.cpp
 
 FLAGS = -Wall -Wextra -Werror
 # Genere les fichiers objet automatiquement depuis la liste des fichiers sources

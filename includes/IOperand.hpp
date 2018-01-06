@@ -1,3 +1,5 @@
+#include "Token.hpp"
+
 #ifndef IOPERAND_HPP
 # define IOPERAND_HPP
 

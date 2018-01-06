@@ -3,8 +3,9 @@
 #include <exception>
 
 #include "Instruction.hpp"
-#include "Operand.tpp"
+//#include "Operand.tpp"
 #include "Token.hpp"
+#include "Factory.hpp"
 
 #ifndef VM_HPP
 # define VM_HPP
@@ -36,7 +37,7 @@ class Vm {
     void  print(void);
 
     /* Factory method (Fabrique) */
-    IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
+    //IOperand const *  createOperand( eOperandType type, std::string const & value ) const;    
 
     class ExecutionException : public std::exception
     {
@@ -78,13 +79,14 @@ class Vm {
 
   private:
     Instruction                 _instruction;
-
+    Factory                     _factory;
+/*
     IOperand const *            _createInt8( std::string const & value ) const;
     IOperand const *            _createInt16( std::string const & value ) const;
     IOperand const *            _createInt32( std::string const & value ) const;
     IOperand const *            _createFloat( std::string const & value ) const;
     IOperand const *            _createDouble( std::string const & value ) const;
-
+*/
     int                         _source; // 0 = file | 1 = stdin
     std::vector<std::string>    _buff;
     std::vector<Content>        _instructions;
