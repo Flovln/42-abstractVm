@@ -65,6 +65,8 @@ void  Vm::readFromStdin(void) {
   this->_source = 1;
 }
 
+/* INSTRUCTIONS */
+
 void  Vm::run(void) {
   this->_instruction.lexer(this->_buff, this->_source);
   this->_instructions = this->_instruction.parser();  
@@ -231,6 +233,8 @@ void  Vm::assert(std::string operand, std::string value)
   delete tmp;
 }
 
+/* INSTRUCTIONS MANAGER */
+
 void  Vm::manageSingleInstruction(std::string instruction)
 {
   void (Vm::*handler[8])(void) = {
@@ -265,30 +269,4 @@ void  Vm::handleInstructions()
     else
       this->manageSingleInstruction(iter.value);
   }
-}
-
-/* Development tools */
-
-void  Vm::displayListContent(void) {
-  std::cout << "--- List content ---" << std::endl;
-  for (auto &iter : this->_instructions)
-  {
-    std::cout << "Node: " << "{ " << iter.type << ", " << iter.value << " }" << std::endl;
-  }
-}
-
-void  Vm::displayBufferContent(void) {
-  std::cout << "--- Buffer(vector) content ---" << std::endl;
-  std::cout << "Source: " << this->getSource() << std::endl;
-
-  std::vector<std::string>::iterator iter = this->_buff.begin();
-  std::vector<std::string>::iterator end = this->_buff.end();
-
-  while (iter != end)
-  {
-    std::cout << (*iter) << std::endl;
-    ++iter;
-  }
-
-  std::cout << "---------" << std::endl;
 }
