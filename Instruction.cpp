@@ -171,12 +171,12 @@ void  Instruction::tokenizer(void)
   }
 }
 
-void                  Instruction::checkInstructions(Token instruction, Token *next)
+void                  Instruction::checkInstructions(Token instruction, Token *next, int line)
 {
-  std::cout << "Token instruction: " << "{ " << instruction.type << ", " << instruction.valueType << ", " << instruction.value << " }" << std::endl;
-  std::cout << "Token next iter: " << "{ " << next->type << ", " << next->valueType << ", " << next->value << " }" << std::endl;
-
-  this->_instructions.push_back({"Instruction", instruction.value});
+  if (next->type == Token::Operand)
+    this->_instructions.push_back({"Instruction", instruction.value});
+  else
+    this->_errors.push_back("Line: " + std::to_string(line) + ": error with instruction " + instruction.value);
 }
 
 void                  Instruction::checkOperands(Token operand, int line)
@@ -208,7 +208,7 @@ std::vector<Content>  Instruction::parser(void)
           if (&iter != &this->_tokens.back())
           {
             auto next = std::next(&iter, 1);
-            this->checkInstructions(iter, next);
+            this->checkInstructions(iter, next, iter.line);
           }
           else
             this->_errors.push_back("Line: " + std::to_string(iter.line) + ": no operand passed after " + iter.value);
