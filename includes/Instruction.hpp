@@ -50,6 +50,9 @@ class Instruction {
 
     /* PARSER */
     std::vector<Content>  parser(void);
+    void                  checkInstructions(Token iterator, Token *next);
+    void                  checkOperands(Token iterator, int line);
+
 
     void  setLine(int nb);
     

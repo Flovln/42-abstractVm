@@ -64,7 +64,9 @@ class Operand : public IOperand
     IOperand const *    operator*( IOperand const & rhs ) const {
       std::cout << "MUL" << std::endl;
       int v1 = std::stoi(this->toString());
-      int v2 = std::stoi(rhs.toString());
+      //std::cout << "v2: " << rhs.toString() << std::endl;
+      int v2 = std::stod(rhs.toString());
+      //std::cout << "v1: " << v1 << ", " << "v2: " << v2 << std::endl;
       int res = v1 * v2;
 
       std::stringstream ss;

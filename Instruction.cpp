@@ -171,48 +171,54 @@ void  Instruction::tokenizer(void)
   }
 }
 
+void                  Instruction::checkInstructions(Token instruction, Token *next)
+{
+  std::cout << "Token instruction: " << "{ " << instruction.type << ", " << instruction.valueType << ", " << instruction.value << " }" << std::endl;
+  std::cout << "Token next iter: " << "{ " << next->type << ", " << next->valueType << ", " << next->value << " }" << std::endl;
+
+  this->_instructions.push_back({"Instruction", instruction.value});
+}
+
+void                  Instruction::checkOperands(Token operand, int line)
+{
+  std::regex operands("int8|int16|int32|float|double");
+
+  if (std::regex_match(operand.valueType, operands) == true)
+  {
+    if (operand.value == "")
+      this->_errors.push_back("Line: " + std::to_string(operand.line) + ": operand missing value.");
+    else
+      this->_instructions.push_back({operand.valueType, operand.value});      
+  }
+  else
+    this->_errors.push_back("Line: " + std::to_string(line) + ": unvalid operand: " + operand.valueType);
+}
+
 std::vector<Content>  Instruction::parser(void)
 {
   for (auto &iter : this->_tokens)
   {
-//    std::cout << "Token: " << "{ " << iter.line << ", " << iter.type << ", " << iter.valueType << ", " << iter.value << " }" << std::endl;
-    std::regex operands("int8|int16|int32|float|double");
     Token::Type type = iter.type;
 
     switch(type)
     {
       case Token::Instruction:
-      {
-//        std::cout << "ASSERT: " << iter.value << std::endl;
         if (iter.value == "push" || iter.value == "assert")
         {
-          auto next = std::next(&iter, 1);
-
-          if (&iter == &this->_tokens.back())
+          if (&iter != &this->_tokens.back())
+          {
+            auto next = std::next(&iter, 1);
+            this->checkInstructions(iter, next);
+          }
+          else
             this->_errors.push_back("Line: " + std::to_string(iter.line) + ": no operand passed after " + iter.value);
-          else if (std::regex_match(next->valueType, operands) == true)
-            this->_instructions.push_back({"Instruction", iter.value});
-          else
-            this->_errors.push_back("Line: " + std::to_string(iter.line) + ": unvalid operand passed to " + iter.value);
         }
         else
-            this->_instructions.push_back({"Instruction", iter.value});          
+          this->_instructions.push_back({"Instruction", iter.value});
         break;
-      }
       case Token::Operand:
-      {
-        /* Check if valid operand */
-        if (std::regex_match(iter.valueType, operands) == true)
-        {
-          if (iter.value == "")
-            this->_errors.push_back("Line: " + std::to_string(iter.line) + ": operand missing value.");
-          else
-            this->_instructions.push_back({iter.valueType, iter.value});
-        }
-        else
-          this->_errors.push_back("Line: " + std::to_string(iter.line) + ": unvalid operand: " + iter.valueType);
+        this->checkOperands(iter, iter.line);
         break;
-      }
       case Token::LexicalError:
         this->_errors.push_back("Line: " + std::to_string(iter.line) + ": lexical error: " + iter.value);
         break;
@@ -221,14 +227,13 @@ std::vector<Content>  Instruction::parser(void)
         break;
 
       default:
-        break;      
+        break;
     }
   }
-
   if (!this->_errors.empty())
     throw Vm::SyntaxException(this->_errors);
 
-  return this->_instructions;
+  return this->_instructions;  
 }
 
 /* Development tools */

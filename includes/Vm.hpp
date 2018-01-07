@@ -18,6 +18,7 @@ class Vm {
 
     Vm &operator=(Vm const &rhs);
 
+    int   getSource(void);
     void  readFromFile(char *file);
     void  readFromStdin(void);
     void  run(void);
@@ -66,12 +67,6 @@ class Vm {
 
         std::vector<std::string> messages;
     };
-
-    /* Development tools */
-    void  displayListContent(void);
-    void  displayBufferContent(void);
-    void  displayTokens(void);
-    int   getSource(void);
 
   private:
     Instruction                 _instruction;
