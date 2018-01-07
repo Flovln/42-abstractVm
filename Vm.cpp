@@ -217,6 +217,9 @@ void  Vm::push(std::string operand, std::string value)
 
 void  Vm::assert(std::string operand, std::string value)
 {
+  if (this->_stack.size() < 1)
+    throw Vm::ExecutionException("not a single value in the stack.");
+
   IOperand const *tmp = this->_stack.front();
 
   for (int i = 0; i < 5; i++)
