@@ -1,5 +1,6 @@
 push int32(32)
-push int8(41132)
-push int16(2113)
-print
+push float(21.13)
+dump
+mul
+dump
 exit
