@@ -104,7 +104,7 @@ void  Vm::add(void)
 
   this->_stack.pop_front();
   this->_stack.pop_front();
-  this->_stack.push_back(res);
+  this->_stack.push_front(res);
 }
 
 //  std::cout << "v1: " << "{ " << v1->toString() << ", " << v1->getType() << " }" << std::endl;
@@ -120,7 +120,7 @@ void  Vm::sub(void)
 
   this->_stack.pop_front();
   this->_stack.pop_front();
-  this->_stack.push_back(res);
+  this->_stack.push_front(res);
 }
 
 void  Vm::mul(void)
@@ -134,7 +134,7 @@ void  Vm::mul(void)
 
   this->_stack.pop_front();
   this->_stack.pop_front();
-  this->_stack.push_back(res);
+  this->_stack.push_front(res);
 }
 
 void  Vm::div(void)
@@ -145,14 +145,14 @@ void  Vm::div(void)
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
 
-  if (v2->toString() == "0")
+  if (v1->toString() == "0")
     throw Vm::ExecutionException("divisor is equal to 0.");
 
-  IOperand const *res = *v1 / *v2;
+  IOperand const *res = *v2 / *v1;
 
   this->_stack.pop_front();
   this->_stack.pop_front();
-  this->_stack.push_back(res);
+  this->_stack.push_front(res);
 }
 
 void  Vm::mod(void)
@@ -163,14 +163,14 @@ void  Vm::mod(void)
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
 
-  if (v2->toString() == "0")
+  if (v1->toString() == "0")
     throw Vm::ExecutionException("divisor is equal to 0.");
 
-  IOperand const *res = *v1 % *v2;
+  IOperand const *res = *v2 % *v1;
 
   this->_stack.pop_front();
   this->_stack.pop_front();
-  this->_stack.push_back(res);
+  this->_stack.push_front(res);
 }
 
 void  Vm::print(void)

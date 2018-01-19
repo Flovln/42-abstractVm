@@ -20,21 +20,14 @@ class Operand : public IOperand
     Operand(void) {}
     Operand(eOperandType type, std::string value) : _type(type), _valueStr(value)
     {
-      // do checking on value overflow, etc ..
       std::cout << "||||| CONSTRUCTOR ||||||" << std::endl;
       std::cout << "value: " << this->toString() << ", type: " << this->getType() << std::endl;
       std::cout << "||||||||||||||||||||||||" << std::endl;
 
-      if (this->_type == eOperandType::Float)
-        this->_value = std::stof(this->_valueStr);
-      else if (this->_type == eOperandType::Double)
-        this->_value = std::stod(this->_valueStr);
-      else if (this->_type == eOperandType::Int8 || this->_type == eOperandType::Int16 || this->_type == eOperandType::Int32)
-        this->_value = std::stoi(this->_valueStr);
-
+      //if (stoi(this->toString()) / stoi(rhs.toString()) < SHRT_MIN || stoi(this->toString()) / stoi(rhs.toString()) > SHRT_MAX)
       if (type == eOperandType::Int8 && (this->_value < SCHAR_MIN || this->_value > SCHAR_MAX))
         throw Vm::ExecutionException("Overflow or underflow on char.");
-      else if (type == eOperandType::Int16 && (this->_value < SHRT_MIN || this->_value > SHRT_MAX))
+      else if (type == eOperandType::Int16 && (std::stoi(this->_valueStr) < SHRT_MIN || std::stoi(this->_valueStr) > SHRT_MAX))
         throw Vm::ExecutionException("Overflow or underflow on short.");
       else if (type == eOperandType::Int32 && (this->_value < INT_MIN || this->_value > INT_MAX))
         throw Vm::ExecutionException("Oveflow or underflow on int");
@@ -42,6 +35,13 @@ class Operand : public IOperand
         throw Vm::ExecutionException("Oveflow or underflow on float");
       else if (type == eOperandType::Double && (this->_value < DBL_MIN || this->_value > DBL_MAX))
         throw Vm::ExecutionException("Overflow or underflow on double");
+
+      if (this->_type == eOperandType::Float)
+        this->_value = std::stof(this->_valueStr);
+      else if (this->_type == eOperandType::Double)
+        this->_value = std::stod(this->_valueStr);
+      else if (this->_type == eOperandType::Int8 || this->_type == eOperandType::Int16 || this->_type == eOperandType::Int32)
+        this->_value = std::stoi(this->_valueStr);
     }
 
     Operand(const Operand & model) { *this = model; }
@@ -56,14 +56,12 @@ class Operand : public IOperand
     }
 
     IOperand const *    operator+( IOperand const & rhs ) const {
-      std::cout << "ADD" << std::endl;
-      //double res = this->getValue() + rhs.getValue();
       double v2;
 
       if (rhs.getType() >= eOperandType::Float)
         v2 = std::stod(rhs.toString());
       else
-        v2 = round(std::stod(rhs.toString()));
+        v2 = std::stoi(rhs.toString());
 
       double res = this->_value + v2;
 
@@ -76,14 +74,12 @@ class Operand : public IOperand
     }
 
     IOperand const *    operator-( IOperand const & rhs ) const {
-      std::cout << "SUB" << std::endl;
-      //double res = this->getValue() - rhs.getValue();
       double v2;
 
       if (rhs.getType() >= eOperandType::Float)
         v2 = std::stod(rhs.toString());
       else
-        v2 = round(std::stod(rhs.toString()));
+        v2 = std::stoi(rhs.toString());
 
       double res = this->_value - v2;
 
@@ -94,18 +90,15 @@ class Operand : public IOperand
     }
 
     IOperand const *    operator*( IOperand const & rhs ) const {
-      std::cout << "MUL" << std::endl;
-      //double res = this->getValue() * rhs.getValue();
       double v2;
 
       if (rhs.getType() >= eOperandType::Float)
         v2 = std::stod(rhs.toString());
       else
-        v2 = round(std::stod(rhs.toString()));
+        v2 = std::stoi(rhs.toString());
 
       double res = this->_value * v2;
 
-      //std::cout << "res: " << res << std::endl;
       if (this->getPrecision() > rhs.getPrecision())        
         return this->_factory.createOperand(this->getType(), std::to_string(res));
       else
@@ -113,14 +106,12 @@ class Operand : public IOperand
     }
 
     IOperand const *    operator/( IOperand const & rhs ) const {
-      std::cout << "DIV" << std::endl;
-      //double res = this->getValue() / rhs.getValue();
       double v2;
 
       if (rhs.getType() >= eOperandType::Float)
         v2 = std::stod(rhs.toString());
       else
-        v2 = round(std::stod(rhs.toString()));
+        v2 = std::stoi(rhs.toString());
 
       double res = this->_value / v2;
 
@@ -131,14 +122,13 @@ class Operand : public IOperand
     }
 
     IOperand const *    operator%( IOperand const & rhs ) const {
-      //double res = this->getValue() % rhs.getValue();
       if (this->getType() >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
         std::cout << "Throw error!" << std::endl;
 
       int v2;
       
       if (rhs.getType() >= eOperandType::Float)
-        v2 = std::stoi(rhs.toString());
+        v2 = std::stod(rhs.toString());
       else
         v2 = std::stoi(rhs.toString());
 
