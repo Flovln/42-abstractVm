@@ -2,10 +2,13 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <climits>
+#include <cfloat>
 
 #include "Token.hpp"
 #include "IOperand.hpp"
 #include "Factory.hpp"
+#include "Vm.hpp"
 
 #ifndef OPERAND_HPP
 # define OPERAND_HPP
@@ -22,17 +25,23 @@ class Operand : public IOperand
       std::cout << "value: " << this->toString() << ", type: " << this->getType() << std::endl;
       std::cout << "||||||||||||||||||||||||" << std::endl;
 
-      if (this->_value >= eOperandType::Float)
+      if (this->_type == eOperandType::Float)
+        this->_value = std::stof(this->_valueStr);
+      else if (this->_type == eOperandType::Double)
         this->_value = std::stod(this->_valueStr);
-      else
-        this->_value = round(std::stod(this->_valueStr));
-/*
-      if (type == eOperandType::Int8 && (this->_valueStr < 0 || this->_valueStr > 255))
-        throw Operand::Execution("");
-      else if (type == eOperandType::Int16)
-      else if (type == eOperandType::Int32)
-      else if (type == eOperandType::Float)
-      else if (type == eOperandType::Double)*/
+      else if (this->_type == eOperandType::Int8 || this->_type == eOperandType::Int16 || this->_type == eOperandType::Int32)
+        this->_value = std::stoi(this->_valueStr);
+
+      if (type == eOperandType::Int8 && (this->_value < SCHAR_MIN || this->_value > SCHAR_MAX))
+        throw Vm::ExecutionException("Overflow or underflow on char.");
+      else if (type == eOperandType::Int16 && (this->_value < SHRT_MIN || this->_value > SHRT_MAX))
+        throw Vm::ExecutionException("Overflow or underflow on short.");
+      else if (type == eOperandType::Int32 && (this->_value < INT_MIN || this->_value > INT_MAX))
+        throw Vm::ExecutionException("Oveflow or underflow on int");
+      else if (type == eOperandType::Float && (this->_value < FLT_MIN || this->_value > FLT_MAX))
+        throw Vm::ExecutionException("Oveflow or underflow on float");
+      else if (type == eOperandType::Double && (this->_value < DBL_MIN || this->_value > DBL_MAX))
+        throw Vm::ExecutionException("Overflow or underflow on double");
     }
 
     Operand(const Operand & model) { *this = model; }
@@ -58,20 +67,12 @@ class Operand : public IOperand
 
       double res = this->_value + v2;
 
+      //check overflow and underflow on result
+
       if (this->getPrecision() > rhs.getPrecision())        
         return this->_factory.createOperand(this->getType(), std::to_string(res));
       else
         return this->_factory.createOperand(rhs.getType(), std::to_string(res));
-/*
-      int v1 = std::stoi(this->toString());
-      int v2 = std::stoi(rhs.toString());
-      int res = v1 + v2;
-
-      std::stringstream ss;
-      ss << res;
-      std::string value = ss.str();
-
-      return this->_factory.createOperand(this->getType(), value);*/
     }
 
     IOperand const *    operator-( IOperand const & rhs ) const {
@@ -104,6 +105,7 @@ class Operand : public IOperand
 
       double res = this->_value * v2;
 
+      //std::cout << "res: " << res << std::endl;
       if (this->getPrecision() > rhs.getPrecision())        
         return this->_factory.createOperand(this->getType(), std::to_string(res));
       else

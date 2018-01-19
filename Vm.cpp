@@ -83,10 +83,14 @@ void  Vm::pop(void)
 
 void  Vm::dump(void)
 {
-  std::list<IOperand const *>::reverse_iterator start = this->_stack.rend();
+//  std::list<IOperand const *>::reverse_iterator start = this->_stack.rend();
 
-  for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++)
-    std::cout << (*iter)->toString() << std::endl;
+//  for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++)
+//    std::cout << (*iter)->toString() << std::endl;
+  for (auto &iter: this->_stack)
+  {
+    std::cout << iter->toString() << std::endl;
+  }
 }
 
 void  Vm::add(void)
@@ -194,19 +198,19 @@ void  Vm::push(std::string operand, std::string value)
       switch(i)
       {
         case(0):
-          this->_stack.push_back(this->_factory.createOperand(eOperandType::Int8, value));
+          this->_stack.push_front(this->_factory.createOperand(eOperandType::Int8, value));
           break;
         case(1):
-          this->_stack.push_back(this->_factory.createOperand(eOperandType::Int16, value));
+          this->_stack.push_front(this->_factory.createOperand(eOperandType::Int16, value));
           break;
         case(2):
-          this->_stack.push_back(this->_factory.createOperand(eOperandType::Int32, value));
+          this->_stack.push_front(this->_factory.createOperand(eOperandType::Int32, value));
           break;
         case(3):
-          this->_stack.push_back(this->_factory.createOperand(eOperandType::Float, value));
+          this->_stack.push_front(this->_factory.createOperand(eOperandType::Float, value));
           break;
         case(4):
-          this->_stack.push_back(this->_factory.createOperand(eOperandType::Double, value));
+          this->_stack.push_front(this->_factory.createOperand(eOperandType::Double, value));
           break;
 
         default:
