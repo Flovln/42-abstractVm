@@ -1,6 +1,7 @@
 #include <iostream>
 #include <list>
 #include <exception>
+#include <cmath>
 
 #include "Instruction.hpp"
 #include "Token.hpp"
