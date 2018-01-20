@@ -89,7 +89,12 @@ void  Vm::dump(void)
 //    std::cout << (*iter)->toString() << std::endl;
   for (auto &iter: this->_stack)
   {
-    std::cout << iter->toString() << std::endl;
+    eOperandType t = iter->getType();
+
+    if (t == eOperandType::Int8 || t == eOperandType::Int16 || t == eOperandType::Int32)
+      std::cout << iter->toString() << std::endl;
+    else
+      std::cout << iter->toString() << std::endl;      
   }
 }
 
