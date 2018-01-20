@@ -112,8 +112,6 @@ void  Vm::add(void)
   this->_stack.push_front(res);
 }
 
-//  std::cout << "v1: " << "{ " << v1->toString() << ", " << v1->getType() << " }" << std::endl;
-//  std::cout << "v2: " << "{ " << v2->toString() << ", " << v2->getType() << " }" << std::endl;
 void  Vm::sub(void)
 {
   if (this->_stack.size() < 2)
