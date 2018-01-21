@@ -1,0 +1,36 @@
+push double(12.21)
+push double(12.21.1)
+push float(.23.)
+push int16(.12)
+push int32(.1.2)
+
+push int8(12)
+push int8(12.3)
+
+push int8(-12)
+push int32(-1.2)
+push int16(-912312)
+push int32(-12-)
+push float(-409.21)
+push double(-57-1.21)
+
+push int8(34)
+push int16(912312)
+push int8(34)
+
+push double(-409.2.1)
+push double(-409..21)
+push int8(--12)
+
+push int8(werqw)
+push int16()
+push int32(.)
+push int32(-)
+push double(12.a)
+push float(we.21)
+push double(12ewq.12)
+push int16(12dq12)
+push float(-12.e)
+
+dump
+exit

@@ -156,7 +156,7 @@ void                  Instruction::checkInstructions(Token instruction, Token *n
   if (next->type == Token::Operand)
     this->_instructions.push_back({"Instruction", instruction.value});
   else
-    this->_errors.push_back("Line: " + std::to_string(line) + ": error with instruction " + instruction.value);
+    this->_errors.push_back("Line: " + std::to_string(line + 1) + ": error with instruction " + instruction.value);
 }
 
 void                  Instruction::checkOperands(Token operand, int line)
@@ -169,11 +169,42 @@ void                  Instruction::checkOperands(Token operand, int line)
       this->_errors.push_back("Line: " + std::to_string(operand.line) + ": operand missing value.");
     else
     {
-      this->_instructions.push_back({operand.valueType, operand.value});      
+      bool error = false;
+      size_t countNeg = std::count(operand.value.begin(), operand.value.end(), '-');
+      size_t countComa = std::count(operand.value.begin(), operand.value.end(), '.');
+
+      if ((operand.value.find("-") != std::string::npos && operand.value.find("-") != 0) || countNeg > 1)
+        error = true;
+
+      if (operand.valueType == "float" || operand.valueType == "double")
+      {
+        if (operand.value.find(".") == std::string::npos || countComa > 1)
+          error = true;
+        else if (operand.value.find(".") != std::string::npos && operand.value.find(".") == 0)
+          error = true;
+      }
+      else
+      {
+        if (operand.value.find(".") != std::string::npos)
+          error = true;
+      }
+
+      for (size_t i = 0; i < operand.value.length(); ++i)
+      {
+        char c = operand.value[i];
+
+        if (!isdigit(c) && c != '.' && c != '-')
+          error = true;
+      }
+
+      if (error)
+        this->_errors.push_back("Line: " + std::to_string(operand.line + 1) + ": unvalid operand value.");
+      else
+        this->_instructions.push_back({operand.valueType, operand.value});      
     }
   }
   else
-    this->_errors.push_back("Line: " + std::to_string(line) + ": unvalid operand: " + operand.valueType);
+    this->_errors.push_back("Line: " + std::to_string(line + 1) + ": unvalid operand: " + operand.valueType);
 }
 
 std::vector<Content>  Instruction::parser(void)
@@ -201,7 +232,7 @@ std::vector<Content>  Instruction::parser(void)
             this->checkInstructions(iter, next, iter.line);
           }
           else
-            this->_errors.push_back("Line: " + std::to_string(iter.line) + ": no operand passed after " + iter.value);
+            this->_errors.push_back("Line: " + std::to_string(iter.line + 1) + ": no operand passed after " + iter.value);
         }
         else
           this->_instructions.push_back({"Instruction", iter.value});
@@ -210,10 +241,10 @@ std::vector<Content>  Instruction::parser(void)
         this->checkOperands(iter, iter.line);
         break;
       case Token::LexicalError:
-        this->_errors.push_back("Line: " + std::to_string(iter.line) + ": lexical error: " + iter.value);
+        this->_errors.push_back("Line: " + std::to_string(iter.line + 1) + ": lexical error: " + iter.value);
         break;
       case Token::UnknownInstruction:
-        this->_errors.push_back("Line: " + std::to_string(iter.line) + ": unknown instruction: " + iter.value);
+        this->_errors.push_back("Line: " + std::to_string(iter.line + 1) + ": unknown instruction: " + iter.value);
         break;
 
       default:

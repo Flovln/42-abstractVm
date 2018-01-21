@@ -1,0 +1,17 @@
+push double(12.21)
+push double(12.21.1)
+push float(.23)
+push int8(12)
+push int8(12.3)
+push int16(.12)
+push int16(.1.2)
+push int16(-12)
+push int32(-1.2)
+push int32(-12-)
+push double(-409.21)
+push double(-57-1.21)
+push double(-409.2.1)
+push double(-409..21)
+dump
+exit
+;;
