@@ -5,7 +5,7 @@
 #include <climits>
 #include <cfloat>
 
-#include "./includes/Token.hpp"
+#include "./includes/Infos.hpp"
 #include "./includes/IOperand.hpp"
 #include "./includes/Factory.hpp"
 #include "./includes/Vm.hpp"

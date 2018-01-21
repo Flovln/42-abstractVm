@@ -1,7 +1,7 @@
 #include <iostream>
 
-#ifndef TOKEN_HPP
-# define TOKEN_HPP
+#ifndef INFOS_HPP
+# define INFOS_HPP
 
 enum eOperandType
 {
@@ -12,7 +12,7 @@ enum eOperandType
   Double
 };
 
-// replace by std::pair
+// Used for instructions vector - to replace by std::pair
 struct Content {
   std::string   type;
   std::string   value;

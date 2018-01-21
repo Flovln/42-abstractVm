@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <iterator>
 
-#include "Token.hpp"
+#include "Infos.hpp"
 
 #ifndef INSTRUCTION_HPP
 # define INSTRUCTION_HPP

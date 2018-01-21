@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "Instruction.hpp"
-#include "Token.hpp"
+#include "Infos.hpp"
 #include "Factory.hpp"
 
 #ifndef VM_HPP
