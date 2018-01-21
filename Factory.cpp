@@ -1,5 +1,5 @@
 #include "./includes/Factory.hpp"
-#include "./includes/Operand.tpp"
+#include "./Operand.tpp"
 
 Factory::Factory(void) {}
 Factory::Factory(Factory &model) { *this = model; }

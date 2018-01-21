@@ -5,10 +5,10 @@
 #include <climits>
 #include <cfloat>
 
-#include "Token.hpp"
-#include "IOperand.hpp"
-#include "Factory.hpp"
-#include "Vm.hpp"
+#include "./includes/Token.hpp"
+#include "./includes/IOperand.hpp"
+#include "./includes/Factory.hpp"
+#include "./includes/Vm.hpp"
 
 #ifndef OPERAND_HPP
 # define OPERAND_HPP

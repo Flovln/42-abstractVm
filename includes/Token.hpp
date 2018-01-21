@@ -14,7 +14,6 @@ enum eOperandType
 
 // replace by std::pair
 struct Content {
-
   std::string   type;
   std::string   value;
 };
