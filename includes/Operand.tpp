@@ -140,15 +140,7 @@ class Operand : public IOperand
     }
 
     IOperand const *    operator%( IOperand const & rhs ) const {
-      if (this->getType() >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
-        std::cout << "Throw error!" << std::endl;
-
-      int v2;
-      
-      if (rhs.getType() >= eOperandType::Float)
-        v2 = std::stod(rhs.toString());
-      else
-        v2 = std::stoi(rhs.toString());
+      int v2 = std::stoi(rhs.toString());
 
       int res = std::stoi(this->toString()) % v2;
 

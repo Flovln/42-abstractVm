@@ -156,9 +156,12 @@ void  Vm::mod(void)
 
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
+  
+  if (v1->getType() >= eOperandType::Float || v2->getType() >= eOperandType::Float)
+    throw Vm::ExecutionException("modulo only works on integer types.");
 
   if (v1->toString() == "0")
-    throw Vm::ExecutionException("divisor is equal to 0.");
+    throw Vm::ExecutionException("value is equal to 0.");
 
   IOperand const *res = *v2 % *v1;
 
@@ -224,11 +227,8 @@ void  Vm::assert(std::string operand, std::string value)
   {
     if (this->_operands[i] == operand)
     {
-      //std::cout << "type: " << tmp->getType() << ", " << tmp->toString() << std::endl;
       double valueFirst = std::stod(tmp->toString());
       double valueToCompare = std::stod(value);
-      //std::cout << "Test: " << test << std::endl;
-      //std::cout << "Test2: " << toto << std::endl;
 
       if (tmp->getType() != i || valueFirst != valueToCompare)
       {
