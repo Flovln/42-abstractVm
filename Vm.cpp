@@ -21,6 +21,14 @@ Vm::Vm(Vm const &model) {
 
 Vm::~Vm(void) {
   //delete instances
+/*  for (auto &iter: this->_stack)
+  {
+    delete(iter);
+  }
+  for (std::list<IOperand const *>::iterator iter = this->_stack.begin(); iter != this->_stack.end(); ++iter)
+  {
+    delete(*iter);
+  }*/
 }
 
 Vm & Vm::operator=(Vm const &rhs)
