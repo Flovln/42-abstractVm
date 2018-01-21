@@ -24,45 +24,42 @@ class Operand : public IOperand
 //      std::cout << "value: " << this->toString() << ", type: " << this->getType() << std::endl;
 //      std::cout << "||||||||||||||||||||||||" << std::endl;
 
-      if (this->_type == eOperandType::Float)
-      {
-        try {
+      try {
+        if (this->_type == eOperandType::Float)
           this->_value = std::stof(this->_valueStr);
-        }
-        catch (std::exception & e) {
-          throw Vm::ExecutionException("out of range assignment.");          
-        }
-      }
-      else if (this->_type == eOperandType::Double)
-      {
-        try {
-          this->_value = std::stod(this->_valueStr);
-        }
-        catch (std::exception & e) {
-          throw Vm::ExecutionException("out of range assignment.");
-        }
-      }
-      else if (this->_type == eOperandType::Int8 || this->_type == eOperandType::Int16 || this->_type == eOperandType::Int32)
-      {
-        try {
+        else if (this->_type == eOperandType::Double)
+            this->_value = std::stod(this->_valueStr);
+        else if (this->_type == eOperandType::Int8 || this->_type == eOperandType::Int16 || this->_type == eOperandType::Int32)
           this->_value = std::stoi(this->_valueStr);
-        }
-        catch (std::exception & e) {
-          throw Vm::ExecutionException("out of range assignment.");
-        }
+      }
+      catch (std::exception & e) {
+        throw Vm::ExecutionException("out of range assignment.");          
       }
 
-      if (type == eOperandType::Int8 && (this->_value < SCHAR_MIN || this->_value > SCHAR_MAX))
-        throw Vm::ExecutionException("Overflow or underflow on char.");
-      else if (type == eOperandType::Int16 && (this->_value < SHRT_MIN || this->_value > SHRT_MAX))
-        throw Vm::ExecutionException("Overflow or underflow on short.");
-      else if (type == eOperandType::Int32 && (this->_value < INT_MIN || this->_value > INT_MAX))
-        throw Vm::ExecutionException("Overflow or underflow on int");
-      else if (type == eOperandType::Float && (this->_value < FLT_MIN || this->_value > FLT_MAX))
-        throw Vm::ExecutionException("Overflow or underflow on float");      
-      else if (type == eOperandType::Double && (this->_value < DBL_MIN || this->_value > DBL_MAX))
-        throw Vm::ExecutionException("Overflow or underflow on double");
-
+      switch(this->_type) {
+        case(eOperandType::Int8):
+          if (this->_value < SCHAR_MIN || this->_value > SCHAR_MAX)
+            throw Vm::ExecutionException("Overflow or underflow on char.");
+          break;
+        case(eOperandType::Int16):
+          if (this->_value < SHRT_MIN || this->_value > SHRT_MAX)
+            throw Vm::ExecutionException("Overflow or underflow on short.");
+          break;
+        case(eOperandType::Int32):
+          if (this->_value < INT_MIN || this->_value > INT_MAX)
+            throw Vm::ExecutionException("Overflow or underflow on int");
+          break;
+        case(eOperandType::Double):
+          if (this->_value < DBL_MIN || this->_value > DBL_MAX)
+            throw Vm::ExecutionException("Overflow or underflow on double");
+          break;
+        case(eOperandType::Float):
+          if (this->_value < FLT_MIN || this->_value > FLT_MAX)
+            throw Vm::ExecutionException("Overflow or underflow on float");
+          break;
+        default:
+          break;
+      }
     }
 
     Operand(const Operand & model) { *this = model; }

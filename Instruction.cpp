@@ -33,27 +33,7 @@ void  Instruction::createChunks(std::string str)
     this->_chunks.push_back(chunk) ;
 }
 
-void  Instruction::lexer(std::vector<std::string> buff, int source) {
-  std::string lastElement =  buff.back();
-
-  switch(source)
-  {
-    case(0):
-      if (lastElement != "exit")
-        this->_errors.push_back("No instruction ending the program found.");
-      break;
-    case(1):
-      if (lastElement != ";;")
-        this->_errors.push_back("No instruction ending the program found.");
-      break;
-
-    default:
-      break;
-  }
-
-  /* Remove last element from vector aka exit command or ";;" */
-  buff.pop_back();
-
+void  Instruction::lexer(std::vector<std::string> buff) {
   int lineNb;
   lineNb = 0;
 
@@ -101,7 +81,7 @@ void  Instruction::removeComments(void)
 
 void  Instruction::tokenizeSimple(std::string chunk)
 {
-  std::regex instructions("push|assert|pop|dump|add|sub|mul|div|mod|print");
+  std::regex instructions("push|assert|pop|dump|add|sub|mul|div|mod|print|exit");
 
   if (std::regex_match(chunk, instructions) == true)
   {
@@ -188,7 +168,9 @@ void                  Instruction::checkOperands(Token operand, int line)
     if (operand.value == "")
       this->_errors.push_back("Line: " + std::to_string(operand.line) + ": operand missing value.");
     else
+    {
       this->_instructions.push_back({operand.valueType, operand.value});      
+    }
   }
   else
     this->_errors.push_back("Line: " + std::to_string(line) + ": unvalid operand: " + operand.valueType);
@@ -196,9 +178,17 @@ void                  Instruction::checkOperands(Token operand, int line)
 
 std::vector<Content>  Instruction::parser(void)
 {
+  bool exit = false;
+
   for (auto &iter : this->_tokens)
   {
     Token::Type type = iter.type;
+
+    if (iter.value == "exit")
+    {
+      exit = true;
+      break;
+    }
 
     switch(type)
     {
@@ -230,6 +220,10 @@ std::vector<Content>  Instruction::parser(void)
         break;
     }
   }
+
+  if (!exit)
+    this->_errors.push_back("RUNTIME ERROR - Program ended with no 'exit' command");
+
   if (!this->_errors.empty())
     throw Vm::SyntaxException(this->_errors);
 

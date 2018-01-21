@@ -41,7 +41,7 @@ class Instruction {
     Instruction &operator=(Instruction const &rhs);
 
     /* LEXER */
-    void  lexer(std::vector<std::string> buff, int source);
+    void  lexer(std::vector<std::string> buff);
     void  createChunks(std::string str);
     void  removeComments(void);
     void  tokenizer(void);

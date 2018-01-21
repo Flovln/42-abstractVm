@@ -68,8 +68,8 @@ void  Vm::readFromStdin(void) {
 /* INSTRUCTIONS */
 
 void  Vm::run(void) {
-  this->_instruction.lexer(this->_buff, this->_source);
-  this->_instructions = this->_instruction.parser();  
+  this->_instruction.lexer(this->_buff);
+  this->_instructions = this->_instruction.parser();
   this->handleInstructions();
 }
 
@@ -237,6 +237,7 @@ void  Vm::assert(std::string operand, std::string value)
   {
     if (this->_operands[i] == operand)
     {
+      //std::cout << "type: " << tmp->getType() << ", " << tmp->toString() << std::endl;
       if (tmp->getType() != i || tmp->toString() != value)
       {
         delete tmp;
