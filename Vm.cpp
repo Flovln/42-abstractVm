@@ -20,15 +20,10 @@ Vm::Vm(Vm const &model) {
 }
 
 Vm::~Vm(void) {
-  //delete instances
-/*  for (auto &iter: this->_stack)
-  {
+  for (auto &iter: this->_stack) {
+    std::cout << "Delete: " << iter->toString() << std::endl;
     delete(iter);
   }
-  for (std::list<IOperand const *>::iterator iter = this->_stack.begin(); iter != this->_stack.end(); ++iter)
-  {
-    delete(*iter);
-  }*/
 }
 
 Vm & Vm::operator=(Vm const &rhs)
@@ -85,7 +80,7 @@ void  Vm::pop(void)
 {
   if (this->_stack.empty())
     throw Vm::ExecutionException("empty stack.");
-  delete *(this->_stack.begin());
+  delete this->_stack.front();
   this->_stack.pop_front();
 }
 
@@ -239,13 +234,9 @@ void  Vm::assert(std::string operand, std::string value)
       double valueToCompare = std::stod(value);
 
       if (tmp->getType() != i || valueFirst != valueToCompare)
-      {
-        delete tmp;
         throw Vm::ExecutionException("values are not equal.");
-      }
     }
   }
-  delete tmp;
 }
 
 /* INSTRUCTIONS MANAGER */
