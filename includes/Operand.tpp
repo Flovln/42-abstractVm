@@ -28,13 +28,15 @@ class Operand : public IOperand
         if (this->_type == eOperandType::Float)
           this->_value = std::stof(this->_valueStr);
         else if (this->_type == eOperandType::Double)
-            this->_value = std::stod(this->_valueStr);
+          this->_value = std::stod(this->_valueStr);
         else if (this->_type == eOperandType::Int8 || this->_type == eOperandType::Int16 || this->_type == eOperandType::Int32)
           this->_value = std::stoi(this->_valueStr);
       }
       catch (std::exception & e) {
         throw Vm::ExecutionException("out of range assignment.");          
       }
+
+//      std::cout << "Value in construc: " << this->_value << std::endl;
 
       switch(this->_type) {
         case(eOperandType::Int8):
@@ -67,7 +69,7 @@ class Operand : public IOperand
 
     int            getPrecision( void ) const { return this->_type; }
     eOperandType   getType( void ) const { return this->_type; }
-    double         getValue( void ) { return this->_value; }
+    double         getValue( void ) const { return this->_value; }
 
     std::string const & toString( void ) const {
       return this->_valueStr;

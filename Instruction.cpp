@@ -23,6 +23,8 @@ void  Instruction::setLine(int nb)
   this->_line = nb;
 }
 
+/*************** LEXER **************/
+
 void  Instruction::createChunks(std::string str)
 {
   /* split line on whitespaces to only keep strings and chars */
@@ -31,30 +33,6 @@ void  Instruction::createChunks(std::string str)
 
   while (lineStream >> chunk)
     this->_chunks.push_back(chunk) ;
-}
-
-void  Instruction::lexer(std::vector<std::string> buff) {
-  int lineNb;
-  lineNb = 0;
-
-  /* Go through file content line by line to remove comments and tonekize chunks */
-  for (auto &iter : buff)
-  {
-    this->setLine(lineNb);
-    lineNb++;
-
-    if (!this->_chunks.empty())
-      this->_chunks.clear();
-    
-    this->createChunks(iter);
-    
-    if (!this->_commentsRemoved.empty())
-      this->_commentsRemoved.clear();
-    
-    this->removeComments();
-    this->tokenizer();
-  }
- 
 }
 
 void  Instruction::removeComments(void)
@@ -150,6 +128,32 @@ void  Instruction::tokenizer(void)
       this->_tokens.push_back({this->_line, Token::LexicalError, "", iter});
   }
 }
+
+void  Instruction::lexer(std::vector<std::string> buff) {
+  int lineNb;
+  lineNb = 0;
+
+  /* Go through file content line by line to remove comments and tonekize chunks */
+  for (auto &iter : buff)
+  {
+    this->setLine(lineNb);
+    lineNb++;
+
+    if (!this->_chunks.empty())
+      this->_chunks.clear();
+    
+    this->createChunks(iter);
+    
+    if (!this->_commentsRemoved.empty())
+      this->_commentsRemoved.clear();
+    
+    this->removeComments();
+    this->tokenizer();
+  }
+ 
+}
+
+/*************** PARSER **************/
 
 void                  Instruction::checkInstructions(Token instruction, Token *next, int line)
 {
@@ -261,53 +265,7 @@ std::vector<Content>  Instruction::parser(void)
   return this->_instructions;  
 }
 
-/* Development tools */
-
-void  Instruction::displayVectorContent(std::vector<std::string> buff) {
-  std::cout << "--- Vector content in Instruction ---" << std::endl;
-
-  std::vector<std::string>::iterator iter = buff.begin();
-  std::vector<std::string>::iterator end = buff.end();
-
-  while (iter != end)
-  {
-    std::cout << (*iter) << std::endl;
-    ++iter;
-  }
-
-  std::cout << "---------" << std::endl;
-}
-
-void  Instruction::displayTokensListWithoutComments(void)
-{
-  std::vector<std::string>::iterator iter = this->_commentsRemoved.begin();
-  std::vector<std::string>::iterator end = this->_commentsRemoved.end();
-
-  std::cout << "--- Tokens list without comments ---" << std::endl;
-  while (iter != end)
-  {
-    std::cout << "Token: " << *iter << std::endl;
-    ++iter;
-  }
-  std::cout << "--- --- ---" << std::endl;
-}
-
-void  Instruction::displayTokensList(void)
-{
-  std::vector<Token>::iterator iter = this->_tokens.begin();
-  std::vector<Token>::iterator end = this->_tokens.end();
-
-  std::cout << "--- Tokens list Instruction ---" << std::endl;
-  while (iter != end)
-  {
-    std::cout << "Token: " << "{ " << iter[0].type << ", " << iter[0].valueType << ", " << iter[0].value << " }" << std::endl;
-    ++iter;
-  }
-  std::cout << "--- --- ---" << std::endl;
-}
-
 /* Non member function */
-
 std::ostream & operator<<(std::ostream & o, Instruction const &obj )
 {
   (void)obj;

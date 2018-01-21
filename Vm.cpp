@@ -83,22 +83,9 @@ void  Vm::pop(void)
 
 void  Vm::dump(void)
 {
-//  std::list<IOperand const *>::reverse_iterator start = this->_stack.rend();
-
-//  for (std::list<IOperand const *>::reverse_iterator iter = this->_stack.rbegin(); iter != start; iter++)
-//    std::cout << (*iter)->toString() << std::endl;
   for (auto &iter: this->_stack)
   {
-    //eOperandType t = iter->getType();
-
-    if (iter->getType() >= eOperandType::Int8 && iter->getType() <= eOperandType::Int32) {
-      //std::cout << "TEST: " << iter->toString() << std::endl;
-      std::cout << std::stoi(iter->toString()) << std::endl;
-    }
-    else {
-      //std::cout << "TEST2: " << std::round(std::stod(iter->toString()) * 100) / 100 << std::endl;
-      std::cout << round(std::stod(iter->toString()) * 100) / 100 << std::endl;      
-    }
+    std::cout << std::stod(iter->toString()) << std::endl;
   }
 }
 
@@ -238,7 +225,12 @@ void  Vm::assert(std::string operand, std::string value)
     if (this->_operands[i] == operand)
     {
       //std::cout << "type: " << tmp->getType() << ", " << tmp->toString() << std::endl;
-      if (tmp->getType() != i || tmp->toString() != value)
+      double valueFirst = std::stod(tmp->toString());
+      double valueToCompare = std::stod(value);
+      //std::cout << "Test: " << test << std::endl;
+      //std::cout << "Test2: " << toto << std::endl;
+
+      if (tmp->getType() != i || valueFirst != valueToCompare)
       {
         delete tmp;
         throw Vm::ExecutionException("values are not equal.");
