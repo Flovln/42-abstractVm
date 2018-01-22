@@ -40,6 +40,17 @@ class Instruction {
 
     Instruction &operator=(Instruction const &rhs);
 
+    int                      getLine(void) const;
+    std::vector<std::string> getErrors(void) const;
+    std::vector<std::string> getChunks(void) const;
+    std::vector<Token>       getTokens(void) const;
+    std::vector<Content>     getInstructions(void) const;
+    bool                     getMarkedAsComment(void) const;
+    bool                     getMarkAsLexicalError(void) const;
+    bool                     getMarkedAsUnknownInstruction(void) const;
+
+    void  setLine(int nb);
+
     /* LEXER */
     void  lexer(std::vector<std::string> buff);
     void  createChunks(std::string str);
@@ -52,14 +63,6 @@ class Instruction {
     std::vector<Content>  parser(void);
     void                  checkInstructions(Token iterator, Token *next, int line);
     void                  checkOperands(Token iterator, int line);
-
-
-    void  setLine(int nb);
-    
-    /* Dev utilities */
-    void  displayVectorContent(std::vector<std::string> buff);
-    void  displayTokensList(void);
-    void  displayTokensListWithoutComments(void);
 
   private:
     int                      _line;

@@ -1,4 +1,4 @@
-#include "./includes/Vm.hpp"
+#include "../includes/Vm.hpp"
 
 Vm::Vm(void) {
   std::string values[] = {"int8", "int16", "int32", "float", "double" };
@@ -30,14 +30,43 @@ Vm & Vm::operator=(Vm const &rhs)
 {
   if (this != &rhs)
   {
-      //this->name = rhs.name;
-      //...
+      this->_instruction = rhs.getInstruction();
+      this->_factory = rhs.getFactory();
+      this->_source = rhs.getSource();
+      this->_buff = rhs.getBuff();
+      this->_instructions = rhs.getInstructions();
+
+      for (int i = 0; i < 5; ++i)
+      {
+        this->_operands[i] = rhs._operands[i];
+        this->_keys[i] = rhs._operands[i];
+      }
   }
   return (*this);
 }
 
-int  Vm::getSource(void) {
+Instruction                 Vm::getInstruction(void) const {
+  return this->_instruction;
+}
+
+Factory                     Vm::getFactory(void) const {
+  return this->_factory;
+}
+
+int                         Vm::getSource(void) const {
   return this->_source;
+}
+
+std::vector<std::string>    Vm::getBuff(void) const {
+  return this->_buff;
+}
+
+std::vector<Content>        Vm::getInstructions(void) const {
+  return this->_instructions;
+}
+
+std::list<IOperand const *> Vm::getStack(void) const {
+  return this->_stack;
 }
 
 void  Vm::readFromFile(char *file) {

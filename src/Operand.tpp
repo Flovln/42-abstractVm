@@ -5,10 +5,10 @@
 #include <climits>
 #include <cfloat>
 
-#include "./includes/Infos.hpp"
-#include "./includes/IOperand.hpp"
-#include "./includes/Factory.hpp"
-#include "./includes/Vm.hpp"
+#include "../includes/Infos.hpp"
+#include "../includes/IOperand.hpp"
+#include "../includes/Factory.hpp"
+#include "../includes/Vm.hpp"
 
 #ifndef OPERAND_HPP
 # define OPERAND_HPP
@@ -65,8 +65,19 @@ class Operand : public IOperand
     }
 
     Operand(const Operand & model) { *this = model; }
+    Operand &operator=(Operand const &rhs) {
+      if (this != rhs) {
+        this->_factory = rhs.getFactory();
+        this->_type = rhs.getType();
+        this->_valueStr = rhs.toString();
+        this->_value = rhs.getValue();
+      }
+      return (*this);
+    }
+
     ~Operand(void) {}
 
+    Factory         getFactory(void) const { return this->_factory; }
     int            getPrecision( void ) const { return this->_type; }
     eOperandType   getType( void ) const { return this->_type; }
     double         getValue( void ) const { return this->_value; }

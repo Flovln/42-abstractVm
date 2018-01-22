@@ -1,8 +1,8 @@
-#include "./includes/Factory.hpp"
+#include "../includes/Factory.hpp"
 #include "./Operand.tpp"
 
 Factory::Factory(void) {}
-Factory::Factory(Factory &model) { *this = model; }
+Factory::Factory(Factory const &model) { *this = model; }
 Factory::~Factory(void) {}
 
 Factory &Factory::operator=(Factory const &rhs)

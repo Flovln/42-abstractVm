@@ -19,7 +19,13 @@ class Vm {
 
     Vm &operator=(Vm const &rhs);
 
-    int   getSource(void);
+    Instruction                 getInstruction(void) const;
+    Factory                     getFactory(void) const;
+    int                         getSource(void) const;
+    std::vector<std::string>    getBuff(void) const ;
+    std::vector<Content>        getInstructions(void) const;
+    std::list<IOperand const *> getStack(void) const;
+
     void  readFromFile(char *file);
     void  readFromStdin(void);
     void  run(void);
@@ -71,7 +77,6 @@ class Vm {
 
   private:
     Instruction                 _instruction;
-    /* Factory method class */
     Factory                     _factory;
 
     int                         _source; // 0 = file | 1 = stdin

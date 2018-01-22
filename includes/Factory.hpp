@@ -10,7 +10,7 @@ class Factory {
 
   public:
     Factory(void);
-    Factory(Factory &model);
+    Factory(Factory const &model);
     ~Factory(void);
 
     Factory &operator=(Factory const &rhs);

@@ -1,5 +1,5 @@
-#include "./includes/Instruction.hpp"
-#include "./includes/Vm.hpp"
+#include "../includes/Instruction.hpp"
+#include "../includes/Vm.hpp"
 
 Instruction::Instruction(void) {}
 
@@ -11,11 +11,49 @@ Instruction::~Instruction(void) {}
 
 Instruction & Instruction::operator=(Instruction const &rhs) {
   if (this != &rhs) {
-    //this->name = rhs.name;
-    //...
+    this->_line = rhs.getLine();
+    this->_errors = rhs.getErrors();
+    this->_chunks = rhs.getChunks();
+    this->_tokens = rhs.getTokens();
+    this->_instructions = rhs.getInstructions();
+    this->_markedAsComment = rhs.getMarkedAsComment();
+    this->_markAsLexicalError = rhs.getMarkAsLexicalError();
+    this->_markAsUnknownInstruction = rhs.getMarkedAsUnknownInstruction();
   }
 
   return (*this);
+}
+
+int                      Instruction::getLine(void) const {
+  return this->_line;
+}
+
+std::vector<std::string> Instruction::getErrors(void) const {
+  return this->_errors;
+}
+
+std::vector<std::string> Instruction::getChunks(void) const {
+  return this->_chunks;
+}
+
+std::vector<Token>       Instruction::getTokens(void) const {
+  return this->_tokens;
+}
+
+std::vector<Content>     Instruction::getInstructions(void) const {
+  return this->_instructions;
+}
+
+bool                     Instruction::getMarkedAsComment(void) const {
+  return this->_markedAsComment;
+}
+
+bool                     Instruction::getMarkAsLexicalError(void) const {
+  return this->_markAsLexicalError;
+}
+
+bool                     Instruction::getMarkedAsUnknownInstruction(void) const {
+  return this->_markAsUnknownInstruction;
 }
 
 void  Instruction::setLine(int nb)

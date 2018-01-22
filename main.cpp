@@ -20,6 +20,8 @@ int main(int ac, char **av)
         vm.readFromStdin();
 
       vm.run();
+
+      Vm vm2(vm);
     }
 
     catch (Vm::ExecutionException & e) { std::cout << "Execution error: " << e.what() << std::endl; }
