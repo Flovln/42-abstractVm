@@ -26,25 +26,24 @@ class Vm {
     std::vector<Content>        getInstructions(void) const;
     std::list<IOperand const *> getStack(void) const;
 
-    void  readFromFile(char *file);
-    void  readFromStdin(void);
-    void  run(void);
-    void  handleInstructions(void);
-    void  manageSingleInstruction(std::string instruction);
+    void                        readFromFile(char *file);
+    void                        readFromStdin(void);
+    void                        run(void);
+    void                        handleInstructions(void);
+    void                        manageSingleInstruction(std::string instruction);
 
-    void  push(std::string operand, std::string value);
-    void  assert(std::string operand, std::string value);
-    void  pop(void);
-    void  dump(void);
-    void  add(void);
-    void  sub(void);
-    void  mul(void);
-    void  div(void);
-    void  mod(void);
-    void  print(void);
+    void                        push(std::string operand, std::string value);
+    void                        assert(std::string operand, std::string value);
+    void                        pop(void);
+    void                        dump(void);
+    void                        add(void);
+    void                        sub(void);
+    void                        mul(void);
+    void                        div(void);
+    void                        mod(void);
+    void                        print(void);
 
-    class ExecutionException : public std::exception
-    {
+    class ExecutionException : public std::exception {
       public:
         ExecutionException(std::string str) : message(str){}
 
@@ -56,19 +55,17 @@ class Vm {
         std::string message;
     };
 
-    class SyntaxException : public std::exception
-    {
+    class SyntaxException : public std::exception {
       public:
         SyntaxException(std::vector<std::string> errors) {
             for (auto &m : errors)
               this->messages.push_back(m);
         }
 
-        virtual void displayErrors(void) const throw ()
-        {
-          for (auto &iter : this->messages)
-          {
-            std::cout << iter << std::endl;
+        virtual void displayErrors(void) const throw () {
+          
+          for (auto &iter : this->messages) {
+            std::cout << "\033[1;33m" << "Syntax error - " << "\033[0m" << iter << std::endl;
           }
         }
 

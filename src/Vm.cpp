@@ -4,13 +4,11 @@ Vm::Vm(void) {
   std::string values[] = {"int8", "int16", "int32", "float", "double" };
   std::string keys[] = { "pop", "dump", "add", "sub", "mul", "div", "mod", "print" };
 
-  for (int i = 0; i < 5; ++i)
-  {
+  for (int i = 0; i < 5; ++i) {
     this->_operands[i] = values[i];
   }
 
-  for (int i = 0; i < 8; ++i)
-  {
+  for (int i = 0; i < 8; ++i) {
     this->_keys[i] = keys[i];
   }
 }
@@ -21,13 +19,11 @@ Vm::Vm(Vm const &model) {
 
 Vm::~Vm(void) {
   for (auto &iter: this->_stack) {
-    std::cout << "Delete: " << iter->toString() << std::endl;
     delete(iter);
   }
 }
 
-Vm & Vm::operator=(Vm const &rhs)
-{
+Vm & Vm::operator=(Vm const &rhs) {
   if (this != &rhs)
   {
       this->_instruction = rhs.getInstruction();
@@ -35,12 +31,14 @@ Vm & Vm::operator=(Vm const &rhs)
       this->_source = rhs.getSource();
       this->_buff = rhs.getBuff();
       this->_instructions = rhs.getInstructions();
+      //this->_stack = rhs.getStack();
 
       for (int i = 0; i < 5; ++i)
       {
         this->_operands[i] = rhs._operands[i];
         this->_keys[i] = rhs._operands[i];
       }
+
   }
   return (*this);
 }
@@ -73,8 +71,7 @@ void  Vm::readFromFile(char *file) {
   std::string   line;
   std::ifstream ifs(file);
 
-  if (ifs.is_open())
-  {
+  if (ifs.is_open()) {
     while (std::getline(ifs, line, '\n'))
       this->_buff.push_back(line);
 
@@ -89,8 +86,7 @@ void  Vm::readFromFile(char *file) {
 void  Vm::readFromStdin(void) {
   std::string line;
 
-  while (line != ";;")
-  {
+  while (line != ";;") {
     std::getline(std::cin, line);
     this->_buff.push_back(line);
   }
@@ -105,24 +101,21 @@ void  Vm::run(void) {
   this->handleInstructions();
 }
 
-void  Vm::pop(void)
-{
+void  Vm::pop(void) {
   if (this->_stack.empty())
     throw Vm::ExecutionException("empty stack.");
   delete this->_stack.front();
   this->_stack.pop_front();
 }
 
-void  Vm::dump(void)
-{
+void  Vm::dump(void) {
   for (auto &iter: this->_stack)
   {
     std::cout << std::stod(iter->toString()) << std::endl;
   }
 }
 
-void  Vm::add(void)
-{
+void  Vm::add(void) {
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
@@ -135,8 +128,7 @@ void  Vm::add(void)
   this->_stack.push_front(res);
 }
 
-void  Vm::sub(void)
-{
+void  Vm::sub(void) {
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
@@ -149,8 +141,7 @@ void  Vm::sub(void)
   this->_stack.push_front(res);
 }
 
-void  Vm::mul(void)
-{
+void  Vm::mul(void) {
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
@@ -163,8 +154,7 @@ void  Vm::mul(void)
   this->_stack.push_front(res);
 }
 
-void  Vm::div(void)
-{
+void  Vm::div(void) {
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
@@ -181,8 +171,7 @@ void  Vm::div(void)
   this->_stack.push_front(res);
 }
 
-void  Vm::mod(void)
-{
+void  Vm::mod(void) {
   if (this->_stack.size() < 2)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
@@ -202,10 +191,8 @@ void  Vm::mod(void)
   this->_stack.push_front(res);
 }
 
-void  Vm::print(void)
-{
-  if (this->_stack.front()->getType() == eOperandType::Int8)
-  {
+void  Vm::print(void) {
+  if (this->_stack.front()->getType() == eOperandType::Int8) {
     std::string value = this->_stack.front()->toString();
 
     int ascii;
@@ -219,13 +206,10 @@ void  Vm::print(void)
     throw Vm::ExecutionException("value is not an 8 bit integer.");
 }
 
-void  Vm::push(std::string operand, std::string value)
-{
-  for (int i = 0; i < 5; ++i)
-  {
+void  Vm::push(std::string operand, std::string value) {
+  for (int i = 0; i < 5; ++i) {
     if (this->_operands[i] == operand)
-      switch(i)
-      {
+      switch(i) {
         case(0):
           this->_stack.push_front(this->_factory.createOperand(eOperandType::Int8, value));
           break;
@@ -248,17 +232,14 @@ void  Vm::push(std::string operand, std::string value)
   }
 }
 
-void  Vm::assert(std::string operand, std::string value)
-{
+void  Vm::assert(std::string operand, std::string value) {
   if (this->_stack.size() < 1)
     throw Vm::ExecutionException("not a single value in the stack.");
 
   IOperand const *tmp = this->_stack.front();
 
-  for (int i = 0; i < 5; i++)
-  {
-    if (this->_operands[i] == operand)
-    {
+  for (int i = 0; i < 5; i++) {
+    if (this->_operands[i] == operand) {
       double valueFirst = std::stod(tmp->toString());
       double valueToCompare = std::stod(value);
 
@@ -270,8 +251,7 @@ void  Vm::assert(std::string operand, std::string value)
 
 /* INSTRUCTIONS MANAGER */
 
-void  Vm::manageSingleInstruction(std::string instruction)
-{
+void  Vm::manageSingleInstruction(std::string instruction) {
   void (Vm::*handler[8])(void) = {
     &Vm::pop,
     &Vm::dump,
@@ -283,18 +263,14 @@ void  Vm::manageSingleInstruction(std::string instruction)
     &Vm::print
   };
 
-  for (int i = 0; i < 8; i++)
-  {
+  for (int i = 0; i < 8; i++) {
     if (this->_keys[i] == instruction)
       (this->*handler[i])();
   }
 }
 
-void  Vm::handleInstructions()
-{
-  for (auto &iter : this->_instructions)
-  {
-    //std::cout << "Node: " << "{ " << iter.type << ", " << iter.value  << " }" << std::endl;
+void  Vm::handleInstructions() {
+  for (auto &iter : this->_instructions) {
     auto next = std::next(&iter, 1);
     
     if (iter.value == "push")

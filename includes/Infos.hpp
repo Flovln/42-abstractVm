@@ -12,7 +12,7 @@ enum eOperandType
   Double
 };
 
-// Used for instructions vector - to replace by std::pair
+// Use for instructions vector - to replace by std::pair
 struct Content {
   std::string   type;
   std::string   value;

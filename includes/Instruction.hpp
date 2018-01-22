@@ -49,20 +49,20 @@ class Instruction {
     bool                     getMarkAsLexicalError(void) const;
     bool                     getMarkedAsUnknownInstruction(void) const;
 
-    void  setLine(int nb);
+    void                     setLine(int nb);
 
     /* LEXER */
-    void  lexer(std::vector<std::string> buff);
-    void  createChunks(std::string str);
-    void  removeComments(void);
-    void  tokenizer(void);
-    void  tokenizeSimple(std::string chunk);
-    void  tokenizeComplex(std::string chunk);
+    void                     lexer(std::vector<std::string> buff);
+    void                     createChunks(std::string str);
+    void                     removeComments(void);
+    void                     tokenizer(void);
+    void                     tokenizeSimple(std::string chunk);
+    void                     tokenizeComplex(std::string chunk);
 
     /* PARSER */
-    std::vector<Content>  parser(void);
-    void                  checkInstructions(Token iterator, Token *next, int line);
-    void                  checkOperands(Token iterator, int line);
+    std::vector<Content>     parser(void);
+    void                     checkInstructions(Token iterator, Token *next, int line);
+    void                     checkOperands(Token iterator, int line);
 
   private:
     int                      _line;

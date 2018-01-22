@@ -20,11 +20,9 @@ int main(int ac, char **av)
         vm.readFromStdin();
 
       vm.run();
-
-      Vm vm2(vm);
     }
 
-    catch (Vm::ExecutionException & e) { std::cout << "Execution error: " << e.what() << std::endl; }
+    catch (Vm::ExecutionException & e) { std::cout << "\033[1;38;5;125m" << "Execution error - " << "\033[0m" << e.what() << std::endl; }
     catch (Vm::SyntaxException & e) { e.displayErrors(); }
   }
   else

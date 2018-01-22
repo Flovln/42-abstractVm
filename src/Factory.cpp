@@ -5,8 +5,7 @@ Factory::Factory(void) {}
 Factory::Factory(Factory const &model) { *this = model; }
 Factory::~Factory(void) {}
 
-Factory &Factory::operator=(Factory const &rhs)
-{
+Factory &Factory::operator=(Factory const &rhs) {
   if (this != &rhs)
   {
     //copy content
@@ -36,8 +35,7 @@ IOperand const * Factory::_createDouble( std::string const & value ) const {
   return new Operand<double>(eOperandType::Double, value);
 }
 
-IOperand const *    Factory::createOperand( eOperandType type, std::string const & value ) const
-{
+IOperand const * Factory::createOperand( eOperandType type, std::string const & value ) const {
   IOperand const *(Factory::*handler[5])(std::string const &) const = {
     &Factory::_createInt8,
     &Factory::_createInt16,

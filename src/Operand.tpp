@@ -14,16 +14,10 @@
 # define OPERAND_HPP
 
 template<typename T>
-class Operand : public IOperand
-{
+class Operand : public IOperand {
   public:
     Operand(void) {}
-    Operand(eOperandType type, std::string value) : _type(type), _valueStr(value)
-    {
-//      std::cout << "||||| CONSTRUCTOR ||||||" << std::endl;
-//      std::cout << "value: " << this->toString() << ", type: " << this->getType() << std::endl;
-//      std::cout << "||||||||||||||||||||||||" << std::endl;
-
+    Operand(eOperandType type, std::string value) : _type(type), _valueStr(value) {
       try {
         if (this->_type == eOperandType::Float)
           this->_value = std::stof(this->_valueStr);
@@ -35,8 +29,6 @@ class Operand : public IOperand
       catch (std::exception & e) {
         throw Vm::ExecutionException("out of range assignment.");          
       }
-
-//      std::cout << "Value in construc: " << this->_value << std::endl;
 
       switch(this->_type) {
         case(eOperandType::Int8):
