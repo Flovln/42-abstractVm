@@ -27,28 +27,28 @@ class Operand : public IOperand {
           this->_value = std::stoi(this->_valueStr);
       }
       catch (std::exception & e) {
-        throw Vm::ExecutionException("out of range assignment.");          
+        throw Vm::ExecutionException("out of range assignment");          
       }
 
       switch(this->_type) {
         case(eOperandType::Int8):
           if (this->_value < SCHAR_MIN || this->_value > SCHAR_MAX)
-            throw Vm::ExecutionException("Overflow or underflow on char.");
+            throw Vm::ExecutionException("Overflow or underflow on char");
           break;
         case(eOperandType::Int16):
           if (this->_value < SHRT_MIN || this->_value > SHRT_MAX)
-            throw Vm::ExecutionException("Overflow or underflow on short.");
+            throw Vm::ExecutionException("Overflow or underflow on short");
           break;
         case(eOperandType::Int32):
           if (this->_value < INT_MIN || this->_value > INT_MAX)
             throw Vm::ExecutionException("Overflow or underflow on int");
           break;
         case(eOperandType::Double):
-          if (this->_value < DBL_MIN || this->_value > DBL_MAX)
+          if (this->_value < -DBL_MAX || this->_value > DBL_MAX)
             throw Vm::ExecutionException("Overflow or underflow on double");
           break;
         case(eOperandType::Float):
-          if (this->_value < FLT_MIN || this->_value > FLT_MAX)
+          if (this->_value < -FLT_MAX || this->_value > FLT_MAX)
             throw Vm::ExecutionException("Overflow or underflow on float");
           break;
         default:

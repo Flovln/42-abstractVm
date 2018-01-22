@@ -111,7 +111,10 @@ void  Vm::pop(void) {
 void  Vm::dump(void) {
   for (auto &iter: this->_stack)
   {
-    std::cout << std::stod(iter->toString()) << std::endl;
+    if (iter->getType() >= eOperandType::Float)
+      std::cout << std::stod(iter->toString()) << std::endl;
+    else
+      std::cout << std::stoi(iter->toString()) << std::endl;      
   }
 }
 
@@ -121,7 +124,7 @@ void  Vm::add(void) {
 
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
-  IOperand const *res = *v1 + *v2;
+  IOperand const *res = *v2 + *v1;
 
   this->_stack.pop_front();
   this->_stack.pop_front();
@@ -134,7 +137,7 @@ void  Vm::sub(void) {
 
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
-  IOperand const *res = *v1 - *v2;
+  IOperand const *res = *v2 - *v1;
 
   this->_stack.pop_front();
   this->_stack.pop_front();
@@ -147,7 +150,7 @@ void  Vm::mul(void) {
 
   IOperand const *v1 = this->_stack.front();
   IOperand const *v2 = *(std::next(this->_stack.begin()));
-  IOperand const *res = *v1 * *v2;
+  IOperand const *res = *v2 * *v1;
 
   this->_stack.pop_front();
   this->_stack.pop_front();

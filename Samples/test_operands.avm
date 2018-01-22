@@ -1,0 +1,29 @@
+push int32(2)
+push int32(3)
+push int8(65)
+add
+push int16(43)
+add
+push double(98.52)
+push float(754.31)
+dump
+
+push int8(32)
+push int16(99)
+sub
+dump
+
+push double(-32.43)
+push float(99.123146)
+mul
+dump
+
+push int8(42)
+push int16(84)
+push int32(9953)
+push float(54.87)
+div
+mod
+dump
+
+exit

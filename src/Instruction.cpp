@@ -186,7 +186,7 @@ void                  Instruction::checkOperands(Token operand, int line) {
 
   if (std::regex_match(operand.valueType, operands) == true) {
     if (operand.value == "")
-      this->_errors.push_back("Line: " + std::to_string(operand.line) + ": operand missing value.");
+      this->_errors.push_back("Line: " + std::to_string(operand.line) + ": operand missing value");
     else {
       bool error = false;
       size_t countNeg = std::count(operand.value.begin(), operand.value.end(), '-');
@@ -214,7 +214,7 @@ void                  Instruction::checkOperands(Token operand, int line) {
       }
 
       if (error)
-        this->_errors.push_back("Line: " + std::to_string(operand.line + 1) + ": unvalid operand value.");
+        this->_errors.push_back("Line: " + std::to_string(operand.line + 1) + ": unvalid operand value");
       else
         this->_instructions.push_back({operand.valueType, operand.value});      
     }
@@ -225,6 +225,7 @@ void                  Instruction::checkOperands(Token operand, int line) {
 
 std::vector<Content>  Instruction::parser(void) {
   bool exit = false;
+  bool inst = false;
 
   for (auto &iter : this->_tokens) {
     Token::Type type = iter.type;
@@ -240,6 +241,7 @@ std::vector<Content>  Instruction::parser(void) {
           if (&iter != &this->_tokens.back()) {
             auto next = std::next(&iter, 1);
             this->checkInstructions(iter, next, iter.line);
+            inst = true;
           }
           else
             this->_errors.push_back("Line: " + std::to_string(iter.line + 1) + ": no operand passed after " + iter.value);
@@ -248,7 +250,12 @@ std::vector<Content>  Instruction::parser(void) {
           this->_instructions.push_back({"Instruction", iter.value});
         break;
       case Token::Operand:
-        this->checkOperands(iter, iter.line);
+        if (inst == true) {
+          this->checkOperands(iter, iter.line);
+          inst = false;
+        }
+        else
+          this->_errors.push_back("Line: " + std::to_string(iter.line + 1) + ": operand without any previous instruction");
         break;
       case Token::LexicalError:
         this->_errors.push_back("Line: " + std::to_string(iter.line + 1) + ": lexical error: " + iter.value);

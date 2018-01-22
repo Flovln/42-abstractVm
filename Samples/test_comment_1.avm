@@ -1,0 +1,12 @@
+;hello world
+;;;;;
+;;tototo
+;hello;;
+push int8(13);salut toi
+push int8(13); dump add push int16(32)
+;exit
+;;
+add
+;dump
+dump;pop
+exit

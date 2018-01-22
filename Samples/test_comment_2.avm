@@ -1,0 +1,6 @@
+;dump
+push ;int32(43)
+;add
+push float(421;.23)
+push int16;(13)
+exit

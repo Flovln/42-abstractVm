@@ -1,9 +1,0 @@
-push float(999999993.444444444)
-push double(44444443.22222)
-dump
-mul
-push int32(123235234)
-add
-add
-dump
-exit
