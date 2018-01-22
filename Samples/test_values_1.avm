@@ -1,3 +1,4 @@
+; floats + negatives
 push double(12.21)
 push double(12.21.1)
 push float(.23.)
@@ -31,6 +32,22 @@ push float(we.21)
 push double(12ewq.12)
 push int16(12dq12)
 push float(-12.e)
-
 dump
+
+; max/min values limits
+push int8(-128)
+push int8(127)
+push int16(-32768)
+push int16(32767)
+push int32(-2147483648)
+push int32(2147483647)
+
+; max/min values errors
+push int8(-130)
+push int8(128)
+push int16(-32769)
+push int16(32768)
+push int32(-2147483649)
+push int32(2147483648)
+
 exit
