@@ -1,29 +1,155 @@
+; add simple
 push int32(2)
-push int32(3)
+push int32(-3)
 push int8(65)
 add
 push int16(43)
 add
 push double(98.52)
-push float(754.31)
+push float(-754.31)
+add
 dump
 
+; add complex
+push int32(214748364)
+push int32(-1197483647)
+push int8(65)
+add
+push int16(43)
+add
+push double(9853.43521)
+push float(-75495324.423)
+add
+dump
+
+; sub simple
 push int8(32)
 push int16(99)
 sub
+push double(98.52)
+push float(-754.31)
+sub
+push int32(-3)
+push int8(65)
+push double(-98.52)
+push int32(145432234)
 dump
 
-push double(-32.43)
-push float(99.123146)
+; sub complex
+push int32(214748364)
+push int32(-1197483647)
+push int8(65)
+sub
+push int16(43)
+sub
+push double(9853.43521)
+push float(-75495324.423)
+sub
+dump
+
+; mul simple
+push int8(32)
+push int16(99)
+mul
+push double(98.52)
+push float(-754.31)
+mul
+push int32(-3)
+push int8(65)
+push double(-98.52)
+push int32(145432234)
+dump
+
+; mul complex
+push int32(214748364)
+push int32(-1197483647)
+push int8(65)
+mul
+push int16(43)
+mul
+push double(9853.43521)
+push float(-75495324.423)
 mul
 dump
 
-push int8(42)
-push int16(84)
-push int32(9953)
-push float(54.87)
+; div simple
+push int8(32)
+push int16(99)
 div
+push double(98.52)
+push float(-754.31)
+div
+push int32(-3)
+push int8(65)
+push double(-98.52)
+push int32(145432234)
+dump
+
+; div complex
+push int32(214748364)
+push int32(-1197483647)
+push int8(65)
+div
+push int16(43)
+div
+push double(9853.43521)
+push float(-75495324.423)
+div
+dump
+
+; mod simple
+push int8(32)
+push int16(99)
 mod
+push int32(-3)
+push int8(65)
+push int32(145432234)
+dump
+
+; mod complex
+push int8(32)
+push int16(99)
+mod
+push int32(-3)
+push int8(65)
+push int32(-145432234)
+dump
+
+; cross simple
+push float(42.234)
+push int8(99)
+mul
+push double(93.10)
+div
+push int16(5432)
+push int16(09876)
+sub
+add
+push int32(7486)
+dump
+mul
+push int32(7492386)
+mod
+dump
+
+; cross complex
+push float(42978.234)
+push int8(99)
+mul
+push double(9376.16780)
+div
+push int16(5435)
+pop
+push int16(0876)
+assert int16(0876)
+sub
+push int32(7486786)
+dump
+pop
+push int32(7492386)
+push int8(42)
+push double(6544.35466)
+mul
 dump
 
 exit

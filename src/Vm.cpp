@@ -195,7 +195,7 @@ void  Vm::mod(void) {
 }
 
 void  Vm::print(void) {
-  if (this->_stack.size() < 2)
+  if (this->_stack.size() < 1)
     throw Vm::ExecutionException("less than 2 values in the stack.");
 
   if (this->_stack.front()->getType() == eOperandType::Int8) {
