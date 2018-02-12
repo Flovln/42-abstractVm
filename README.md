@@ -50,5 +50,5 @@ AbstractVM’s assembly language has a limited type system:
 
 In your terminal:
 
-$> make && make clean
-$> ./avm || ./avm [filepath]
+  - $> make && make clean
+  - $> ./avm || ./avm [filepath]
