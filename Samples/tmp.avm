@@ -1,6 +1,0 @@
-push int32(32)
-push float(21.13)
-dump
-mul
-dump
-exit
