@@ -2,11 +2,11 @@
 
 Ecole 42 project
 
-#### Goal
+## Goal
 
 AbstractVM is a machine that uses a stack to compute simple arithmetic expressions. These arithmetic expressions are provided to the machine as basic assembly programs and saved as a stack like structure.
 
-#### Lexical rules
+## Lexical rules
 
 AbstractVM’s assembly language has a limited type system:
 
@@ -19,7 +19,7 @@ AbstractVM’s assembly language has a limited type system:
   - Can read from a file.
   - Can read from the standard input.
 
-#### Commands
+## Commands
 
   - push v: pushes a new value on the top of the stack.
   - pop: pop the first element of the stack.
@@ -33,11 +33,11 @@ AbstractVM’s assembly language has a limited type system:
   - mod: Unstacks the first two values on the stack, calculates the modulus, then stacks the result.
   - exit: Terminate the execution of the current program.
 
-#### Execution
+## Execution
 
   -  When a computation involves two operands of different types, the value returned has the type of the more precise operand.
 
-#### Errors
+## Errors
 
   - Overflow and underflow on values.
   - Overflow and underflow on results.
@@ -46,9 +46,13 @@ AbstractVM’s assembly language has a limited type system:
   - The stack is composed of strictly less that two values when an arithmetic instruction is executed.
   - The exit instruction does not appears while all others instruction has been processed, the execution stops.
 
-#### Usage
+## Usage
 
 In your terminal:
 
+```sh
+
   - $> make && make clean
   - $> ./avm || ./avm [filepath]
+
+```
