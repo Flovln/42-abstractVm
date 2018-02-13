@@ -21,30 +21,30 @@ AbstractVM’s assembly language has a limited type system:
 
 ## Commands
 
-  - push v: pushes a new value on the top of the stack.
-  - pop: pop the first element of the stack.
-  - dump: display all the values of the stack without changing its order.
-  - print: if value is a int8 prints it as a char, if that's not the case.
-  - assert v: Asserts that the value at the top of the stack is equal to the one passed as parameter for this instruction..
-  - add: Unstacks the first two values on the stack, adds them together and stacks the result.
-  - sub: Unstacks the first two values on the stack, subtracts them, then stacks the result.
-  - mul: Unstacks the first two values on the stack, multiplies them, then stacks the result.
-  - div: Unstacks the first two values on the stack, divide them, then stacks the result.
-  - mod: Unstacks the first two values on the stack, calculates the modulus, then stacks the result.
-  - exit: Terminate the execution of the current program.
+	- push v: pushes a new value on the top of the stack.
+	- pop: pop the first element of the stack.
+	- dump: display all the values of the stack without changing its order.
+	- print: if value is a int8 prints it as a char, if that's not the case.
+	- assert v: Asserts that the value at the top of the stack is equal to the one passed as parameter for this instruction..
+	- add: Unstacks the first two values on the stack, adds them together and stacks the result.
+	- sub: Unstacks the first two values on the stack, subtracts them, then stacks the result.
+	- mul: Unstacks the first two values on the stack, multiplies them, then stacks the result.
+	- div: Unstacks the first two values on the stack, divide them, then stacks the result.
+	- mod: Unstacks the first two values on the stack, calculates the modulus, then stacks the result.
+	- exit: Terminate the execution of the current program.
 
 ## Execution
 
-  -  When a computation involves two operands of different types, the value returned has the type of the more precise operand.
+	-  When a computation involves two operands of different types, the value returned has the type of the more precise operand.
 
 ## Errors
 
-  - Overflow and underflow on values.
-  - Overflow and underflow on results.
-  - Division/Modulo by 0.
-  - The stack is empty when calling an instruction manipulating the stack, the program execution stops with an error.
-  - The stack is composed of strictly less that two values when an arithmetic instruction is executed.
-  - The exit instruction does not appears while all others instruction has been processed, the execution stops.
+	- Overflow and underflow on values.
+	- Overflow and underflow on results.
+	- Division/Modulo by 0.
+	- The stack is empty when calling an instruction manipulating the stack, the program execution stops with an error.
+	- The stack is composed of strictly less that two values when an arithmetic instruction is executed.
+	- The exit instruction does not appears while all others instruction has been processed, the execution stops.
 
 ## Usage
 
